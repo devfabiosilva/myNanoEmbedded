@@ -1,0 +1,13 @@
+embedded/
+examples/
+include/sodium/
+include/mbedtls/
+doc/html
+doc/latex
+src/
+*.mk
+*.o
+*.la
+*.a
+*.so
+
