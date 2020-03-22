@@ -4,7 +4,7 @@ myNanoEmbedded is a lightweight C library of source files that integrates Nano C
 - DPoW (Distributed Proof of Work)
 - P2PoW (a Descentralized P2P Proof of Work)
 
-##API features
+## API features
 - Attaches a random function to TRNG hardware (if available)
 - Self entropy verifier to ensure excelent TRNG or PRNG entropy
 - Creates a encrypted by password your stream or file to store your Nano SEED
@@ -19,7 +19,7 @@ myNanoEmbedded is a lightweight C library of source files that integrates Nano C
 - Optmized for size and speed
 - Non static functions (all data is cleared before processed for security)
 
-###To add this API in your project you must first:
+### To add this API in your project you must first:
 Download the latest version.
 
 ```markdown

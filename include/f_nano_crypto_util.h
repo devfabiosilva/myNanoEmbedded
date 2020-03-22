@@ -83,7 +83,6 @@
  *   </li>
  *   <li>Include the main library files in the client application.
  *   @code{.c}
- *   #include "f_util.h"
  *   #include "f_nano_crypto_util.h"
  *   @endcode
  *   </li>
@@ -94,15 +93,9 @@
  * | --- | --- |
  * | f_random_attach() | Initializes the PRNG or TRNG to be used in this API |
  *
- * ## Function summary
- * The following tables list the functions you can use to communicate over <a href="https://github.com/devfabiosilva/FIOT/tree/master/DPoW_FIOT_SERVER/Python">Fenixiot</a>.
- *
- *
- * ### Defining and managing connection contexts
- * | Function | Description |
- * | --- | --- |
- * | test() | Creates a connection context. |
- * | test1() | Deletes and frees the provided context. |
+ * ## Transmit/Receive transactions
+ * To transmit/receive your transaction you must use <a href="https://github.com/devfabiosilva/FIOT/tree/master/DPoW_FIOT_SERVER/Python">Fenix</a> protocol
+ * to stabilish a DPoW/P2PoW support
  *
  * ## Examples using platforms
  * The repository has some examples with most common embedded and Linux systems
@@ -117,6 +110,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /**
  * @def MAX_STR_NANO_CHAR
  * @brief Defines a max size of Nano char (70 bytes)
@@ -200,25 +194,25 @@ typedef uint8_t f_uint128_t[16];
 #endif
 
 /**
- * @fn NANO_PRIVATE_KEY
+ * @typedef NANO_PRIVATE_KEY
  * @brief Size of Nano Private Key.
  */
 typedef uint8_t NANO_PRIVATE_KEY[sizeof(NANO_SEED)];
 
 /**
- * @fn NANO_PRIVATE_KEY_EXTENDED
+ * @typedef NANO_PRIVATE_KEY_EXTENDED
  * @brief Size of Nano Private Key extended
  */
 typedef uint8_t NANO_PRIVATE_KEY_EXTENDED[crypto_sign_ed25519_SECRETKEYBYTES];
 
 /**
- * @fn NANO_PUBLIC_KEY
+ * @typedef NANO_PUBLIC_KEY
  * @brief Size of Nano Public Key
  */
 typedef uint8_t NANO_PUBLIC_KEY[crypto_sign_ed25519_PUBLICKEYBYTES];
 
 /**
- * @fn NANO_PUBLIC_KEY_EXTENDED
+ * @typedef NANO_PUBLIC_KEY_EXTENDED
  * @brief Size of Public Key Extended
  */
 typedef uint8_t NANO_PUBLIC_KEY_EXTENDED[PUB_KEY_EXTENDED_MAX_LEN];
