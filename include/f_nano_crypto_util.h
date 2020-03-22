@@ -105,6 +105,13 @@
  * - <a href="../../../../examples/esp32">ESP32</a>
  * - <a href="../../../../examples/olimexa20">Olimex A20</a>
  * - <a href="../../../../examples/stm">STM</a>
+ *
+ * ## CREDITS
+ *
+ * @author Fábio Pereira da Silva
+ * @date Feb 2020
+ * @version 1.0
+ * @copyright License MIT <a href="https://github.com/devfabiosilva/myNanoEmbedded/blob/master/LICENSE">see here</a>
  */
 
 #ifdef __cplusplus
