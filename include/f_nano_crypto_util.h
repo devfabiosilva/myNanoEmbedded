@@ -106,12 +106,16 @@
  * - <a href="../../../../examples/olimexa20">Olimex A20</a>
  * - <a href="../../../../examples/stm">STM</a>
  *
- * ## CREDITS
+ * ## Credits
  *
  * @author Fábio Pereira da Silva
  * @date Feb 2020
  * @version 1.0
  * @copyright License MIT <a href="https://github.com/devfabiosilva/myNanoEmbedded/blob/master/LICENSE">see here</a>
+ *
+ * ## References:
+ * 1- Editing
+ *
  */
 
 #ifdef __cplusplus

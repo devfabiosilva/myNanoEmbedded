@@ -2,8 +2,8 @@ embedded/
 examples/
 include/sodium/
 include/mbedtls/
-doc/html
-doc/latex
+doc_dev/html
+doc_dev/latex
 src/
 *.mk
 *.o
