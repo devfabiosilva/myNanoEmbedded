@@ -10,6 +10,7 @@ var searchData=
   ['f_5fnano_5fparse_5freal_5fstr_5fto_5fraw128_5ft',['f_nano_parse_real_str_to_raw128_t',['../df/d1d/f__nano__crypto__util_8h.html#a7743e6f254108900091f5510c062be4a',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fraw_5fto_5fstring',['f_nano_raw_to_string',['../df/d1d/f__nano__crypto__util_8h.html#a5c15c9984f6ec56694ceeaba6409ea34',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fseed_5fto_5fbip39',['f_nano_seed_to_bip39',['../df/d1d/f__nano__crypto__util_8h.html#a3ccc22b724a46e05eec80ab384a83ac4',1,'f_nano_crypto_util.h']]],
+  ['f_5fnano_5fsign_5fblock',['f_nano_sign_block',['../df/d1d/f__nano__crypto__util_8h.html#a4e23db218b52c16c883c3f1b5d085371',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5ftransaction_5fto_5fjson',['f_nano_transaction_to_JSON',['../df/d1d/f__nano__crypto__util_8h.html#ad7be2b59d986dc49b42bf5402faa98ce',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fvalid_5fnano_5fstr_5fvalue',['f_nano_valid_nano_str_value',['../df/d1d/f__nano__crypto__util_8h.html#a7f9edb1bb4f7cbe14ce05f633bf51f23',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fvalue_5fcompare_5fvalue',['f_nano_value_compare_value',['../df/d1d/f__nano__crypto__util_8h.html#a727dff4ae6d1c613a01abd09a87ae52e',1,'f_nano_crypto_util.h']]],

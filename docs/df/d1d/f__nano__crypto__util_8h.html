@@ -285,6 +285,8 @@ Functions</h2></td></tr>
 <tr class="separator:a7743e6f254108900091f5510c062be4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91849150037a4bfd447c9b2f0ff81e48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a45db4c051f03f1ee8f76369a7a5c2721">f_nano_err</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a91849150037a4bfd447c9b2f0ff81e48">f_nano_add_sub</a> (void *, void *, void *, uint32_t)</td></tr>
 <tr class="separator:a91849150037a4bfd447c9b2f0ff81e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e23db218b52c16c883c3f1b5d085371"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4e23db218b52c16c883c3f1b5d085371">f_nano_sign_block</a> (F_BLOCK_TRANSFER *, F_BLOCK_TRANSFER *, <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af809db7ad8c77323658a86780a93ef4f">NANO_PRIVATE_KEY_EXTENDED</a>)</td></tr>
+<tr class="separator:a4e23db218b52c16c883c3f1b5d085371"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -1401,6 +1403,57 @@ F_ENTROPY_TYPE_NOT_ENOUGH<br />
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a0e8f0380fe584268d63270c19da09701" title="Parse Nano Bip39 encoded string to raw Nano SEED given a dictionary file. ">f_bip39_to_nano_seed()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4e23db218b52c16c883c3f1b5d085371"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e23db218b52c16c883c3f1b5d085371">&#9670;&nbsp;</a></span>f_nano_sign_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_nano_sign_block </td>
+          <td>(</td>
+          <td class="paramtype">F_BLOCK_TRANSFER *&#160;</td>
+          <td class="paramname"><em>user_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F_BLOCK_TRANSFER *&#160;</td>
+          <td class="paramname"><em>fee_block</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af809db7ad8c77323658a86780a93ef4f">NANO_PRIVATE_KEY_EXTENDED</a>&#160;</td>
+          <td class="paramname"><em>private_key</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Signs <em>user_block</em> and worker <em>fee_block</em> given a private key <em>private_key</em> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">user_block</td><td>User block to be signed with a private key <em>private_key</em> </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">fee_block</td><td>Fee block to be signed with a private key <em>private_key</em>. Can be NULL if worker does not require fee </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">private_key</td><td>Private key to sign block(s)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If Success, otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ad7be2b59d986dc49b42bf5402faa98ce" title="Sign a block pointed in block_transfer with a given private_key and stores signed block to block_tran...">f_nano_transaction_to_JSON()</a> </dd></dl>
 
 </div>
 </div>

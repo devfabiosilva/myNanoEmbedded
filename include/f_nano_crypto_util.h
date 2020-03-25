@@ -936,6 +936,18 @@ f_nano_err f_nano_parse_real_str_to_raw128_t(uint8_t *, const char *);
  */
 f_nano_err f_nano_add_sub(void *, void *, void *, uint32_t);
 
+/**
+ * @fn int f_nano_sign_block(F_BLOCK_TRANSFER *user_block, F_BLOCK_TRANSFER *fee_block, NANO_PRIVATE_KEY_EXTENDED private_key)
+ * @brief Signs <i>user_block</i> and worker <i>fee_block</i> given a private key <i>private_key</i>
+ * @param [in, out] user_block User block to be signed with a private key <i>private_key</i>
+ * @param [in, out] fee_block Fee block to be signed with a private key <i>private_key</i>. Can be NULL if worker does not require fee
+ * @param [in] private_key Private key to sign block(s)
+ *
+ * @retval 0: If Success, otherwise error
+ * @see f_nano_transaction_to_JSON()
+ */
+int f_nano_sign_block(F_BLOCK_TRANSFER *, F_BLOCK_TRANSFER *, NANO_PRIVATE_KEY_EXTENDED);
+
 #ifdef __cplusplus
 }
 #endif

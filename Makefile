@@ -22,9 +22,12 @@ ARCH?=F_IA64
 include ./project.mk
 
 OBJEXT ?= .o
+EXAMPLE_OBJS ?= .o
 
 SOBJS = $(SSRCS:.S=$(OBJEXT))
 COBJS = $(CSRCS:.c=$(OBJEXT))
+
+CEXOBJS = $(CEXSRCS:.c=$(EXAMPLE_OBJS))
 
 all: part main
 
@@ -50,6 +53,22 @@ main: part
 	cd $(CURDIR) -v
 	@echo "Creating static library..."
 	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
+
+examples: $(COBJS) $(SOBJS) $(CEXOBJS)
+	@echo "Making examples ..."
+	cd $(CURDIR)/src/libsodium-1.0.17 -v;\
+	./configure --prefix=$(CURDIR)/src/libsodium-1.0.17/build
+	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17
+	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 install
+	mv $(CURDIR)/src/libsodium-1.0.17/build/lib/libsodium.a $(CURDIR)/lib
+	cd $(CURDIR) -v
+	@echo "Creating static library..."
+	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
+	cd $(CURDIR)/examples/desktop/ex01/
+	@echo $(PWD)
+	$(MAKE) -C examples/desktop/ex01
+	cd $(CURDIR)/examples/desktop/ex02
+	$(MAKE) -C examples/desktop/ex02
 
 .PHONY: clean
 clean:
