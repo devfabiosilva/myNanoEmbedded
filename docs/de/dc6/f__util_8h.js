@@ -18,5 +18,6 @@ var f__util_8h =
     [ "f_pass_must_have_at_least", "de/dc6/f__util_8h.html#a51441c2e68432090498cc409b5334068", null ],
     [ "f_random", "de/dc6/f__util_8h.html#ab517a2285ef295c093dd2e3ff44a96ff", null ],
     [ "f_random_attach", "de/dc6/f__util_8h.html#ac002f5f0a0ce2e3da7c90022254ce5a3", null ],
-    [ "f_verify_system_entropy", "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e", null ]
+    [ "f_verify_system_entropy", "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e", null ],
+    [ "get_console_passwd", "de/dc6/f__util_8h.html#a9473b62cadda2ce3936bb58bc791bc4d", null ]
 ];

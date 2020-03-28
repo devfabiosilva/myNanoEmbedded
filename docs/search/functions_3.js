@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['nano_5fbase_5f32_5f2_5fhex',['nano_base_32_2_hex',['../df/d1d/f__nano__crypto__util_8h.html#ab7705b19465d7a834c0fd5da2e356ede',1,'f_nano_crypto_util.h']]]
+  ['is_5fnano_5fprefix',['is_nano_prefix',['../df/d1d/f__nano__crypto__util_8h.html#a3c456dc91a46acdc6f837fa50341002b',1,'f_nano_crypto_util.h']]],
+  ['is_5fnull_5fhash',['is_null_hash',['../df/d1d/f__nano__crypto__util_8h.html#a33d0195a592347a82dd2cfbfe6a32efb',1,'f_nano_crypto_util.h']]]
 ];

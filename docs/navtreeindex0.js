@@ -61,6 +61,7 @@ var NAVTREEINDEX0 =
 "de/dc6/f__util_8h.html#a6e14d9fd7d0b26c242af241aa98cc430":[1,2,13],
 "de/dc6/f__util_8h.html#a81143c2c475ed36f6cff9f66f613c5aa":[1,2,12],
 "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e":[1,2,18],
+"de/dc6/f__util_8h.html#a9473b62cadda2ce3936bb58bc791bc4d":[1,2,19],
 "de/dc6/f__util_8h.html#aad0006905027453d7ac29806ee093904":[1,2,5],
 "de/dc6/f__util_8h.html#ab32805b689cb494d0a65f81d4ef2198c":[1,2,0],
 "de/dc6/f__util_8h.html#ab517a2285ef295c093dd2e3ff44a96ff":[1,2,16],
@@ -201,8 +202,8 @@ var NAVTREEINDEX0 =
 "df/d1d/f__nano__crypto__util_8h.html#afc7635203eca2aec604c12539b24871a":[1,1,19],
 "df/d1d/f__nano__crypto__util_8h_source.html":[1,1],
 "files.html":[1],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "pages.html":[],
 "usergroup0.html":[3]
 };

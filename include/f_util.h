@@ -233,6 +233,16 @@ void f_random_attach(rnd_fn);
  */
 void f_random(void *, size_t);
 
+/**
+ * @fn int get_console_passwd(char *pass, size_t pass_sz)
+ * @brief Reads a password from console
+ * @param [out] pass Password to be parsed to pointer
+ * @param [in] pass_sz Size of buffer <i>pass</i>
+ *
+ * @retval 0: On Success, otherwise Error
+ */
+int get_console_passwd(char *, size_t);
+
 #endif
 
 #ifdef __cplusplus
