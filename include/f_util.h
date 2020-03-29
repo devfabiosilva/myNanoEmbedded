@@ -62,6 +62,7 @@ int f_verify_system_entropy(uint32_t, void *, size_t, int);
  *     - F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER Must have at least one number
  *     - F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL Must have at least one symbol
  *     - F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE Must have at least one upper case
+ *     - F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE Must have at least one lower case
  *
  * <b>Return values:</b>
  *
@@ -70,6 +71,7 @@ int f_verify_system_entropy(uint32_t, void *, size_t, int);
  * - <i>F_PASS_IS_TOO_SHORT:</i> If password length is less than <i>min</i> value<br>
  * - <i>F_PASS_IS_TOO_LONG:</i> If password length is greater tham <i>m</i> value<br>
  * - <i>F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE:</i> If password is required in <i>must_have</i> type upper case characters
+ * - <i>F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE:</i> If password is required in <i>must_have</i> type lower case characters
  * - <i>F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL:</i> If password is required in <i>must_have</i> type to have symbol(s)
  * - <i>F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER:</i> if password is required in <i>must_have</i> type to have number(s)
  *
@@ -162,6 +164,12 @@ int is_filled_with_value(uint8_t *, size_t, uint8_t);
 #define F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE (int)4
 
 /**
+ * @def F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE
+ * @brief Password must have at least one lower case
+ */
+#define F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE (int)8
+
+/**
  * @def F_PASS_IS_TOO_LONG
  * @brief Password is too long
  */
@@ -177,7 +185,7 @@ int is_filled_with_value(uint8_t *, size_t, uint8_t);
  * @def F_PASS_IS_OUT_OVF
  * @brief Password is overflow and cannot be stored
  */
-#define F_PASS_IS_OUT_OVF (int)768
+#define F_PASS_IS_OUT_OVF (int)1024//768
 
 #ifndef F_DOC_SKIP
 
@@ -205,6 +213,47 @@ f_pbkdf2_err f_pbkdf2_hmac(unsigned char *, size_t, unsigned char *, size_t, uin
 f_aes_err f_aes256cipher(uint8_t *, uint8_t *, void *, size_t, void *, int);
 
 #endif
+
+/**
+ * @fn int f_passwd_comp_safe(char *pass1, char *pass2, size_t n, size_t min, size_t max)
+ * @brief Compares two passwords values with safe buffer
+ * @param [in] pass1 First password to compare with <i>pass2</i>
+ * @param [in] pass2 Second password to compare with <i>pass1</i>
+ * @param [in] n Size of Maximum buffer of both <i>pass1</i> and <i>pass2</i>
+ * @param [in] min Minimun value of both <i>pass1</i> and <i>pass2</i>
+ * @param [in] max Maximum value of both <i>pass1</i> and <i>pass2</i>
+ *
+ * @retval 0: If <i>pass1</i> is equal to <i>pass2</i>, otherwise value is less than 0 (zero) if password does not match
+ */
+int f_passwd_comp_safe(char *, char *, size_t, size_t, size_t);
+
+/**
+ * @fn char *f_get_entropy_name(uint32_t val)
+ * @brief Returns a entropy name given a index/ASCII index or entropy value
+ * @param [in] val Index/ASCII index or entropy value
+ *
+ * <b>Return values:</b>
+ *
+ * - <i>NULL</i> If no entropy index/ASCII/entropy found in <i>val</i><br>
+ * - <i>F_ENTROPY_TYPE_*</i> name if found in index/ASCII or entropy value
+ */
+char *f_get_entropy_name(uint32_t);
+
+/**
+ * @fn uint32_t f_sel_to_entropy_level(int sel)
+ * @brief Return a given entropy number given a number encoded ASCII or index number
+ * @param [in] sel ASCII or index value
+ *
+ * <b>Return values:</b>
+ *
+ * - <i>0 (zero):</i> If no entropy number found in <i>sel</i><br>
+ * - <i>F_ENTROPY_TYPE_PARANOIC</i>
+ * - <i>F_ENTROPY_TYPE_EXCELENT</i>
+ * - <i>F_ENTROPY_TYPE_GOOD</i>
+ * - <i>F_ENTROPY_TYPE_NOT_ENOUGH</i>
+ * - <i>F_ENTROPY_TYPE_NOT_RECOMENDED</i>
+ */
+uint32_t f_sel_to_entropy_level(int);
 
 #ifndef F_ESP32
 
