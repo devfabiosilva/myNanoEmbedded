@@ -25,5 +25,6 @@ var searchData=
   ['f_5fseed_5fto_5fnano_5fwallet',['f_seed_to_nano_wallet',['../df/d1d/f__nano__crypto__util_8h.html#ab72781b87f8caa96b9789141fb865f18',1,'f_nano_crypto_util.h']]],
   ['f_5fsel_5fto_5fentropy_5flevel',['f_sel_to_entropy_level',['../de/dc6/f__util_8h.html#a5fff90f1cb24f0978f9c828a7eef428e',1,'f_util.h']]],
   ['f_5fset_5fnano_5ffile_5finfo',['f_set_nano_file_info',['../df/d1d/f__nano__crypto__util_8h.html#ac29f948b6dcc6b9391b6b622772f732b',1,'f_nano_crypto_util.h']]],
+  ['f_5fstr_5fto_5fhex',['f_str_to_hex',['../de/dc6/f__util_8h.html#ac1bb50469f73d98b1e8a7b8e1aa7debd',1,'f_util.h']]],
   ['f_5fverify_5fsystem_5fentropy',['f_verify_system_entropy',['../de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e',1,'f_util.h']]]
 ];

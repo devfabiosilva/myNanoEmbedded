@@ -156,8 +156,9 @@ extern "C" {
 #else
 
  #ifndef F_DOC_SKIP
-  #define BIP39_DICTIONARY "/spiffs/dictionary.dic"
+  //#define BIP39_DICTIONARY "/spiffs/dictionary.dic"
   #define BIP39_DICTIONARY_SAMPLE "../../dictionary.dic"
+  #define BIP39_DICTIONARY "dictionary.dic"
  #endif
 
 #endif
