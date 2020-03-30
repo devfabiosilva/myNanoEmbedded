@@ -28,6 +28,9 @@ var searchData=
   ['f_5ffile_5finfo_5ferr_5ft',['f_file_info_err_t',['../d8/d4d/structf__file__info__err__t.html',1,'f_file_info_err_t'],['../df/d1d/f__nano__crypto__util_8h.html#a35ce19e93634d641aa08fc7dbc16adda',1,'f_file_info_err_t():&#160;f_nano_crypto_util.h']]],
   ['f_5ffile_5finfo_5finvalid_5fheader_5ffile',['F_FILE_INFO_INVALID_HEADER_FILE',['../df/d1d/f__nano__crypto__util_8h.html#a35ce19e93634d641aa08fc7dbc16addaa483f6457fd2c9f9ada1bcc8db37d4507',1,'f_nano_crypto_util.h']]],
   ['f_5fgenerate_5fnano_5fseed',['f_generate_nano_seed',['../df/d1d/f__nano__crypto__util_8h.html#abfab7b881e8c138b1d7b3666dbe157bb',1,'f_nano_crypto_util.h']]],
+  ['f_5fget_5fch_5fmode_5fany_5fkey',['F_GET_CH_MODE_ANY_KEY',['../de/dc6/f__util_8h.html#a37f18a5a28eebb68a2f53535c6ea111e',1,'f_util.h']]],
+  ['f_5fget_5fch_5fmode_5fno_5fecho',['F_GET_CH_MODE_NO_ECHO',['../de/dc6/f__util_8h.html#af4f3a8f72413cecdb5f8775a8e2d2447',1,'f_util.h']]],
+  ['f_5fget_5fchar_5fno_5fblock',['f_get_char_no_block',['../de/dc6/f__util_8h.html#a3e84376a91447deb825b262547a6cc90',1,'f_util.h']]],
   ['f_5fget_5fentropy_5fname',['f_get_entropy_name',['../de/dc6/f__util_8h.html#a9d5091409b5a2ce40ffdbda5742c7079',1,'f_util.h']]],
   ['f_5fget_5fnano_5ffile_5finfo',['f_get_nano_file_info',['../df/d1d/f__nano__crypto__util_8h.html#a406d1895c7e0812210079bfd4bcf340c',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fadd_5fsub',['f_nano_add_sub',['../df/d1d/f__nano__crypto__util_8h.html#a91849150037a4bfd447c9b2f0ff81e48',1,'f_nano_crypto_util.h']]],
@@ -69,6 +72,7 @@ var searchData=
   ['f_5fuint128_5ft',['f_uint128_t',['../df/d1d/f__nano__crypto__util_8h.html#aa2c193d9108b22fda3da8fbdc272aac2',1,'f_nano_crypto_util.h']]],
   ['f_5futil_2eh',['f_util.h',['../de/dc6/f__util_8h.html',1,'']]],
   ['f_5fverify_5fsystem_5fentropy',['f_verify_system_entropy',['../de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e',1,'f_util.h']]],
+  ['f_5fwrite_5fseed',['f_write_seed',['../df/d1d/f__nano__crypto__util_8h.html#aac9e692df60fee8d2b818c1346225391',1,'f_nano_crypto_util.h']]],
   ['f_5fwrite_5fseed_5ferr',['f_write_seed_err',['../df/d1d/f__nano__crypto__util_8h.html#afc7635203eca2aec604c12539b24871a',1,'f_nano_crypto_util.h']]],
   ['f_5fwrite_5fseed_5ferr_5ft',['f_write_seed_err_t',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72ca',1,'f_nano_crypto_util.h']]],
   ['file_5finfo_5fintegrity',['file_info_integrity',['../d8/d24/structf__nano__wallet__info__t.html#af540dc6f4b60ff6b96f368d676de84f8',1,'f_nano_wallet_info_t::file_info_integrity()'],['../df/d1d/f__nano__crypto__util_8h.html#af540dc6f4b60ff6b96f368d676de84f8',1,'file_info_integrity():&#160;f_nano_crypto_util.h']]]

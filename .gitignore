@@ -1,9 +1,9 @@
 embedded/
-examples/desktop/ex02
 examples/desktop/ex03
 examples/desktop/ex04
 examples/desktop/ex05
 examples/dictionary.dic
+tests
 include/sodium/
 include/mbedtls/
 doc_dev/html

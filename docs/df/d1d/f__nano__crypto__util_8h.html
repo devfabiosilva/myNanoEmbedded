@@ -287,6 +287,8 @@ Functions</h2></td></tr>
 <tr class="separator:a91849150037a4bfd447c9b2f0ff81e48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e23db218b52c16c883c3f1b5d085371"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4e23db218b52c16c883c3f1b5d085371">f_nano_sign_block</a> (F_BLOCK_TRANSFER *, F_BLOCK_TRANSFER *, <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af809db7ad8c77323658a86780a93ef4f">NANO_PRIVATE_KEY_EXTENDED</a>)</td></tr>
 <tr class="separator:a4e23db218b52c16c883c3f1b5d085371"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac9e692df60fee8d2b818c1346225391"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#afc7635203eca2aec604c12539b24871a">f_write_seed_err</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aac9e692df60fee8d2b818c1346225391">f_write_seed</a> (void *, int, uint8_t *, char *)</td></tr>
+<tr class="separator:aac9e692df60fee8d2b818c1346225391"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -985,7 +987,7 @@ F_ENTROPY_TYPE_NOT_ENOUGH<br />
 </dl>
 <p><b>WARNING</b></p>
 <p><em><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a26255892a474d8fda6b662a44c6b44b3" title="Generates a new SEED and saves it to an non deterministic encrypted file. ">f_cloud_crypto_wallet_nano_create_seed()</a></em> does not verify your password. It is recommended to use a strong password like symbols, capital letters and numbers to keep your SEED safe and avoid brute force attacks.</p>
-<p>You can use <em><a class="el" href="../../de/dc6/f__util_8h.html#a51441c2e68432090498cc409b5334068" title="Checks if a given password has enought requirements to be parsed to a function. ">f_pass_must_have_at_least()</a></em> function to check passwords strenght </p><dl class="retval"><dt>Return values</dt><dd>
+<p>You can use <em><a class="el" href="../../de/dc6/f__util_8h.html#a51441c2e68432090498cc409b5334068" title="Checks if a given password has enought requirements to be parsed to a function. ">f_pass_must_have_at_least()</a></em> function to check passwords strength </p><dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
     <tr><td class="paramname">0</td><td>On Success, otherwise Error </td></tr>
   </table>
@@ -1838,7 +1840,7 @@ Output type:</li>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a72189fd3f111a3c17c708daa5481bd45" title="Parse Nano SEED and Bip39 to JSON given a encrypted data in memory or encrypted data in file or unenc...">f_parse_nano_seed_and_bip39_to_JSON()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a72189fd3f111a3c17c708daa5481bd45" title="Parse Nano SEED and Bip39 to JSON given a encrypted data in memory or encrypted data in file or unenc...">f_parse_nano_seed_and_bip39_to_JSON()</a> <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aac9e692df60fee8d2b818c1346225391" title="Writes a SEED into a ecrypted with password with non deterministic stream in memory or file...">f_write_seed()</a> </dd></dl>
 
 </div>
 </div>
@@ -1947,6 +1949,68 @@ Output type:</li>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a016da69f9a6eb386c13763da8866b3a8" title="Typedef Error enumerator for info file functions. ">F_FILE_INFO_ERR</a> enum type error for detailed error and <a class="el" href="../../d8/d24/structf__nano__wallet__info__t.html" title="struct of the body block of the info file ">f_nano_wallet_info_t</a> for info type details </dd></dl>
+
+</div>
+</div>
+<a id="aac9e692df60fee8d2b818c1346225391"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac9e692df60fee8d2b818c1346225391">&#9670;&nbsp;</a></span>f_write_seed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#afc7635203eca2aec604c12539b24871a">f_write_seed_err</a> f_write_seed </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>source_data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>seed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>passwd</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Writes a SEED into a ecrypted with password with non deterministic stream in memory or file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">source_data</td><td>Memory pointer or file name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>Source of output data:<ul>
+<li><em>WRITE_SEED_TO_STREAM</em> Output data is a pointer to memory to store encrypted Nano SEED data</li>
+<li><em>WRITE_SEED_TO_FILE</em> Output is a string filename to store encrypted Nano SEED data </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">seed</td><td>Nano SEED to be stored in encrypted stream or file </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">passwd</td><td>(Mandatory) It can not be null string or NULL. See <em><a class="el" href="../../de/dc6/f__util_8h.html#a51441c2e68432090498cc409b5334068" title="Checks if a given password has enought requirements to be parsed to a function. ">f_pass_must_have_at_least()</a></em> function to check passwords strength</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If Success, otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab75b05c3f5efe2b59bcbdc37fe6e8108" title="Extracts a Nano SEED from encrypted stream in memory or in a file. ">f_read_seed()</a> </dd></dl>
 
 </div>
 </div>

@@ -589,7 +589,7 @@ typedef enum f_file_info_err_t {
  * @brief <i>f_cloud_crypto_wallet_nano_create_seed()</i> does not verify your password. It is recommended to use a strong password like symbols,
  * capital letters and numbers to keep your SEED safe and avoid brute force attacks.
  *
- * @brief You can use <i>f_pass_must_have_at_least()</i> function to check passwords strenght
+ * @brief You can use <i>f_pass_must_have_at_least()</i> function to check passwords strength
  * @retval 0: On Success, otherwise Error
  *
  */
@@ -729,7 +729,7 @@ int f_parse_nano_seed_and_bip39_to_JSON(char *, size_t, size_t *, void *, int, c
  * Sensive data. Do not share any SEED !
  *
  * @retval 0: On Success, otherwise Error
- * @see f_parse_nano_seed_and_bip39_to_JSON()
+ * @see f_parse_nano_seed_and_bip39_to_JSON() f_write_seed()
  */
 int f_read_seed(uint8_t *, const char *, void *, int, int);
 
@@ -948,6 +948,21 @@ f_nano_err f_nano_add_sub(void *, void *, void *, uint32_t);
  * @see f_nano_transaction_to_JSON()
  */
 int f_nano_sign_block(F_BLOCK_TRANSFER *, F_BLOCK_TRANSFER *, NANO_PRIVATE_KEY_EXTENDED);
+
+/**
+ * @fn f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char *passwd)
+ * @brief Writes a SEED into a ecrypted with password with non deterministic stream in memory or file
+ * @param [out] source_data Memory pointer or file name
+ * @param [in] source Source of output data:
+ *     - <i>WRITE_SEED_TO_STREAM</i> Output data is a pointer to memory to store encrypted Nano SEED data
+ *     - <i>WRITE_SEED_TO_FILE</i> Output is a string filename to store encrypted Nano SEED data
+ * @param [in] seed Nano SEED to be stored in encrypted stream or file
+ * @param [in] passwd (Mandatory) It can not be null string or NULL. See <i>f_pass_must_have_at_least()</i> function to check passwords strength
+ *
+ * @retval 0: If Success, otherwise error
+ * @see f_read_seed()
+ */
+f_write_seed_err f_write_seed(void *, int, uint8_t *, char *);
 
 #ifdef __cplusplus
 }

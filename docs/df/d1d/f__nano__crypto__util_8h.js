@@ -102,6 +102,7 @@ var f__nano__crypto__util_8h =
     [ "f_read_seed", "df/d1d/f__nano__crypto__util_8h.html#ab75b05c3f5efe2b59bcbdc37fe6e8108", null ],
     [ "f_seed_to_nano_wallet", "df/d1d/f__nano__crypto__util_8h.html#ab72781b87f8caa96b9789141fb865f18", null ],
     [ "f_set_nano_file_info", "df/d1d/f__nano__crypto__util_8h.html#ac29f948b6dcc6b9391b6b622772f732b", null ],
+    [ "f_write_seed", "df/d1d/f__nano__crypto__util_8h.html#aac9e692df60fee8d2b818c1346225391", null ],
     [ "is_nano_prefix", "df/d1d/f__nano__crypto__util_8h.html#a3c456dc91a46acdc6f837fa50341002b", null ],
     [ "is_null_hash", "df/d1d/f__nano__crypto__util_8h.html#a33d0195a592347a82dd2cfbfe6a32efb", null ],
     [ "nano_base_32_2_hex", "df/d1d/f__nano__crypto__util_8h.html#ab7705b19465d7a834c0fd5da2e356ede", null ],

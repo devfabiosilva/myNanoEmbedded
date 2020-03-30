@@ -320,6 +320,35 @@ void f_random(void *, size_t);
  */
 int get_console_passwd(char *, size_t);
 
+/**
+ * @def F_GET_CH_MODE_NO_ECHO
+ * @see f_get_char_no_block()
+ */
+#define F_GET_CH_MODE_NO_ECHO (int)(1<<16)
+
+/**
+ * @def F_GET_CH_MODE_ANY_KEY
+ * @see f_get_char_no_block()
+ */
+#define F_GET_CH_MODE_ANY_KEY (int)(1<<17)
+
+/**
+ * @fn int f_get_char_no_block(int mode)
+ * @brief Reads a char from console. Waits a char and returns its value
+ * @param [in] mode Mode and/or character to be returned
+ *     - <i>F_GET_CH_MODE_NO_ECHO</i> No echo is on the console string
+ *     - <i>F_GET_CH_MODE_ANY_KEY</i> Returns any key pressed<br><br>
+ *
+ *<li><strong>Example:</strong>
+ *   @code{.c}
+ *       key=f_get_char_no_block(F_GET_CH_MODE_NO_ECHO|'c'); // Waits 'c' char key and returns value 0x00000063 without echo 'c' on the screen
+ *   @endcode
+ *</li>
+ *
+ * @retval key code: On Success, Negative value on error
+ */
+int f_get_char_no_block(int);
+
 #endif
 
 #ifdef __cplusplus
