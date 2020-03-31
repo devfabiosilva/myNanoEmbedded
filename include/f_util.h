@@ -64,6 +64,7 @@ SOFTWARE.\n\n\n"
  * @param [in] turn_on_wdt For ESP32, Arduino platform and other microcontrollers only. Turns on/off WATCH DOG (0: OFF, NON ZERO: ON).
  *     For Raspberry PI and Linux native is ommited.
  *
+ * @brief This implementation is based on topic in <a href="https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html">equation 7.12</a> in MIT opencourseware (7.3 A Statistical Definition of Entropy - 2005)<br> Many thanks to <b>Professor Z. S. Spakovszky</b> for this amazing topic
  * @retval 0: On Success, otherwise Error
  */
 int f_verify_system_entropy(uint32_t, void *, size_t, int);

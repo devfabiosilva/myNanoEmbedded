@@ -114,8 +114,13 @@
  * @copyright License MIT <a href="https://github.com/devfabiosilva/myNanoEmbedded/blob/master/LICENSE">see here</a>
  *
  * ## References:
- * 1- Editing
+ *     [<a href="https://content.nano.org/whitepaper/Nano_Whitepaper_en.pdf">1</a>] - Colin LeMahieu - <i>Nano: A Feeless Distributed Cryptocurrency Network</i> - (2015)
  *
+ *     [<a href="https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html">2</a>] - Z. S. Spakovszky - <i>7.3 A Statistical Definition of Entropy</i> - (2005)
+ *
+ *     [<a href="https://medium.com/@kaiquenunes/delegated-proof-of-work-d566870924d9">3</a>] - Kaique Anarkrypto - <i>Delegated Proof of Work</i> - (2019)
+ *
+ *     [<a href="https://docs.nano.org/commands/rpc-protocol/#node-rpcs">4</a>] - <a href="https://docs.nano.org/">docs.nano.org</a> - <i>Node RPCs documentation</i>
  */
 
 #ifdef __cplusplus
