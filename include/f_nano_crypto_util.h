@@ -116,7 +116,7 @@
  * ## References:
  *     [<a href="https://content.nano.org/whitepaper/Nano_Whitepaper_en.pdf">1</a>] - Colin LeMahieu - <i>Nano: A Feeless Distributed Cryptocurrency Network</i> - (2015)
  *
- *     [<a href="https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html">2</a>] - Z. S. Spakovszky - <i>7.3 A Statistical Definition of Entropy</i> - (2005)
+ *     [<a href="https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html">2</a>] - Z. S. Spakovszky - <i>7.3 A Statistical Definition of Entropy</i> - (2005) - NOTE: Entropy function for cryptography is implemented based on <a href="https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html">Definition (7.12)</a> of this amazing topic
  *
  *     [<a href="https://medium.com/@kaiquenunes/delegated-proof-of-work-d566870924d9">3</a>] - Kaique Anarkrypto - <i>Delegated Proof of Work</i> - (2019)
  *
@@ -968,6 +968,20 @@ int f_nano_sign_block(F_BLOCK_TRANSFER *, F_BLOCK_TRANSFER *, NANO_PRIVATE_KEY_E
  * @see f_read_seed()
  */
 f_write_seed_err f_write_seed(void *, int, uint8_t *, char *);
+
+/**
+ * @fn f_nano_err f_nano_balance_to_str(char *str, size_t str_len, size_t *out_len, f_uint128_t value)
+ * @brief Converts a raw Nano balance to string raw balance
+ * @param [out] str Output string pointer
+ * @param [in] str_len Size of string pointer memory
+ * @param [out] out_len Output length of converted value to string. If <i>out_len</i> is NULL then <i>str</i> returns converted value with NULL terminated string
+ * @param [in] value Raw Nano balance value
+ *
+ * @retval 0: If success, otherwise error.
+ * @see function f_nano_parse_raw_str_to_raw128_t() and return errors f_nano_err
+ *
+ */
+f_nano_err f_nano_balance_to_str(char *, size_t, size_t *, f_uint128_t);
 
 #ifdef __cplusplus
 }

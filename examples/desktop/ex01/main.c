@@ -10,6 +10,21 @@
 #include <string.h>
 #include "f_nano_crypto_util.h"
 
+#define WELCOME "\
+  This example show a simple use of this API. It just attaches\n\
+ a random function generator in Linux destop using \"f_random_attach()\"\n\
+ to be called in this API. Then it fills a 32 bytes example with random\n\
+ number in first step.\n\n\
+  Next step it uses a function called \"f_verify_system_entropy()\" to\n\
+ calculate a entropy level and select the desired random number to generate\n\
+ random SEEDs.\n\n\
+  \"f_random_attach()\" is implemented based in equation 7.12 of this amazing\n\
+ MIT opencourseware topic (7.3 A Statistical Definition of Entropy) - 2005.\n\
+ See:\n\
+ https://web.mit.edu/16.unified/www/FALL/thermodynamics/notes/node56.html\n\n\
+  * Many thanks to Professor Z. S. Spakovszky for this amazing topic\n\n\
+ \n\nAuthor: Fábio Pereira da Silva.\n\nLicense: MIT\n\n"
+
 void gen_rand_no_entropy(void *output, size_t output_len)
 {
    FILE *f;
@@ -37,7 +52,7 @@ int main(int argc, char *argv[])
    uint8_t rand[32];
    int err;
 
-   printf(LICENSE);
+   printf(WELCOME);
 
    memset(rand, 0, sizeof(rand));
 

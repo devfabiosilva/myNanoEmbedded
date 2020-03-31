@@ -88,6 +88,7 @@ var f__nano__crypto__util_8h =
     [ "f_generate_nano_seed", "df/d1d/f__nano__crypto__util_8h.html#abfab7b881e8c138b1d7b3666dbe157bb", null ],
     [ "f_get_nano_file_info", "df/d1d/f__nano__crypto__util_8h.html#a406d1895c7e0812210079bfd4bcf340c", null ],
     [ "f_nano_add_sub", "df/d1d/f__nano__crypto__util_8h.html#a91849150037a4bfd447c9b2f0ff81e48", null ],
+    [ "f_nano_balance_to_str", "df/d1d/f__nano__crypto__util_8h.html#a71369aa79606b9ff1c634fcd344cf793", null ],
     [ "f_nano_key_to_str", "df/d1d/f__nano__crypto__util_8h.html#a9ac601dde1a59535a029533eac5252a3", null ],
     [ "f_nano_parse_raw_str_to_raw128_t", "df/d1d/f__nano__crypto__util_8h.html#ac5a54865d39a182093fd3d0556ebd7ad", null ],
     [ "f_nano_parse_real_str_to_raw128_t", "df/d1d/f__nano__crypto__util_8h.html#a7743e6f254108900091f5510c062be4a", null ],

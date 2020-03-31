@@ -9,6 +9,15 @@
 #include <string.h>
 #include "f_nano_crypto_util.h"
 
+#define WELCOME "\
+  \n\n  This example ataches a random number function and finally use\n\
+ \"f_generate_nano_seed()\" to extract a seed given an entropy\n\
+ level and finally extracts 8 Nano Key Pairs and shows private key,\n\
+ public key and their respective nano wallets.\n\n\
+  Paranoic entropy level is used.\n\n\
+  It can take a little longer. Try to move mouse, open programs to increase\n\
+  entropy.\n\n"
+
 void gen_rand_no_entropy(void *output, size_t output_len)
 {
    FILE *f;
@@ -38,7 +47,7 @@ int main(int argc, char *argv[])
    NANO_PUBLIC_KEY_EXTENDED PUBLIC_KEY;
    char buffer[1024];
 
-   printf(LICENSE);
+   printf(WELCOME);
 
    f_random_attach(gen_rand_no_entropy);
 

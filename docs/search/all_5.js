@@ -34,6 +34,7 @@ var searchData=
   ['f_5fget_5fentropy_5fname',['f_get_entropy_name',['../de/dc6/f__util_8h.html#a9d5091409b5a2ce40ffdbda5742c7079',1,'f_util.h']]],
   ['f_5fget_5fnano_5ffile_5finfo',['f_get_nano_file_info',['../df/d1d/f__nano__crypto__util_8h.html#a406d1895c7e0812210079bfd4bcf340c',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fadd_5fsub',['f_nano_add_sub',['../df/d1d/f__nano__crypto__util_8h.html#a91849150037a4bfd447c9b2f0ff81e48',1,'f_nano_crypto_util.h']]],
+  ['f_5fnano_5fbalance_5fto_5fstr',['f_nano_balance_to_str',['../df/d1d/f__nano__crypto__util_8h.html#a71369aa79606b9ff1c634fcd344cf793',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fcrypto_5futil_2eh',['f_nano_crypto_util.h',['../df/d1d/f__nano__crypto__util_8h.html',1,'']]],
   ['f_5fnano_5fcrypto_5fwallet_5ft',['f_nano_crypto_wallet_t',['../d4/d42/structf__nano__crypto__wallet__t.html',1,'']]],
   ['f_5fnano_5fencrypted_5fwallet_5ft',['f_nano_encrypted_wallet_t',['../d4/db2/structf__nano__encrypted__wallet__t.html',1,'']]],

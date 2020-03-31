@@ -1,8 +1,7 @@
 embedded/
-examples/desktop/ex03
 examples/desktop/ex04
 examples/desktop/ex05
-examples/dictionary.dic
+examples/desktop/ex06
 tests
 include/sodium/
 include/mbedtls/
