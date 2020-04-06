@@ -2,6 +2,7 @@ var searchData=
 [
   ['f_5fbip39_5fto_5fnano_5fseed',['f_bip39_to_nano_seed',['../df/d1d/f__nano__crypto__util_8h.html#a0e8f0380fe584268d63270c19da09701',1,'f_nano_crypto_util.h']]],
   ['f_5fcloud_5fcrypto_5fwallet_5fnano_5fcreate_5fseed',['f_cloud_crypto_wallet_nano_create_seed',['../df/d1d/f__nano__crypto__util_8h.html#a26255892a474d8fda6b662a44c6b44b3',1,'f_nano_crypto_util.h']]],
+  ['f_5fconvert_5fto_5flong_5fint',['f_convert_to_long_int',['../de/dc6/f__util_8h.html#a7cb881b6c306f3f8b478e11b2fb454ba',1,'f_util.h']]],
   ['f_5fgenerate_5fnano_5fseed',['f_generate_nano_seed',['../df/d1d/f__nano__crypto__util_8h.html#abfab7b881e8c138b1d7b3666dbe157bb',1,'f_nano_crypto_util.h']]],
   ['f_5fget_5fchar_5fno_5fblock',['f_get_char_no_block',['../de/dc6/f__util_8h.html#a3e84376a91447deb825b262547a6cc90',1,'f_util.h']]],
   ['f_5fget_5fentropy_5fname',['f_get_entropy_name',['../de/dc6/f__util_8h.html#a9d5091409b5a2ce40ffdbda5742c7079',1,'f_util.h']]],

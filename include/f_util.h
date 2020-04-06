@@ -350,6 +350,17 @@ int get_console_passwd(char *, size_t);
  */
 int f_get_char_no_block(int);
 
+/**
+ * @fn int f_convert_to_long_int(unsigned long int *val, char *value, size_t value_sz)
+ * @brief Converts a string value to unsigned long int
+ * @param [out] val Value stored in a unsigned long int variable
+ * @param [in] value Input value to be parsed to unsigned long int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ */
+int f_convert_to_long_int(unsigned long int *, char *, size_t);
+
 #endif
 
 #ifdef __cplusplus

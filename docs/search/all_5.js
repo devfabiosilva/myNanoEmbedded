@@ -5,6 +5,7 @@ var searchData=
   ['f_5fbip39_5fto_5fnano_5fseed',['f_bip39_to_nano_seed',['../df/d1d/f__nano__crypto__util_8h.html#a0e8f0380fe584268d63270c19da09701',1,'f_nano_crypto_util.h']]],
   ['f_5fblock_5ftransfer_5ft',['f_block_transfer_t',['../d2/dee/structf__block__transfer__t.html',1,'']]],
   ['f_5fcloud_5fcrypto_5fwallet_5fnano_5fcreate_5fseed',['f_cloud_crypto_wallet_nano_create_seed',['../df/d1d/f__nano__crypto__util_8h.html#a26255892a474d8fda6b662a44c6b44b3',1,'f_nano_crypto_util.h']]],
+  ['f_5fconvert_5fto_5flong_5fint',['f_convert_to_long_int',['../de/dc6/f__util_8h.html#a7cb881b6c306f3f8b478e11b2fb454ba',1,'f_util.h']]],
   ['f_5fentropy_5ftype_5fexcelent',['F_ENTROPY_TYPE_EXCELENT',['../de/dc6/f__util_8h.html#aef38cfeb3568f967ce0c3503963916ee',1,'f_util.h']]],
   ['f_5fentropy_5ftype_5fgood',['F_ENTROPY_TYPE_GOOD',['../de/dc6/f__util_8h.html#a21e5bcefda6235d350ba262970f815fa',1,'f_util.h']]],
   ['f_5fentropy_5ftype_5fnot_5fenough',['F_ENTROPY_TYPE_NOT_ENOUGH',['../de/dc6/f__util_8h.html#a174ea183f4f887acbf3c4ea623a76569',1,'f_util.h']]],

@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
       printf("\nError \"f_generate_nano_seed\" %d\nCould not generate SEED. Aborting ...\n", err);
 
-      return 1;
+      return err;
 
    }
 
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
       printf("\nError when parse SEED to Bip39 in \"f_nano_seed_to_bip39\" %d\n", err);
 
-      return 4;
+      return err;
 
    }
 
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 
          printf("\nError when extracting \"f_seed_to_nano_wallet\" %d\n", err);
 
-         return 2;
+         return err;
 
       }
 
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
          printf("\nError when parsing PUBLIC KEY to Base32 encoded string in \"pk_to_wallet\" %d\n", err);
 
-         return 3;
+         return err;
 
       }
 
