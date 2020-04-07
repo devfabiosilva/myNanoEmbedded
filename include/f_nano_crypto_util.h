@@ -71,6 +71,7 @@
  * - Libsodium and mbedTLS libraries with smaller resources and best performance
  * - Optmized for size and speed
  * - Non static functions (all data is cleared before processed for security)
+ * - Fully written in C for maximum performance and portability
  *
  * ## To add this API in your project you must first:
  *
