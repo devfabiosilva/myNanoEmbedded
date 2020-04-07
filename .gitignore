@@ -1,5 +1,4 @@
 embedded/
-examples/desktop/ex07
 tests
 include/sodium/
 include/mbedtls/
