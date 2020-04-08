@@ -1,5 +1,5 @@
 # myNanoEmbedded
-myNanoEmbedded is a lightweight C library of source files that integrates Nano Cryptocurrency to low complexity computational devices to send/receive digital money to anywhere in the world with fast trasnsaction and with a small fee by delegating a Proof of Work with your choice:
+**myNanoEmbedded** is a lightweight C library of source files that integrates Nano Cryptocurrency to low complexity computational devices to send/receive digital money to anywhere in the world with fast trasnsaction and with a small fee by delegating a Proof of Work with your choice:
 
 - DPoW (Distributed Proof of Work)
 - P2PoW (a Descentralized P2P Proof of Work)
