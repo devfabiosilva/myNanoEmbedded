@@ -18,7 +18,7 @@ all: main
 
 main: main.c
 	@echo "Compiling example ..."
-	@$(CC) -Os -o $(PROGNAME) main.c -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -L$(LIBDIR) -lnanocrypto1 -lsodium
+	@$(CC) -Os -o $(PROGNAME) main.c -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -L$(LIBDIR) -l$(LIBANAME) -lsodium
 	@$(STRIP) $(PROGNAME)
 
 .PHONY: clean

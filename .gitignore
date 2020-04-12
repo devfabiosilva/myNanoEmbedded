@@ -1,4 +1,5 @@
 embedded/
+examples/desktop/ex08
 tests
 include/sodium/
 include/mbedtls/
@@ -10,4 +11,5 @@ src/
 *.la
 *.a
 *.so
+misc
 

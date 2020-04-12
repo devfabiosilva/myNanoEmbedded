@@ -984,6 +984,108 @@ f_write_seed_err f_write_seed(void *, int, uint8_t *, char *);
  */
 f_nano_err f_nano_balance_to_str(char *, size_t, size_t *, f_uint128_t);
 
+
+/**
+ * @def F_BRAIN_WALLET_VERY_POOR
+ * @brief [very poor]. Crack within seconds or less
+ */
+#define F_BRAIN_WALLET_VERY_POOR (uint32_t)0
+
+/**
+ * @def F_BRAIN_WALLET_POOR
+ * @brief [poor]. Crack within minutes
+ */
+#define F_BRAIN_WALLET_POOR (uint32_t)1
+
+/**
+ * @def F_BRAIN_WALLET_VERY_BAD
+ * @brief [very bad]. Crack within one hour
+ */
+#define F_BRAIN_WALLET_VERY_BAD (uint32_t)2
+
+/**
+ * @def F_BRAIN_WALLET_BAD
+ * @brief [bad]. Crack within one day
+ */
+#define F_BRAIN_WALLET_BAD (uint32_t)3
+
+/**
+ * @def F_BRAIN_WALLET_VERY_WEAK
+ * @brief [very weak]. Crack within one week
+ */
+#define F_BRAIN_WALLET_VERY_WEAK (uint32_t)4
+
+/**
+ * @def F_BRAIN_WALLET_WEAK
+ * @brief [weak]. Crack within one month
+ */
+#define F_BRAIN_WALLET_WEAK (uint32_t)5
+
+/**
+ * @def F_BRAIN_WALLET_STILL_WEAK
+ * @brief [still weak]. Crack within one year
+ */
+#define F_BRAIN_WALLET_STILL_WEAK (uint32_t)6
+
+/**
+ * @def F_BRAIN_WALLET_MAYBE_GOOD
+ * @brief [maybe good for you]. Crack within one century
+ */
+#define F_BRAIN_WALLET_MAYBE_GOOD (uint32_t)7
+
+
+/**
+ * @def F_BRAIN_WALLET_GOOD
+ * @brief [good]. Crack within one thousand year
+ */
+#define F_BRAIN_WALLET_GOOD (uint32_t)8
+
+/**
+ * @def F_BRAIN_WALLET_VERY_GOOD
+ * @brief [very good]. Crack within ten thousand year
+ */
+#define F_BRAIN_WALLET_VERY_GOOD (uint32_t)9
+
+/**
+ * @def F_BRAIN_WALLET_NICE
+ * @brief [very nice]. Crack withing one hundred thousand year
+ */
+#define F_BRAIN_WALLET_NICE (uint32_t)10
+
+/**
+ * @def F_BRAIN_WALLET_PERFECT
+ * @brief [Perfect!] 3.34x10^53 Years to crack
+ */
+#define F_BRAIN_WALLET_PERFECT (uint32_t)11
+
+/**
+ * @fn int f_extract_seed_from_brainwallet(uint8_t *seed, char **warning_msg, uint32_t allow_mode, const char *brainwallet, const char *salt)
+ * @brief Analyzes a text given a <i>mode</i> and if pass then the text in <i>braiwallet</i> is translated to a Nano SEED
+ * @param [out] seed Output Nano SEED extracted from <i>brainwallet</i>
+ * @param [out] warning_msg Warning message parsed to application. It can be NULL
+ * @param [in] allow_mode Allow <i>mode</i>. Funtion will return SUCCESS only if permitted mode set by user
+ *     <br/><br/>Allow mode are:
+ *     - <i>F_BRAIN_WALLET_VERY_POOR</i> Crack within seconds or less
+ *     - <i>F_BRAIN_WALLET_POOR</i> Crack within minutes
+ *     - <i>F_BRAIN_WALLET_VERY_BAD</i> Crack within one hour
+ *     - <i>F_BRAIN_WALLET_BAD</i> Crack within one day
+ *     - <i>F_BRAIN_WALLET_VERY_WEAK</i> Crack within one week
+ *     - <i>F_BRAIN_WALLET_WEAK</i> Crack within one month
+ *     - <i>F_BRAIN_WALLET_STILL_WEAK</i> Crack within one year
+ *     - <i>F_BRAIN_WALLET_MAYBE_GOOD</i> Crack within one century
+ *     - <i>F_BRAIN_WALLET_GOOD</i> Crack within one thousand year
+ *     - <i>F_BRAIN_WALLET_VERY_GOOD</i> Crack within ten thousand year
+ *     - <i>F_BRAIN_WALLET_NICE</i> Crack withing one hundred thousand year
+ *     - <i>F_BRAIN_WALLET_PERFECT</i> 3.34x10^53 Years to crack
+ * @param [in] brainwallet Brainwallet text to be parsed. It can be NOT NULL or null string
+ * @param [in] salt Salt of the Braiwallet. It can be NOT NULL or null string
+ *
+ * @retval 0: If success, otherwise error.
+ * @see f_bip39_to_nano_seed()
+ *
+ */
+int f_extract_seed_from_brainwallet(uint8_t *, char **, uint32_t, const char *, const char *);
+
 #ifdef __cplusplus
 }
 #endif

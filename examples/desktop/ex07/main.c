@@ -267,7 +267,7 @@ int main(int argc, char **argv)
 
    }
 
-   printf("\nWALLET NUMBER %d\n", (uint32_t)n);
+   printf("\nWALLET NUMBER %u\n", (uint32_t)n);
    printf("-----------------------------------------------------------\n");
 
    printf("\nPRIVATE KEY = \"%s\" (DON'T TELL IT TO ANYBODY)\n", f_nano_key_to_str(buf, PRIVATE_KEY));

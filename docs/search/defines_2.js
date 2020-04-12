@@ -1,5 +1,17 @@
 var searchData=
 [
+  ['f_5fbrain_5fwallet_5fbad',['F_BRAIN_WALLET_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a9da10bb8ea76491520355d3fc04103e9',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fgood',['F_BRAIN_WALLET_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adf59258863cbd983409dde603a614839',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fmaybe_5fgood',['F_BRAIN_WALLET_MAYBE_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adc5a8728a7e3c4d0a15f3bf4f304d0a5',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fnice',['F_BRAIN_WALLET_NICE',['../df/d1d/f__nano__crypto__util_8h.html#abc16aca0a5009fb96edf3461f2dbca6f',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fperfect',['F_BRAIN_WALLET_PERFECT',['../df/d1d/f__nano__crypto__util_8h.html#a890b99a5e40b1b8b6d113b3433a8756e',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fpoor',['F_BRAIN_WALLET_POOR',['../df/d1d/f__nano__crypto__util_8h.html#a99983cdd27d524f2e90cc5ee21c612d0',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fstill_5fweak',['F_BRAIN_WALLET_STILL_WEAK',['../df/d1d/f__nano__crypto__util_8h.html#a3901890bb0df8439d648e911a5d4673b',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fvery_5fbad',['F_BRAIN_WALLET_VERY_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a1ed930d682633be7d129fd9f2c7ae905',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fvery_5fgood',['F_BRAIN_WALLET_VERY_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#a36de65b8fa8c3efc7c16920366159ec2',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fvery_5fpoor',['F_BRAIN_WALLET_VERY_POOR',['../df/d1d/f__nano__crypto__util_8h.html#abec8a99ba5a75a8f985934c4e3c95a74',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fvery_5fweak',['F_BRAIN_WALLET_VERY_WEAK',['../df/d1d/f__nano__crypto__util_8h.html#a8bfde43a6ec0ad7f5b81de0cd9a7d90b',1,'f_nano_crypto_util.h']]],
+  ['f_5fbrain_5fwallet_5fweak',['F_BRAIN_WALLET_WEAK',['../df/d1d/f__nano__crypto__util_8h.html#a6e2301f85375f0226aaf33e5303771a9',1,'f_nano_crypto_util.h']]],
   ['f_5fentropy_5ftype_5fexcelent',['F_ENTROPY_TYPE_EXCELENT',['../de/dc6/f__util_8h.html#aef38cfeb3568f967ce0c3503963916ee',1,'f_util.h']]],
   ['f_5fentropy_5ftype_5fgood',['F_ENTROPY_TYPE_GOOD',['../de/dc6/f__util_8h.html#a21e5bcefda6235d350ba262970f815fa',1,'f_util.h']]],
   ['f_5fentropy_5ftype_5fnot_5fenough',['F_ENTROPY_TYPE_NOT_ENOUGH',['../de/dc6/f__util_8h.html#a174ea183f4f887acbf3c4ea623a76569',1,'f_util.h']]],
