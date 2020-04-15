@@ -106,7 +106,7 @@ Extract Nano Wallet and keypair number 0 from encrypted password Nano SEED file 
 
 How about you try? I will give you this homework ;)
 
-Encrypted file pass is: **<MyNanoWallet2020>**
+Encrypted file pass is: **(MyNanoWallet2020)**
 
 
 ## How many Wallets and Key Pair with an unique Nano SEED or Encrypted Nano SEED File (*.nse) or Bip39 encoded string word list can store?
