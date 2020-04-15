@@ -1,10 +1,10 @@
-# Example 4
+# Example 5
 
-This example we will use "f_parse_nano_seed_and_bip39_to_JSON" function to parse a encrypted block in memory with pass "abc@1234567890" in non determistic mode and decrypt it and parse SEED and Bip39 to JSON format
+This example we will use "**f_parse_nano_seed_and_bip39_to_JSON**" function to parse a encrypted block in memory with pass "**abc@1234567890**" in non determistic mode and decrypt it and parse SEED and Bip39 to JSON format
 
 Also it will use your PRNG/TRNG to create a random SEED and parse it to JSON as well
 
-Finally we will open encrypted file example "example.nse" with password "aW?#183HxKm>@hn-:QV/" extract the hidden SEED and parse it to JSON.
+Finally we will open encrypted file example "example.nse" with password "**aW?#183HxKm>@hn-:QV/**" extract the hidden SEED and parse it to JSON.
 
 ## Compiling and running
 
