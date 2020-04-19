@@ -32,11 +32,11 @@ CEXOBJS = $(CEXSRCS:.c=$(EXAMPLE_OBJS))
 all: part main
 
 %.o: %.S
-	@$(CC) -c $< -o $@ -Os -D$(ARCH)
+	@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
 	@echo "Assembly $<"
 
 %.o: %.c
-	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH)
+	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
 	@echo "CC $<"
 
 part:$(COBJS) $(SOBJS)

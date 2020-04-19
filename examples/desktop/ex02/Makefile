@@ -22,7 +22,7 @@ all: main
 
 main: main.c
 	@echo "Compiling example ..."
-	@$(CC) -Os -o $(PROGNAME) main.c -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -L$(LIBDIR) -l$(LIBANAME) -lsodium
+	@$(CC) -Os -o $(PROGNAME) -fwhole-program -flto -fuse-linker-plugin main.c -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -L$(LIBDIR) -l$(LIBANAME) -lsodium
 	@$(STRIP) $(PROGNAME)
 
 .PHONY: clean

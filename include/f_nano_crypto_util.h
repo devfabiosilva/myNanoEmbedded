@@ -931,6 +931,9 @@ f_nano_err f_nano_parse_real_str_to_raw128_t(uint8_t *, const char *);
  * @param [in] mode Mode type:
  *     - <i>F_NANO_ADD_A_B</i> valA + valB
  *     - <i>F_NANO_SUB_A_B</i> valA - valB
+ *     - <i>F_NANO_RES_RAW_128</i> Output is a raw data 128 bit big number result
+ *     - <i>F_NANO_RES_RAW_STRING</i> Output is a 128 bit Big Integer string
+ *     - <i>F_NANO_RES_REAL_STRING</i> Output is a Real string value
  *     - <i>F_NANO_A_RAW_128</i> if <i>balance</i> is big number raw buffer type
  *     - <i>F_NANO_A_RAW_STRING</i> if <i>balance</i> is big number raw string type
  *     - <i>F_NANO_A_REAL_STRING</i> if <i>balance</i> is real number string type
