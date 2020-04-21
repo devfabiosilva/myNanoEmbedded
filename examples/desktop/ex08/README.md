@@ -13,7 +13,6 @@ make
 ## Usage
 
 USAGE:
-======
         example8 <YOUR BRAIN WALLET> <SALT OF YOUR BRAIN WALLET>
 
 ### Example 1
@@ -94,6 +93,27 @@ Your Nano SEED "9129998C6EAF800B35289400598B0831EFEF4CE395138BABB6C11A0B905EA77E
 With a estimated time to a Bitcoin antminer with 110TH/s to crack this Brain Wallet with bruteforce attack: [Perfect!] 3.34x10^53 Years to crack
 
 Your Bip39 equivalent: "muffin error glide tail way airport start barely able slush search glow year please mixture pen merry frozen raccoon cross ribbon consider over teach"
+
+
+Finally HELLO WORLD !!!
+```
+
+## Example 5
+
+```
+./example8 "Anima Christi, sanctifica Me, Corpus Christi, salva Me, Sanguis Christi inebria Me, Aqua lateris Christi, lava me" "in hora mortis meae voca me"
+```
+
+**Return value**
+
+```
+SUCCESS
+Don't tell any data here (SEED, Bip39, salt or even your brain wallet text) to ANYBODY !!!!
+Your Nano SEED "20A39CBFFAEFEB45AA64C77AEB1F37A6D9C9FC5DB28E00610F68AE55751B018E"
+
+With a estimated time to a Bitcoin antminer with 110TH/s to crack this Brain Wallet with bruteforce attack: [Perfect!] 3.34x10^53 Years to crack
+
+Your Bip39 equivalent: "camera brother copper volume wrong people praise ocean kit flight social ethics orient wreck item fade about anchor surface frequent firm mirror alert seven"
 
 
 Finally HELLO WORLD !!!
