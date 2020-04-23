@@ -128,6 +128,19 @@
 extern "C" {
 #endif
 
+
+/**
+ * @def MAX_STR_NANO_CHAR
+ * @brief (desktop only) Number of threads for Proof of Work routines. Default 10
+ */
+#define F_NANO_POW_MAX_THREAD (size_t)10
+
+#ifndef F_DOC_SKIP
+ #ifdef F_ESP32
+  #undef F_NANO_POW_MAX_THREAD
+ #endif
+#endif
+
 /**
  * @def MAX_STR_NANO_CHAR
  * @brief Defines a max size of Nano char (70 bytes)
@@ -162,7 +175,6 @@ extern "C" {
 #else
 
  #ifndef F_DOC_SKIP
-  //#define BIP39_DICTIONARY "/spiffs/dictionary.dic"
   #define BIP39_DICTIONARY_SAMPLE "../../dictionary.dic"
   #define BIP39_DICTIONARY "dictionary.dic"
  #endif
@@ -1088,6 +1100,37 @@ f_nano_err f_nano_balance_to_str(char *, size_t, size_t *, f_uint128_t);
  *
  */
 int f_extract_seed_from_brainwallet(uint8_t *, char **, uint32_t, const char *, const char *);
+
+/**
+ * @fn int f_verify_work(uint64_t *result, const unsigned char *hash, uint64_t *work, uint64_t threshold)
+ * @brief Verifies if Proof of Work of a given <i>hash</i> is valid
+ * @param [out] result Result of work. It can be NULL
+ * @param [in] hash Input <i>hash</i> for verification
+ * @param [in] work Work previously calculated to be checked
+ * @param [in] threshold Input <i>threshold</i>
+ *
+ * @retval 0: If is not valid or less than zero if error or greater than zero if is valid
+ * @see f_nano_pow()
+ *
+ */
+int f_verify_work(uint64_t *, const unsigned char *, uint64_t *, uint64_t);
+
+#ifndef F_ESP32
+
+/**
+ * @fn int f_nano_pow(uint64_t *PoW_res, unsigned char *hash, const uint64_t threshold, int n_thr)
+ * @brief Calculates a Proof of Work given a <i>hash</i>, <i>threshold</i> and number of threads <i>n_thr</i>
+ * @param [out] PoW_res Output Proof of Work
+ * @param [in] hash Input <i>hash</i>
+ * @param [in] threshold Input <i>threshold</i>
+ * @param [in] n_thr Number of threads. Default maximum value: 10. You can modify <i>F_NANO_POW_MAX_THREAD</i> in f_nano_crypto_util.h
+ *
+ * @retval 0: If success, otherwise error.
+ * @see f_verify_work()
+ *
+ */
+int f_nano_pow(uint64_t *, unsigned char *, const uint64_t, int);
+#endif
 
 #ifdef __cplusplus
 }

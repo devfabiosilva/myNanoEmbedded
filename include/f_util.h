@@ -350,6 +350,8 @@ int get_console_passwd(char *, size_t);
  */
 int f_get_char_no_block(int);
 
+#endif
+
 /**
  * @fn int f_convert_to_long_int(unsigned long int *val, char *value, size_t value_sz)
  * @brief Converts a string value to unsigned long int
@@ -361,7 +363,14 @@ int f_get_char_no_block(int);
  */
 int f_convert_to_long_int(unsigned long int *, char *, size_t);
 
-#endif
+
+//////DOCUMENTACAO PENDENTE
+int f_convert_to_unsigned_int(unsigned int *, char *, size_t);
+int f_convert_to_long_int0x(unsigned long int *, char *, size_t);
+int f_convert_to_long_int0(unsigned long int *, char *, size_t);
+int f_convert_to_long_int_std(unsigned long int *, char *, size_t);
+void *f_is_random_attached();
+void f_random_detach();
 
 #ifdef __cplusplus
 }

@@ -113,6 +113,8 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:a39cb5d21c557f6919d9e062e30be830f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a39cb5d21c557f6919d9e062e30be830f">F_NANO_POW_MAX_THREAD</a>&#160;&#160;&#160;(size_t)10</td></tr>
+<tr class="separator:a39cb5d21c557f6919d9e062e30be830f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a5e04187a92343e2d2733ca64c51ad3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a2a5e04187a92343e2d2733ca64c51ad3">MAX_STR_NANO_CHAR</a>&#160;&#160;&#160;(size_t)70</td></tr>
 <tr class="separator:a2a5e04187a92343e2d2733ca64c51ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f451b410ed97dcf32ecf63e8f29495e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a8f451b410ed97dcf32ecf63e8f29495e">PUB_KEY_EXTENDED_MAX_LEN</a>&#160;&#160;&#160;(size_t)40</td></tr>
@@ -317,6 +319,10 @@ Functions</h2></td></tr>
 <tr class="separator:a71369aa79606b9ff1c634fcd344cf793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3477a2f2d6d1e36089fbbc0e33295a9b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a3477a2f2d6d1e36089fbbc0e33295a9b">f_extract_seed_from_brainwallet</a> (uint8_t *, char **, uint32_t, const char *, const char *)</td></tr>
 <tr class="separator:a3477a2f2d6d1e36089fbbc0e33295a9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72c2932e1e8cc304f1708d1127171e83"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a72c2932e1e8cc304f1708d1127171e83">f_verify_work</a> (uint64_t *, const unsigned char *, uint64_t *, uint64_t)</td></tr>
+<tr class="separator:a72c2932e1e8cc304f1708d1127171e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420">f_nano_pow</a> (uint64_t *, unsigned char *, const uint64_t, int)</td></tr>
+<tr class="separator:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -396,7 +402,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00415">415</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00427">427</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +421,7 @@ Variables</h2></td></tr>
 <p>[bad]. </p>
 <p>Crack within one day </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01013">1013</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01025">1025</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -434,7 +440,7 @@ Variables</h2></td></tr>
 <p>[good]. </p>
 <p>Crack within one thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01044">1044</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01056">1056</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -453,7 +459,7 @@ Variables</h2></td></tr>
 <p>[maybe good for you]. </p>
 <p>Crack within one century </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01037">1037</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01049">1049</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -472,7 +478,7 @@ Variables</h2></td></tr>
 <p>[very nice]. </p>
 <p>Crack withing one hundred thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01056">1056</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01068">1068</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -490,7 +496,7 @@ Variables</h2></td></tr>
 
 <p>[Perfect!] 3.34x10^53 Years to crack </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01062">1062</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01074">1074</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -509,7 +515,7 @@ Variables</h2></td></tr>
 <p>[poor]. </p>
 <p>Crack within minutes </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01001">1001</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01013">1013</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -528,7 +534,7 @@ Variables</h2></td></tr>
 <p>[still weak]. </p>
 <p>Crack within one year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01031">1031</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01043">1043</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -547,7 +553,7 @@ Variables</h2></td></tr>
 <p>[very bad]. </p>
 <p>Crack within one hour </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01007">1007</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01019">1019</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -566,7 +572,7 @@ Variables</h2></td></tr>
 <p>[very good]. </p>
 <p>Crack within ten thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01050">1050</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01062">1062</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -585,7 +591,7 @@ Variables</h2></td></tr>
 <p>[very poor]. </p>
 <p>Crack within seconds or less </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00995">995</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01007">1007</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -604,7 +610,7 @@ Variables</h2></td></tr>
 <p>[very weak]. </p>
 <p>Crack within one week </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01019">1019</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01031">1031</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -623,7 +629,23 @@ Variables</h2></td></tr>
 <p>[weak]. </p>
 <p>Crack within one month </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01025">1025</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01037">1037</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
+<a id="a39cb5d21c557f6919d9e062e30be830f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a39cb5d21c557f6919d9e062e30be830f">&#9670;&nbsp;</a></span>F_NANO_POW_MAX_THREAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_NANO_POW_MAX_THREAD&#160;&#160;&#160;(size_t)10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00136">136</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -639,9 +661,11 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Defines a max size of Nano char (70 bytes) </p>
+<p>(desktop only) Number of threads for Proof of Work routines. </p>
+<p>Defines a max size of Nano char (70 bytes)</p>
+<p>Default 10 </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00135">135</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00148">148</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +685,7 @@ Variables</h2></td></tr>
 <p>File containing the SEED of the Nano wallets generated by TRNG (if available in your Hardware) or PRNG. <br />
  Default name: "nano.nse" </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00178">178</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00190">190</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -679,7 +703,7 @@ Variables</h2></td></tr>
 
 <p>Custom information file path about Nano SEED wallet stored in "walletsinfo.i". </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00196">196</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00208">208</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -697,7 +721,7 @@ Variables</h2></td></tr>
 
 <p>Password max length. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00184">184</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00196">196</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -715,7 +739,7 @@ Variables</h2></td></tr>
 
 <p>Nano prefix. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00147">147</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00160">160</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -733,7 +757,7 @@ Variables</h2></td></tr>
 
 <p>Max size of public key (extended) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00141">141</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00154">154</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -767,7 +791,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00409">409</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00421">421</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -785,7 +809,7 @@ Variables</h2></td></tr>
 
 <p>String size of Nano encoded Base32 including NULL char. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00190">190</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00202">202</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +827,7 @@ Variables</h2></td></tr>
 
 <p>XRB (old Raiblocks) prefix. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00153">153</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00166">166</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -855,7 +879,7 @@ Variables</h2></td></tr>
 
 <p>128 bit big number of Nano balance </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00208">208</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00220">220</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -887,7 +911,7 @@ Variables</h2></td></tr>
 
 <p>Size of Nano Private Key. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00218">218</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00230">230</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -905,7 +929,7 @@ Variables</h2></td></tr>
 
 <p>Size of Nano Private Key extended. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00224">224</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00236">236</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -923,7 +947,7 @@ Variables</h2></td></tr>
 
 <p>Size of Nano Public Key. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00230">230</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -941,7 +965,7 @@ Variables</h2></td></tr>
 
 <p>Size of Public Key Extended. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00236">236</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00248">248</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +983,7 @@ Variables</h2></td></tr>
 
 <p>Size of Nano SEED. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00202">202</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00214">214</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1008,7 +1032,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00521">521</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00533">533</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1098,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00280">280</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00292">292</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1116,7 +1140,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00417">417</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00429">429</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1667,6 +1691,64 @@ F_ENTROPY_TYPE_NOT_ENOUGH<br />
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ae074b28c7eee3839a229f291851b194c">f_nano_err_t</a> for <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a45db4c051f03f1ee8f76369a7a5c2721" title="Error function enumerator. ">f_nano_err</a> enum error type </dd></dl>
+
+</div>
+</div>
+<a id="a4b8347fe7afb8ead037ec9f9d4e5b420"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b8347fe7afb8ead037ec9f9d4e5b420">&#9670;&nbsp;</a></span>f_nano_pow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_nano_pow </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>PoW_res</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned char *&#160;</td>
+          <td class="paramname"><em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint64_t&#160;</td>
+          <td class="paramname"><em>threshold</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n_thr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculates a Proof of Work given a <em>hash</em>, <em>threshold</em> and number of threads <em>n_thr</em> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">PoW_res</td><td>Output Proof of Work </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">hash</td><td>Input <em>hash</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">threshold</td><td>Input <em>threshold</em> </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">n_thr</td><td>Number of threads. Default maximum value: 10. You can modify <em>F_NANO_POW_MAX_THREAD</em> in <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html" title="This API Integrates Nano Cryptocurrency to low computational devices. ">f_nano_crypto_util.h</a></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If success, otherwise error. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a72c2932e1e8cc304f1708d1127171e83" title="Verifies if Proof of Work of a given hash is valid. ">f_verify_work()</a> </dd></dl>
 
 </div>
 </div>
@@ -2349,6 +2431,64 @@ Output type:</li>
 
 </div>
 </div>
+<a id="a72c2932e1e8cc304f1708d1127171e83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72c2932e1e8cc304f1708d1127171e83">&#9670;&nbsp;</a></span>f_verify_work()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_verify_work </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const unsigned char *&#160;</td>
+          <td class="paramname"><em>hash</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t *&#160;</td>
+          <td class="paramname"><em>work</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>threshold</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verifies if Proof of Work of a given <em>hash</em> is valid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">result</td><td>Result of work. It can be NULL </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">hash</td><td>Input <em>hash</em> for verification </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">work</td><td>Work previously calculated to be checked </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">threshold</td><td>Input <em>threshold</em></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If is not valid or less than zero if error or greater than zero if is valid </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420" title="Calculates a Proof of Work given a hash, threshold and number of threads n_thr ">f_nano_pow()</a> </dd></dl>
+
+</div>
+</div>
 <a id="aac9e692df60fee8d2b818c1346225391"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aac9e692df60fee8d2b818c1346225391">&#9670;&nbsp;</a></span>f_write_seed()</h2>
 
@@ -2669,7 +2809,7 @@ Output type:</li>
 
 <p>Account in raw binary data. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00240">240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2688,7 +2828,7 @@ Output type:</li>
 <p>Big number 128 bit raw balance. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aa2c193d9108b22fda3da8fbdc272aac2" title="128 bit big number of Nano balance ">f_uint128_t</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00248">248</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00260">260</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2706,7 +2846,7 @@ Output type:</li>
 
 <p>Body of the file info. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00248">248</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00260">260</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2724,7 +2864,7 @@ Output type:</li>
 
 <p>Description. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2742,7 +2882,7 @@ Output type:</li>
 
 <p>File description. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2760,7 +2900,7 @@ Output type:</li>
 
 <p>File info integrity of the body block. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00246">246</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00258">258</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2778,7 +2918,7 @@ Output type:</li>
 
 <p>hash of Nano SEED when unencrypted </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00244">244</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2796,7 +2936,7 @@ Output type:</li>
 
 <p>Header magic. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00238">238</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2815,7 +2955,7 @@ Output type:</li>
 <p>Initial sub vector. </p>
 <p>Initial vector of first encryption layer. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00240">240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2833,7 +2973,7 @@ Output type:</li>
 
 <p>Last used wallet number. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00240">240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2851,7 +2991,7 @@ Output type:</li>
 
 <p>link or destination account </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00262">262</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2869,7 +3009,7 @@ Output type:</li>
 
 <p>Custom preferred max fee of Proof of Work. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00244">244</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2887,7 +3027,7 @@ Output type:</li>
 
 <p>Header of the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00238">238</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2905,7 +3045,7 @@ Output type:</li>
 
 <p>Nano SEED hash file. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00244">244</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2923,7 +3063,7 @@ Output type:</li>
 
 <p>Block preamble. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00238">238</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2941,7 +3081,7 @@ Output type:</li>
 
 <p>Internal use for this API. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00266">266</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2959,7 +3099,7 @@ Output type:</li>
 
 <p>Previous block. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2977,7 +3117,7 @@ Output type:</li>
 
 <p>Representative for current account. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00244">244</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -2996,7 +3136,7 @@ Output type:</li>
 <p>Reserved (not used) </p>
 <p>Reserved. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3014,7 +3154,7 @@ Output type:</li>
 
 <p>Salt of the first encryption layer. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00244">244</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3032,7 +3172,7 @@ Output type:</li>
 
 <p>Second encrypted block for Nano SEED. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00248">248</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00260">260</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3050,7 +3190,7 @@ Output type:</li>
 
 <p>Signature of the block. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00264">264</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3069,7 +3209,7 @@ Output type:</li>
 <p>Secret. </p>
 <p>SEED encrypted (second layer) </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00246">246</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00258">258</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3087,7 +3227,7 @@ Output type:</li>
 
 <p>Salt of the sub block to be stored. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00238">238</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3105,7 +3245,7 @@ Output type:</li>
 
 <p>Version of the file. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00240">240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3123,7 +3263,7 @@ Output type:</li>
 
 <p>Version. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00240">240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00252">252</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3141,7 +3281,7 @@ Output type:</li>
 
 <p>Wallet prefix: 0 for NANO; 1 for XRB. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00238">238</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00250">250</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3159,7 +3299,7 @@ Output type:</li>
 
 <p>Wallet representative. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00242">242</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00254">254</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3177,7 +3317,7 @@ Output type:</li>
 
 <p>Internal use for this API. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00256">256</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00268">268</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
