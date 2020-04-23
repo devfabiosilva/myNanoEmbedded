@@ -297,7 +297,7 @@ typedef void (*rnd_fn)(void *, size_t);
  * @brief Attachs a function to be called by <i>f_random()</i>
  * @param [in] fn A function to be called
  *
- * @see rnd_fn
+ * @see rnd_fn()
  */
 void f_random_attach(rnd_fn);
 
@@ -360,16 +360,77 @@ int f_get_char_no_block(int);
  * @param [in] value_sz Max size allowed in <i>value</i> string.
  *
  * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_unsigned_int()
  */
 int f_convert_to_long_int(unsigned long int *, char *, size_t);
 
 
-//////DOCUMENTACAO PENDENTE
+/**
+ * @fn int f_convert_to_unsigned_int(unsigned int *val, char *value, size_t value_sz)
+ * @brief Converts a string value to unsigned int
+ * @param [out] val Value stored in a unsigned int variable
+ * @param [in] value Input value to be parsed to unsigned int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_long_int()
+ */
 int f_convert_to_unsigned_int(unsigned int *, char *, size_t);
+
+/**
+ * @fn int f_convert_to_long_int0x(unsigned long int *val, char *value, size_t value_sz)
+ * @brief Converts a hex value in ASCII string to unsigned long int
+ * @param [out] val Value stored in a unsigned long int variable
+ * @param [in] value Input value to be parsed to unsigned long int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_long_int0()
+ */
 int f_convert_to_long_int0x(unsigned long int *, char *, size_t);
+
+/**
+ * @fn int f_convert_to_long_int0(unsigned long int *val, char *value, size_t value_sz)
+ * @brief Converts a octal value in ASCII string to unsigned long int
+ * @param [out] val Value stored in a unsigned long int variable
+ * @param [in] value Input value to be parsed to unsigned long int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_long_int0x()
+ */
 int f_convert_to_long_int0(unsigned long int *, char *, size_t);
+
+/**
+ * @fn int f_convert_to_long_int_std(unsigned long int *val, char *value, size_t value_sz)
+ * @brief Converts a actal/decimal/hexadecimal into ASCII string to unsigned long int
+ * @param [out] val Value stored in a unsigned long int variable
+ * @param [in] value Input value to be parsed to unsigned long int
+ *    - If a string contains only numbers, it will be parsed to unsigned long int decimal
+ *    - If a string begins with 0 it will be parsed to octal EX.: 010(octal) = 08(decimal)
+ *    - If a string contais 0x or 0X it will be parsed to hexadecimal. EX.: 0x10(hexadecimal) = 16 (decimal)
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_long_int()
+ */
 int f_convert_to_long_int_std(unsigned long int *, char *, size_t);
+
+/**
+ * @fn void *f_is_random_attached()
+ * @brief Verifies if system random function is attached in myNanoEmbedded API
+ *
+ * @retval 0: if not attached, Otherwise returns the pointer of random number genarator function
+ * @see f_random_attach()
+ */
 void *f_is_random_attached();
+
+/**
+ * @fn void f_random_detach()
+ * @brief Detaches system random numeber genarator from myNanoEmbedded API
+ *
+ * @see f_random_attach()
+ */
 void f_random_detach();
 
 #ifdef __cplusplus
