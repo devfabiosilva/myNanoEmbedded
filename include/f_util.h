@@ -420,7 +420,7 @@ int f_convert_to_long_int_std(unsigned long int *, char *, size_t);
  * @fn void *f_is_random_attached()
  * @brief Verifies if system random function is attached in myNanoEmbedded API
  *
- * @retval 0: if not attached, Otherwise returns the pointer of random number genarator function
+ * @retval NULL: if not attached, Otherwise returns the pointer of random number genarator function
  * @see f_random_attach()
  */
 void *f_is_random_attached();

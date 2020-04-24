@@ -1111,7 +1111,6 @@ int f_extract_seed_from_brainwallet(uint8_t *, char **, uint32_t, const char *, 
  *
  * @retval 0: If is not valid or less than zero if error or greater than zero if is valid
  * @see f_nano_pow()
- *
  */
 int f_verify_work(uint64_t *, const unsigned char *, uint64_t *, uint64_t);
 
@@ -1125,9 +1124,9 @@ int f_verify_work(uint64_t *, const unsigned char *, uint64_t *, uint64_t);
  * @param [in] threshold Input <i>threshold</i>
  * @param [in] n_thr Number of threads. Default maximum value: 10. You can modify <i>F_NANO_POW_MAX_THREAD</i> in f_nano_crypto_util.h
  *
+ * Mandatory: You need to enable attach a random function to your project using f_random_attach()
  * @retval 0: If success, otherwise error.
  * @see f_verify_work()
- *
  */
 int f_nano_pow(uint64_t *, unsigned char *, const uint64_t, int);
 #endif

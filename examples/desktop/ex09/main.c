@@ -9,7 +9,7 @@
 #include <string.h>
 #include "f_nano_crypto_util.h"
 
-#define USAGE "\nThis example calculate a Proof of Work of a given hash and threshold difficulty\
+#define USAGE "\nThis example calculates a Proof of Work of a given hash and threshold difficulty\
 \n\n\nUSAGE\n\
 =====\n\n\
 \texample9 [auto|hash <HASH VALUE>] n <NUMBER OF THREADS> t <THRESHOLD VALUE>(OPTIONAL)\
@@ -227,7 +227,7 @@ int main(int argc, char **argv)
    if ((err=f_verify_work(&result, hash, &pow, threshold))>0) {
 
       err=0;
-      printf("\nSuccess. Work \"%016lx\" value produces a hash \"%016lx\"\n", pow, result);
+      printf("\nSuccess. Work \"%016lx\" value generates the hash \"%016lx\"\n", pow, result);
 
    } else if (err) {
 
