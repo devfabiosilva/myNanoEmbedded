@@ -1,4 +1,5 @@
 embedded/
+ex10/
 tests
 include/sodium/
 include/mbedtls/

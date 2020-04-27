@@ -130,7 +130,7 @@ extern "C" {
 
 
 /**
- * @def MAX_STR_NANO_CHAR
+ * @def F_NANO_POW_MAX_THREAD
  * @brief (desktop only) Number of threads for Proof of Work routines. Default 10
  */
 #define F_NANO_POW_MAX_THREAD (size_t)10
@@ -1113,6 +1113,128 @@ int f_extract_seed_from_brainwallet(uint8_t *, char **, uint32_t, const char *, 
  * @see f_nano_pow()
  */
 int f_verify_work(uint64_t *, const unsigned char *, uint64_t *, uint64_t);
+
+/**
+ * @def F_SIGNATURE_RAW
+ * @brief Signature is raw data
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_RAW (uint32_t)1
+
+/**
+ * @def F_SIGNATURE_STRING
+ * @brief Signature is hex ASCII encoded string
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_STRING (uint32_t)2
+
+/**
+ * @def F_SIGNATURE_OUTPUT_RAW_PK
+ * @brief Public key is raw data
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_OUTPUT_RAW_PK (uint32_t)4
+
+/**
+ * @def F_SIGNATURE_OUTPUT_STRING_PK
+ * @brief Public key is hex ASCII encoded string
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_OUTPUT_STRING_PK (uint32_t)8
+
+/**
+ * @def F_SIGNATURE_OUTPUT_XRB_PK
+ * @brief Public key is a XRB wallet encoded base32 string
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_OUTPUT_XRB_PK (uint32_t)16
+
+/**
+ * @def F_SIGNATURE_OUTPUT_NANO_PK
+ * @brief Public key is a NANO wallet encoded base32 string
+ * @see f_sign_data()
+ */
+#define F_SIGNATURE_OUTPUT_NANO_PK (uint32_t)32
+
+/**
+ * @fn int f_sign_data(unsigned char *signature, void *out_public_key, uint32_t ouput_type, const unsigned char *message, size_t msg_len, const unsigned char *private_key)
+ * @brief Signs a <i>message</i> with a deterministic signature given a <i>private key</i>
+ * @param [out] signature Output signature
+ * @param [out] out_public_key Output public key. It can be NULL
+ * @param [in] output_type Output type of public key. Public key types are:
+ *     <br/><br/>
+ *     - <i>F_SIGNATURE_RAW</i> Signature is raw 64 bytes long
+ *     - <i>F_SIGNATURE_STRING</i> Singnature is hex ASCII encoded string
+ *     - <i>F_SIGNATURE_OUTPUT_RAW_PK</i> Public key is raw 32 bytes data
+ *     - <i>F_SIGNATURE_OUTPUT_STRING_PK</i> Public key is hes ASCII encoded string
+ *     - <i>F_SIGNATURE_OUTPUT_XRB_PK</i> Public key is a XRB wallet encoded base32 string
+ *     - <i>F_SIGNATURE_OUTPUT_NANO_PK</i> Public key is a NANO wallet encoded base32 string
+ *
+ *
+ * @param [in] message Message to be signed with Elliptic Curve Ed25519 with blake2b hash
+ * @param [in] msg_len Size of message to be signed
+ * @param [in] private_key Private key to sign message
+ *
+ * @retval 0: If success, otherwise error.
+ * @see f_verify_signed_data()
+ *
+ */
+int f_sign_data(
+   unsigned char *signature, 
+   void *out_public_key, 
+   uint32_t ouput_type, 
+   const unsigned char *message,
+   size_t msg_len, 
+   const unsigned char *private_key);
+
+/**
+ * @def F_VERIFY_SIG_NANO_WALLET
+ * @brief Public key is a NANO wallet with <i>XRB</i> or <i>NANO</i> prefixes encoded base32 string
+ * @see f_verify_signed_data()
+ */
+#define F_VERIFY_SIG_NANO_WALLET (uint32_t)1
+
+/**
+ * @def F_VERIFY_SIG_RAW_HEX
+ * @brief Public key raw 32 bytes data
+ * @see f_verify_signed_data()
+ */
+#define F_VERIFY_SIG_RAW_HEX (uint32_t)2
+
+/**
+ * @def F_VERIFY_SIG_ASCII_HEX
+ * @brief Public key is a hex ASCII encoded string
+ * @see f_verify_signed_data()
+ */
+#define F_VERIFY_SIG_ASCII_HEX (uint32_t)4
+
+/**
+ * @fn int f_verify_signed_data(const unsigned char *signature, const unsigned char *message, size_t message_len, const void *public_key, uint32_t pk_type)
+ * @brief Verifies if a signed message is valid
+ * @param [in] signature Signature of the <i>message</i>
+ * @param [in] message Message to be verified
+ * @param [in] message_len Length of the message
+ * @param [in] public_key Public key to verify signed message
+ * @param [in] pk_type Type of the public key. Types are:
+ *     <br/><br/>
+ *     - <i>F_VERIFY_SIG_NANO_WALLET</i> Public key is a NANO wallet with <i>XRB</i> or <i>NANO</i> prefixes encoded base32 string
+ *     - <i>F_VERIFY_SIG_RAW_HEX</i> Public key is raw 32 bytes data
+ *     - <i>F_VERIFY_SIG_ASCII_HEX</i> Public key is a hex ASCII encoded string
+ *
+ * <b>Return value are</b>
+ * - Greater than zero if <i>signature</i> is VALID
+ * - 0 (zero) if <i>signature</i> is INVALID
+ * - Negative if ERROR occurred
+ *
+ * @see f_sign_data()
+ */
+int f_verify_signed_data(
+   const unsigned char *signature,
+   const unsigned char *message,
+   size_t message_len,
+   const void *public_key,
+   uint32_t pk_type);
+
 
 #ifndef F_ESP32
 
