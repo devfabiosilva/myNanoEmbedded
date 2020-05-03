@@ -46,13 +46,14 @@ part:$(COBJS) $(SOBJS)
 main: part
 	@echo "Almost finishing ..."
 	cd $(CURDIR)/src/libsodium-1.0.17 -v;\
-	./configure --prefix=$(CURDIR)/src/libsodium-1.0.17/build
+	./configure --disable-pie --prefix=$(CURDIR)/src/libsodium-1.0.17/build
 	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17
 	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 install
 	mv $(CURDIR)/src/libsodium-1.0.17/build/lib/libsodium.a $(CURDIR)/lib
 	cd $(CURDIR) -v
 	@echo "Creating static library..."
 	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
+#	$(CC) -shared -o $(LIBDIR)/lib$(LIBANAME).so $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
 
 examples: $(COBJS) $(SOBJS) $(CEXOBJS)
 	@echo "Making examples ..."

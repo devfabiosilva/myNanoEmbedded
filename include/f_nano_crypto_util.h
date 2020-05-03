@@ -1157,6 +1157,26 @@ int f_verify_work(uint64_t *, const unsigned char *, uint64_t *, uint64_t);
 #define F_SIGNATURE_OUTPUT_NANO_PK (uint32_t)32
 
 /**
+ * @def F_IS_SIGNATURE_RAW_HEX_STRING
+ * @brief Signature is raw hex string flag
+ * @see f_sign_data()
+ */
+#define F_IS_SIGNATURE_RAW_HEX_STRING (uint32_t)64
+
+/**
+ * @def F_MESSAGE_IS_HASH_STRING
+ * @brief Message is raw hex hash string
+ * @see f_sign_data()
+ */
+#define F_MESSAGE_IS_HASH_STRING (uint32_t)128
+
+/**
+ * @def F_DEFAULT_THRESHOLD
+ * @brief Default Nano Proof of Work Threshold
+ */
+#define F_DEFAULT_THRESHOLD (uint64_t) 0xffffffc000000000
+
+/**
  * @fn int f_sign_data(unsigned char *signature, void *out_public_key, uint32_t ouput_type, const unsigned char *message, size_t msg_len, const unsigned char *private_key)
  * @brief Signs a <i>message</i> with a deterministic signature given a <i>private key</i>
  * @param [out] signature Output signature
@@ -1228,13 +1248,7 @@ int f_sign_data(
  *
  * @see f_sign_data()
  */
-int f_verify_signed_data(
-   const unsigned char *signature,
-   const unsigned char *message,
-   size_t message_len,
-   const void *public_key,
-   uint32_t pk_type);
-
+int f_verify_signed_data( const unsigned char *signature, const unsigned char *message, size_t message_len, const void *public_key, uint32_t pk_type);
 
 #ifndef F_ESP32
 
