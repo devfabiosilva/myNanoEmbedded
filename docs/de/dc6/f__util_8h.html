@@ -174,6 +174,12 @@ Functions</h2></td></tr>
 <tr class="separator:aa11440b12a5f8464219a38dfd05694e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65f14d7a91d631c8eb4dc7ac1246305b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#a65f14d7a91d631c8eb4dc7ac1246305b">f_random_detach</a> ()</td></tr>
 <tr class="separator:a65f14d7a91d631c8eb4dc7ac1246305b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b2e24b0a6daa05fd45d74964db0465b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#a0b2e24b0a6daa05fd45d74964db0465b">f_convert_to_unsigned_int0x</a> (unsigned int *val, char *value, size_t value_sz)</td></tr>
+<tr class="separator:a0b2e24b0a6daa05fd45d74964db0465b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e15684929d7f8d5761149a6e6b0f3b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#a03e15684929d7f8d5761149a6e6b0f3b">f_convert_to_unsigned_int0</a> (unsigned int *val, char *value, size_t value_sz)</td></tr>
+<tr class="separator:a03e15684929d7f8d5761149a6e6b0f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af35daf6120c76c1f9d00b29703149fe1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#af35daf6120c76c1f9d00b29703149fe1">f_convert_to_unsigned_int_std</a> (unsigned int *val, char *value, size_t value_sz)</td></tr>
+<tr class="separator:af35daf6120c76c1f9d00b29703149fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This ABI is a utility for myNanoEmbedded library and sub routines are implemented here. </p>
@@ -768,6 +774,164 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/dc6/f__util_8h.html#a7cb881b6c306f3f8b478e11b2fb454ba" title="Converts a string value to unsigned long int. ">f_convert_to_long_int()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a03e15684929d7f8d5761149a6e6b0f3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03e15684929d7f8d5761149a6e6b0f3b">&#9670;&nbsp;</a></span>f_convert_to_unsigned_int0()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_convert_to_unsigned_int0 </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>value_sz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a octal value in ASCII string to unsigned int. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>Value stored in a unsigned int variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Input value to be parsed to unsigned int </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value_sz</td><td>Max size allowed in <em>value</em> string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>On Success, Otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/dc6/f__util_8h.html#a0b2e24b0a6daa05fd45d74964db0465b" title="Converts a hex value in ASCII string to unsigned int. ">f_convert_to_unsigned_int0x()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0b2e24b0a6daa05fd45d74964db0465b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b2e24b0a6daa05fd45d74964db0465b">&#9670;&nbsp;</a></span>f_convert_to_unsigned_int0x()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_convert_to_unsigned_int0x </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>value_sz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a hex value in ASCII string to unsigned int. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>Value stored in a unsigned int variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Input value to be parsed to unsigned int </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value_sz</td><td>Max size allowed in <em>value</em> string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>On Success, Otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/dc6/f__util_8h.html#a03e15684929d7f8d5761149a6e6b0f3b" title="Converts a octal value in ASCII string to unsigned int. ">f_convert_to_unsigned_int0()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af35daf6120c76c1f9d00b29703149fe1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af35daf6120c76c1f9d00b29703149fe1">&#9670;&nbsp;</a></span>f_convert_to_unsigned_int_std()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_convert_to_unsigned_int_std </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>value_sz</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Converts a actal/decimal/hexadecimal into ASCII string to unsigned int. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>Value stored in a unsigned int variable </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Input value to be parsed to unsigned int<ul>
+<li>If a string contains only numbers, it will be parsed to unsigned int decimal</li>
+<li>If a string begins with 0 it will be parsed to octal EX.: 010(octal) = 08(decimal)</li>
+<li>If a string contais 0x or 0X it will be parsed to hexadecimal. EX.: 0x10(hexadecimal) = 16 (decimal) </li>
+</ul>
+</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value_sz</td><td>Max size allowed in <em>value</em> string.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>On Success, Otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../de/dc6/f__util_8h.html#ace12a6f06d1c7835d64ffd461af85eab" title="Converts a string value to unsigned int. ">f_convert_to_unsigned_int()</a> </dd></dl>
 
 </div>
 </div>

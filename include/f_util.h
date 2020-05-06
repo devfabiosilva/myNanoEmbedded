@@ -433,6 +433,45 @@ void *f_is_random_attached();
  */
 void f_random_detach();
 
+/**
+ * @fn int f_convert_to_unsigned_int0x(unsigned int *val, char *value, size_t value_sz)
+ * @brief Converts a hex value in ASCII string to unsigned int
+ * @param [out] val Value stored in a unsigned int variable
+ * @param [in] value Input value to be parsed to unsigned int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_unsigned_int0()
+ */
+int f_convert_to_unsigned_int0x(unsigned int *val, char *value, size_t value_sz);
+
+/**
+ * @fn int f_convert_to_unsigned_int0(unsigned int *val, char *value, size_t value_sz)
+ * @brief Converts a octal value in ASCII string to unsigned int
+ * @param [out] val Value stored in a unsigned int variable
+ * @param [in] value Input value to be parsed to unsigned int
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_unsigned_int0x()
+ */
+int f_convert_to_unsigned_int0(unsigned int *val, char *value, size_t value_sz);
+
+/**
+ * @fn int f_convert_to_unsigned_int_std(unsigned int *val, char *value, size_t value_sz)
+ * @brief Converts a actal/decimal/hexadecimal into ASCII string to unsigned int
+ * @param [out] val Value stored in a unsigned int variable
+ * @param [in] value Input value to be parsed to unsigned int
+ *    - If a string contains only numbers, it will be parsed to unsigned int decimal
+ *    - If a string begins with 0 it will be parsed to octal EX.: 010(octal) = 08(decimal)
+ *    - If a string contais 0x or 0X it will be parsed to hexadecimal. EX.: 0x10(hexadecimal) = 16 (decimal)
+ * @param [in] value_sz Max size allowed in <i>value</i> string.
+ *
+ * @retval 0: On Success, Otherwise error
+ * @see f_convert_to_unsigned_int()
+ */
+int f_convert_to_unsigned_int_std(unsigned int *val, char *value, size_t value_sz);
+
 #ifdef __cplusplus
 }
 #endif

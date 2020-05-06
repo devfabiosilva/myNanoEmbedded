@@ -173,6 +173,12 @@ Macros</h2></td></tr>
 <tr class="separator:a7f28956dfd363ee9184c6123845e8f9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9be604eec38d2857421eb3fb05c6e92f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a9be604eec38d2857421eb3fb05c6e92f">F_SIGNATURE_OUTPUT_NANO_PK</a>&#160;&#160;&#160;(uint32_t)32</td></tr>
 <tr class="separator:a9be604eec38d2857421eb3fb05c6e92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075e66cda4b1f83771abadc8298ce73e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a075e66cda4b1f83771abadc8298ce73e">F_IS_SIGNATURE_RAW_HEX_STRING</a>&#160;&#160;&#160;(uint32_t)64</td></tr>
+<tr class="separator:a075e66cda4b1f83771abadc8298ce73e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac40004079934aa1d76678f128c44f8b0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ac40004079934aa1d76678f128c44f8b0">F_MESSAGE_IS_HASH_STRING</a>&#160;&#160;&#160;(uint32_t)128</td></tr>
+<tr class="separator:ac40004079934aa1d76678f128c44f8b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad2fe9bddf4d467a930ca72bad2cb410"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aad2fe9bddf4d467a930ca72bad2cb410">F_DEFAULT_THRESHOLD</a>&#160;&#160;&#160;(uint64_t) 0xffffffc000000000</td></tr>
+<tr class="separator:aad2fe9bddf4d467a930ca72bad2cb410"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f0e0d9c79084f462710bbf2c9e93d42"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a6f0e0d9c79084f462710bbf2c9e93d42">F_VERIFY_SIG_NANO_WALLET</a>&#160;&#160;&#160;(uint32_t)1</td></tr>
 <tr class="separator:a6f0e0d9c79084f462710bbf2c9e93d42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade78b5a9195ed33cda8ec3f817cb3b3f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ade78b5a9195ed33cda8ec3f817cb3b3f">F_VERIFY_SIG_RAW_HEX</a>&#160;&#160;&#160;(uint32_t)2</td></tr>
@@ -655,6 +661,62 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="aad2fe9bddf4d467a930ca72bad2cb410"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad2fe9bddf4d467a930ca72bad2cb410">&#9670;&nbsp;</a></span>F_DEFAULT_THRESHOLD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_DEFAULT_THRESHOLD&#160;&#160;&#160;(uint64_t) 0xffffffc000000000</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default Nano Proof of Work Threshold. </p>
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01177">1177</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
+<a id="a075e66cda4b1f83771abadc8298ce73e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a075e66cda4b1f83771abadc8298ce73e">&#9670;&nbsp;</a></span>F_IS_SIGNATURE_RAW_HEX_STRING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_IS_SIGNATURE_RAW_HEX_STRING&#160;&#160;&#160;(uint32_t)64</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Signature is raw hex string flag. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01164">1164</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
+<a id="ac40004079934aa1d76678f128c44f8b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac40004079934aa1d76678f128c44f8b0">&#9670;&nbsp;</a></span>F_MESSAGE_IS_HASH_STRING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_MESSAGE_IS_HASH_STRING&#160;&#160;&#160;(uint32_t)128</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Message is raw hex hash string. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01171">1171</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
 <a id="a39cb5d21c557f6919d9e062e30be830f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a39cb5d21c557f6919d9e062e30be830f">&#9670;&nbsp;</a></span>F_NANO_POW_MAX_THREAD</h2>
 
@@ -803,7 +865,7 @@ Variables</h2></td></tr>
 <p>Public key is a hex ASCII encoded string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01209">1209</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01229">1229</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -822,7 +884,7 @@ Variables</h2></td></tr>
 <p>Public key is a NANO wallet with <em>XRB</em> or <em>NANO</em> prefixes encoded base32 string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01195">1195</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01215">1215</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -841,7 +903,7 @@ Variables</h2></td></tr>
 <p>Public key raw 32 bytes data. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01202">1202</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01222">1222</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
