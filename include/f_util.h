@@ -472,6 +472,17 @@ int f_convert_to_unsigned_int0(unsigned int *val, char *value, size_t value_sz);
  */
 int f_convert_to_unsigned_int_std(unsigned int *val, char *value, size_t value_sz);
 
+/**
+ * @fn int f_convert_to_double(double *val, const char *value)
+ * @brief Convert any valid number im <i>value</i> and converts it to double <i>val</i>
+ *
+ * @param [out] val Value converted to double
+ * @param [in] value Value in string to be converted
+ *
+ * @retval 0: On Success, Otherwise error
+ */
+int f_convert_to_double(double *, const char *);
+
 #ifdef __cplusplus
 }
 #endif

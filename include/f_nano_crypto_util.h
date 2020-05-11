@@ -590,6 +590,52 @@ typedef enum f_file_info_err_t {
 #endif
 
 /**
+ * @fn double to_multiplier(uint64_t difficulty, uint64_t base_difficulty)
+ * @brief Calculates a relative difficulty compared PoW with another
+ *
+ * @param [in] dificulty Work difficulty
+ * @param [in] base_difficulty Base difficulty
+ * Details <a href="https://docs.nano.org/integration-guides/work-generation/#difficulty-multiplier">here</a>
+ *
+ * @see from_multiplier()
+ * @retval Calculated value
+ */
+double to_multiplier(uint64_t, uint64_t);
+
+/**
+ * @fn uint64_t from_multiplier(double multiplier, uint64_t base_difficulty)
+ * @brief Calculates a PoW given a multiplier and base difficulty
+ *
+ * @param [in] multiplier Multiplier of the work
+ * @param [in] base_difficulty Base difficulty
+ * Details <a href="https://docs.nano.org/integration-guides/work-generation/#difficulty-multiplier">here</a>
+ *
+ * @see to_multiplier()
+ * @retval Calculated value
+ */
+uint64_t from_multiplier(double, uint64_t);
+
+/**
+ * @fn void f_set_dictionary_path(const char *path)
+ * @brief Set default dictionary file and path to <b>myNanoEmbedded</b> library
+ *
+ * @param [in] path Path to dictionary file
+ *
+ * If f_set_dictionary_path() is not used in <b>myNanoEmbedded</b> library then default path stored in <i>BIP39_DICTIONARY</i> is used
+ * @see f_get_dictionary_path()
+ */
+void f_set_dictionary_path(const char *);
+
+/**
+ * @fn char *f_get_dictionary_path(void);
+ * @brief Get default dictionary path in <b>myNanoEmbedded</b> library
+ *
+ * @retval Path and name of the dictionary file
+ * @see f_set_dictionary_path()
+ */
+char *f_get_dictionary_path(void);
+
+/**
  * @fn int f_cloud_crypto_wallet_nano_create_seed(size_t entropy, char *file_name, char *password)
  * @brief Generates a new SEED and saves it to an non deterministic encrypted file. <i>password</i> is mandatory
  *

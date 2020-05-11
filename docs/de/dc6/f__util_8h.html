@@ -180,6 +180,8 @@ Functions</h2></td></tr>
 <tr class="separator:a03e15684929d7f8d5761149a6e6b0f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af35daf6120c76c1f9d00b29703149fe1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#af35daf6120c76c1f9d00b29703149fe1">f_convert_to_unsigned_int_std</a> (unsigned int *val, char *value, size_t value_sz)</td></tr>
 <tr class="separator:af35daf6120c76c1f9d00b29703149fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a305474021bbf07e4810d5989e7ee172b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dc6/f__util_8h.html#a305474021bbf07e4810d5989e7ee172b">f_convert_to_double</a> (double *, const char *)</td></tr>
+<tr class="separator:a305474021bbf07e4810d5989e7ee172b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This ABI is a utility for myNanoEmbedded library and sub routines are implemented here. </p>
@@ -517,6 +519,49 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a305474021bbf07e4810d5989e7ee172b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a305474021bbf07e4810d5989e7ee172b">&#9670;&nbsp;</a></span>f_convert_to_double()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_convert_to_double </td>
+          <td>(</td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert any valid number im <em>value</em> and converts it to double <em>val</em> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">val</td><td>Value converted to double </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>Value in string to be converted</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>On Success, Otherwise error </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a7cb881b6c306f3f8b478e11b2fb454ba"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7cb881b6c306f3f8b478e11b2fb454ba">&#9670;&nbsp;</a></span>f_convert_to_long_int()</h2>
 
