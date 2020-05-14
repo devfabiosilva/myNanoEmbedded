@@ -208,6 +208,12 @@ extern "C" {
 #define NANO_FILE_WALLETS_INFO "/spiffs/secure/walletsinfo.i"
 
 /**
+ * @def F_TOKEN
+ * @brief Custom non deterministic token generation block for developing API's
+ */
+typedef uint8_t F_TOKEN[16];
+
+/**
  * @typedef NANO_SEED
  * @brief Size of Nano SEED
  */
@@ -634,6 +640,34 @@ void f_set_dictionary_path(const char *);
  * @see f_set_dictionary_path()
  */
 char *f_get_dictionary_path(void);
+
+/**
+ * @fn int f_generate_token(F_TOKEN signature, void *data, size_t data_sz, const char *password)
+ * @brief Generates a non deterministic token given a message data and a password
+ *
+ * @param [out] signature 128 bit non deterministic token
+ * @param [in] data Data to be signed in token
+ * @param [in] data_sz Size of data
+ * @param [in] password Password
+ *
+ * @retval 0: On Success, otherwise Error
+ * @see f_verify_token()
+ */
+int f_generate_token(F_TOKEN, void *, size_t, const char *);
+
+/**
+ * @fn int f_verify_token(F_TOKEN signature, void *data, size_t data_sz, const char *password)
+ * @brief Verifies if a token is valid given data and password
+ *
+ * @param [in] signature 128 bit non deterministic token
+ * @param [in] data Data to be signed in token
+ * @param [in] data_sz Size of data
+ * @param [in] password Password
+ *
+ * @retval 0: On if invalid; 1 if valid ; less than zero if an error occurs
+ * @see f_generate_token()
+ */
+int f_verify_token(F_TOKEN, void *, size_t, const char *);
 
 /**
  * @fn int f_cloud_crypto_wallet_nano_create_seed(size_t entropy, char *file_name, char *password)

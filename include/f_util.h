@@ -483,6 +483,18 @@ int f_convert_to_unsigned_int_std(unsigned int *val, char *value, size_t value_s
  */
 int f_convert_to_double(double *, const char *);
 
+/**
+ * @fn uint32_t crc32_init(unsigned char *p, size_t len, uint32_t crcinit)
+ * @brief Performs a CRC32 of a given data
+ *
+ * @param [in] p Pointer of the data
+ * @param [in] len Size of data in pointer <i>p</i>
+ * @param [in] crcinit Init vector of the CRC32
+ *
+ * @retval CRC32 hash
+ */
+uint32_t crc32_init(unsigned char *, size_t, uint32_t);
+
 #ifdef __cplusplus
 }
 #endif
