@@ -33,10 +33,12 @@ all: part main
 
 %.o: %.S
 	@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
+	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "Assembly $<"
 
 %.o: %.c
 	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
+	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "CC $<"
 
 part:$(COBJS) $(SOBJS)

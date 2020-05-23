@@ -17,7 +17,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "Edit1",
-"df/d1d/f__nano__crypto__util_8h.html#ae119886ef7fe00a0b03c840dbaf756f3"
+"df/d1d/f__nano__crypto__util_8h.html#ae074b28c7eee3839a229f291851b194cadfc115e9cd54f59a5ea2d0a04cc6d6a5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
