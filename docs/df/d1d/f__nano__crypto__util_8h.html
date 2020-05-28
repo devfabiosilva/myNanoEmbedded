@@ -371,8 +371,10 @@ Functions</h2></td></tr>
 <tr class="separator:a72c2932e1e8cc304f1708d1127171e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4e439f45ed4b10d55efe13fb720ddd5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5">f_sign_data</a> (unsigned char *<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aa83b7555940a450e4c7bcaa284f584cd">signature</a>, void *out_public_key, uint32_t ouput_type, const unsigned char *message, size_t msg_len, const unsigned char *private_key)</td></tr>
 <tr class="separator:af4e439f45ed4b10d55efe13fb720ddd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07e13b8eb30ceee19d4c8191d91c7ffe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe">f_verify_signed_data</a> (const unsigned char *<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#aa83b7555940a450e4c7bcaa284f584cd">signature</a>, const unsigned char *message, size_t message_len, const void *public_key, uint32_t pk_type)</td></tr>
-<tr class="separator:a07e13b8eb30ceee19d4c8191d91c7ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46976d4225f8a3f8f4a3b3c563849345"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345">f_verify_signed_data</a> (const unsigned char *, const unsigned char *, size_t, const void *, uint32_t)</td></tr>
+<tr class="separator:a46976d4225f8a3f8f4a3b3c563849345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d1a4cca9cfa3f11e38dd9ad993e258d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a8d1a4cca9cfa3f11e38dd9ad993e258d">f_is_valid_nano_seed_encrypted</a> (void *, size_t, int)</td></tr>
+<tr class="separator:a8d1a4cca9cfa3f11e38dd9ad993e258d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420">f_nano_pow</a> (uint64_t *, unsigned char *, const uint64_t, int)</td></tr>
 <tr class="separator:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -887,7 +889,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Public key is a hex ASCII encoded string. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01373">1373</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
@@ -906,7 +908,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Public key is a NANO wallet with <em>XRB</em> or <em>NANO</em> prefixes encoded base32 string. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01359">1359</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
@@ -925,7 +927,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Public key raw 32 bytes data. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01366">1366</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
@@ -1817,6 +1819,56 @@ F_ENTROPY_TYPE_NOT_ENOUGH<br />
   </dd>
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a016da69f9a6eb386c13763da8866b3a8" title="Typedef Error enumerator for info file functions. ">F_FILE_INFO_ERR</a> enum type error for detailed error and <a class="el" href="../../d8/d24/structf__nano__wallet__info__t.html" title="struct of the body block of the info file ">f_nano_wallet_info_t</a> for info type details </dd></dl>
+
+</div>
+</div>
+<a id="a8d1a4cca9cfa3f11e38dd9ad993e258d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d1a4cca9cfa3f11e38dd9ad993e258d">&#9670;&nbsp;</a></span>f_is_valid_nano_seed_encrypted()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_is_valid_nano_seed_encrypted </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>stream_len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>read_from</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Verifies if ecrypted Nano SEED is valid. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">stream</td><td>Encrypted binary data block coming from memory or file </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">stream_len</td><td>size of <em>stream</em> data </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">read_from</td><td>Source <em>READ_SEED_FROM_STREAM</em> if encrypted binary data is in memory or <em>READ_SEED_FROM_FILE</em> is in a file.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>If invalid, greater than zero if is valid or error if less than zero. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -3131,12 +3183,12 @@ Output type:</li>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a07e13b8eb30ceee19d4c8191d91c7ffe" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a07e13b8eb30ceee19d4c8191d91c7ffe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07e13b8eb30ceee19d4c8191d91c7ffe">&#9670;&nbsp;</a></span>f_verify_signed_data()</h2>
+<a id="a46976d4225f8a3f8f4a3b3c563849345"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46976d4225f8a3f8f4a3b3c563849345">&#9670;&nbsp;</a></span>f_verify_signed_data()</h2>
 
 <div class="memitem">
 <div class="memproto">

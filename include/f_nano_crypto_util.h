@@ -1392,7 +1392,18 @@ int f_sign_data(
  *
  * @see f_sign_data()
  */
-int f_verify_signed_data( const unsigned char *signature, const unsigned char *message, size_t message_len, const void *public_key, uint32_t pk_type);
+int f_verify_signed_data( const unsigned char *, const unsigned char *, size_t, const void *, uint32_t);
+
+/**
+ * @fn int f_is_valid_nano_seed_encrypted(void *stream, size_t stream_len, int read_from)
+ * @brief Verifies if ecrypted Nano SEED is valid
+ * @param [in] stream Encrypted binary data block coming from memory or file
+ * @param [in] stream_len size of <i>stream</i> data
+ * @param [in] read_from Source <i>READ_SEED_FROM_STREAM</i> if encrypted binary data is in memory or <i>READ_SEED_FROM_FILE</i> is in a file.
+ *
+ * @retval 0: If invalid, greater than zero if is valid or error if less than zero.
+ */
+int f_is_valid_nano_seed_encrypted(void *, size_t, int);
 
 #ifndef F_ESP32
 
