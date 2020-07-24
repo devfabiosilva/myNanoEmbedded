@@ -32,12 +32,14 @@ CEXOBJS = $(CEXSRCS:.c=$(EXAMPLE_OBJS))
 all: part main
 
 %.o: %.S
-	@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
+	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
+	@$(CC) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #Node
 	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "Assembly $<"
 
 %.o: %.c
-	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program
+	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
+	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #NODE
 	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "CC $<"
 

@@ -1,11 +1,5 @@
-embedded/
 ex11/
 tests
-include/sodium/
-include/mbedtls/
-doc_dev/html
-doc_dev/latex
-src/
 *.mk
 *.o
 *.la
