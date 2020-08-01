@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['f_5fbitcoin_5fbuf_5fsz',['F_BITCOIN_BUF_SZ',['../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80',1,'f_bitcoin.h']]],
+  ['f_5fbitcoin_5fwif_5fmainnet',['F_BITCOIN_WIF_MAINNET',['../d0/da6/f__bitcoin_8h.html#afe4f4113b6c9f8a65b44627c1561b7c0',1,'f_bitcoin.h']]],
+  ['f_5fbitcoin_5fwif_5ftestnet',['F_BITCOIN_WIF_TESTNET',['../d0/da6/f__bitcoin_8h.html#af59b1d2c222a8a7717c761f4393b26f7',1,'f_bitcoin.h']]],
   ['f_5fbrain_5fwallet_5fbad',['F_BRAIN_WALLET_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a9da10bb8ea76491520355d3fc04103e9',1,'f_nano_crypto_util.h']]],
   ['f_5fbrain_5fwallet_5fgood',['F_BRAIN_WALLET_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adf59258863cbd983409dde603a614839',1,'f_nano_crypto_util.h']]],
   ['f_5fbrain_5fwallet_5fmaybe_5fgood',['F_BRAIN_WALLET_MAYBE_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adc5a8728a7e3c4d0a15f3bf4f304d0a5',1,'f_nano_crypto_util.h']]],
@@ -21,6 +24,7 @@ var searchData=
   ['f_5fget_5fch_5fmode_5fany_5fkey',['F_GET_CH_MODE_ANY_KEY',['../de/dc6/f__util_8h.html#a37f18a5a28eebb68a2f53535c6ea111e',1,'f_util.h']]],
   ['f_5fget_5fch_5fmode_5fno_5fecho',['F_GET_CH_MODE_NO_ECHO',['../de/dc6/f__util_8h.html#af4f3a8f72413cecdb5f8775a8e2d2447',1,'f_util.h']]],
   ['f_5fis_5fsignature_5fraw_5fhex_5fstring',['F_IS_SIGNATURE_RAW_HEX_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a075e66cda4b1f83771abadc8298ce73e',1,'f_nano_crypto_util.h']]],
+  ['f_5fmax_5fbase58_5flength',['F_MAX_BASE58_LENGTH',['../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894',1,'f_bitcoin.h']]],
   ['f_5fmessage_5fis_5fhash_5fstring',['F_MESSAGE_IS_HASH_STRING',['../df/d1d/f__nano__crypto__util_8h.html#ac40004079934aa1d76678f128c44f8b0',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fpow_5fmax_5fthread',['F_NANO_POW_MAX_THREAD',['../df/d1d/f__nano__crypto__util_8h.html#a39cb5d21c557f6919d9e062e30be830f',1,'f_nano_crypto_util.h']]],
   ['f_5fpass_5fis_5fout_5fovf',['F_PASS_IS_OUT_OVF',['../de/dc6/f__util_8h.html#a318e831d56063ecb61ac55987235f024',1,'f_util.h']]],

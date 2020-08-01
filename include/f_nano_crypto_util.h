@@ -1025,9 +1025,7 @@ F_FILE_INFO_ERR f_set_nano_file_info(F_NANO_WALLET_INFO *, int);
  *     <br/><br/>Output type:
  *     - <i>F_NANO_COMPARE_EQ</i> If <i>valA</i> is greater than <i>valB</i>
  *     - <i>F_NANO_COMPARE_LT</i> if <i>valA</i> is lesser than <i>valB</i>
- *     - <i>F_NANO_COMPARE_LEQ</i> if <i>valA</i> is lesser or equal than <i>valB</i>
  *     - <i>F_NANO_COMPARE_GT</i> if <i>valA</i> is greater than <i>valB</i>
- *     - <i>F_NANO_COMPARE_GEQ</i> If <i>valA</i> is greater or equal than <i>valB</i>
  *
  * @retval NANO_ERR_OK: If Success, otherwise f_nano_err_t enum type error
  * @see f_nano_err_t for f_nano_err enum error type

@@ -11,6 +11,8 @@ var searchData=
   ['f_5fconvert_5fto_5funsigned_5fint0',['f_convert_to_unsigned_int0',['../de/dc6/f__util_8h.html#a03e15684929d7f8d5761149a6e6b0f3b',1,'f_util.h']]],
   ['f_5fconvert_5fto_5funsigned_5fint0x',['f_convert_to_unsigned_int0x',['../de/dc6/f__util_8h.html#a0b2e24b0a6daa05fd45d74964db0465b',1,'f_util.h']]],
   ['f_5fconvert_5fto_5funsigned_5fint_5fstd',['f_convert_to_unsigned_int_std',['../de/dc6/f__util_8h.html#af35daf6120c76c1f9d00b29703149fe1',1,'f_util.h']]],
+  ['f_5fdecode_5fb58_5futil',['f_decode_b58_util',['../d0/da6/f__bitcoin_8h.html#a9625e8502d8be05fd1dace64e3a82ed4',1,'f_bitcoin.h']]],
+  ['f_5fencode_5fb58',['f_encode_b58',['../d0/da6/f__bitcoin_8h.html#aae360837b813c1a1eb80d0e64bad52d1',1,'f_bitcoin.h']]],
   ['f_5fextract_5fseed_5ffrom_5fbrainwallet',['f_extract_seed_from_brainwallet',['../df/d1d/f__nano__crypto__util_8h.html#a3477a2f2d6d1e36089fbbc0e33295a9b',1,'f_nano_crypto_util.h']]],
   ['f_5fgenerate_5fnano_5fseed',['f_generate_nano_seed',['../df/d1d/f__nano__crypto__util_8h.html#abfab7b881e8c138b1d7b3666dbe157bb',1,'f_nano_crypto_util.h']]],
   ['f_5fgenerate_5ftoken',['f_generate_token',['../df/d1d/f__nano__crypto__util_8h.html#a97b73e1303ce4c624c7d2bc89cd2ff27',1,'f_nano_crypto_util.h']]],
@@ -41,6 +43,7 @@ var searchData=
   ['f_5fparse_5fnano_5fseed_5fand_5fbip39_5fto_5fjson',['f_parse_nano_seed_and_bip39_to_JSON',['../df/d1d/f__nano__crypto__util_8h.html#a72189fd3f111a3c17c708daa5481bd45',1,'f_nano_crypto_util.h']]],
   ['f_5fpass_5fmust_5fhave_5fat_5fleast',['f_pass_must_have_at_least',['../de/dc6/f__util_8h.html#a51441c2e68432090498cc409b5334068',1,'f_util.h']]],
   ['f_5fpasswd_5fcomp_5fsafe',['f_passwd_comp_safe',['../de/dc6/f__util_8h.html#a77efb522864d746e486da5e3212dbd80',1,'f_util.h']]],
+  ['f_5fprivate_5fkey_5fto_5fwif',['f_private_key_to_wif',['../d0/da6/f__bitcoin_8h.html#aa4f420a1e217f470ff23d48365a20514',1,'f_bitcoin.h']]],
   ['f_5frandom',['f_random',['../de/dc6/f__util_8h.html#ab517a2285ef295c093dd2e3ff44a96ff',1,'f_util.h']]],
   ['f_5frandom_5fattach',['f_random_attach',['../de/dc6/f__util_8h.html#ac002f5f0a0ce2e3da7c90022254ce5a3',1,'f_util.h']]],
   ['f_5frandom_5fdetach',['f_random_detach',['../de/dc6/f__util_8h.html#a65f14d7a91d631c8eb4dc7ac1246305b',1,'f_util.h']]],
@@ -55,6 +58,7 @@ var searchData=
   ['f_5fverify_5fsystem_5fentropy',['f_verify_system_entropy',['../de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e',1,'f_util.h']]],
   ['f_5fverify_5ftoken',['f_verify_token',['../df/d1d/f__nano__crypto__util_8h.html#af99317dca59ebc2980f9e6056ef9b401',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fwork',['f_verify_work',['../df/d1d/f__nano__crypto__util_8h.html#a72c2932e1e8cc304f1708d1127171e83',1,'f_nano_crypto_util.h']]],
+  ['f_5fwif_5fto_5fprivate_5fkey',['f_wif_to_private_key',['../d0/da6/f__bitcoin_8h.html#a9c42e4c4f99dbbf4a3079fa78b47025e',1,'f_bitcoin.h']]],
   ['f_5fwrite_5fseed',['f_write_seed',['../df/d1d/f__nano__crypto__util_8h.html#aac9e692df60fee8d2b818c1346225391',1,'f_nano_crypto_util.h']]],
   ['from_5fmultiplier',['from_multiplier',['../df/d1d/f__nano__crypto__util_8h.html#a0f27c84016bb365a45c5b9ba5a2b230b',1,'f_nano_crypto_util.h']]]
 ];
