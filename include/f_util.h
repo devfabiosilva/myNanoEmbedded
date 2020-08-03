@@ -226,6 +226,14 @@ typedef enum f_aes_err {
     F_ERR_ENC_DECRYPT_FAILED
 } f_aes_err;
 
+typedef enum f_md_hmac_sha512_t {
+   F_HMAC_SHA512_OK = 0,
+   F_HMAC_SHA512_MALLOC = 304,
+   F_HMAC_SHA512_ERR_INFO,
+   F_HMAC_SHA512_ERR_SETUP,
+   F_HMAC_SHA512_DIGEST_ERROR
+} f_md_hmac_sha512;
+
 char *fhex2strv2(char *, const void *, size_t, int);
 uint8_t *f_sha256_digest(uint8_t *, size_t);
 f_pbkdf2_err f_pbkdf2_hmac(unsigned char *, size_t, unsigned char *, size_t, uint8_t *);
@@ -494,6 +502,9 @@ int f_convert_to_double(double *, const char *);
  * @retval CRC32 hash
  */
 uint32_t crc32_init(unsigned char *, size_t, uint32_t);
+//
+int f_reverse(unsigned char *, size_t);
+f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, const unsigned char *, size_t);
 
 #ifdef __cplusplus
 }

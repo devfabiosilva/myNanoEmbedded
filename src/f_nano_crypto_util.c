@@ -69,7 +69,7 @@ inline char *f_get_dictionary_path(void) { return (char *)__dictionary_path; }
 double to_multiplier(uint64_t difficulty, uint64_t base_difficulty) { return ((double)-base_difficulty)/((double)-difficulty); }
 
 uint64_t from_multiplier(double multiplier, uint64_t base_difficulty) { return (uint64_t)(-(uint64_t)((double)(-base_difficulty)/multiplier)); }
-
+/*
 #ifdef F_ESP32
 int IRAM_ATTR f_reverse(unsigned char *val, size_t val_sz)
 #else
@@ -94,37 +94,6 @@ int f_reverse(unsigned char *val, size_t val_sz)
    memcpy(val, buf, val_sz);
    memset(buf, 0, val_sz);
    free(buf);
-
-   return 0;
-}
-
-/*
-#ifdef F_ESP32
-int IRAM_ATTR f_reverse(unsigned char *val, size_t val_sz)
-#else
-int f_reverse(unsigned char *val, size_t val_sz)
-#endif
-{
-   unsigned char *val_tmp, *p1, *p2;
-   size_t count;
-
-   val_tmp=malloc(val_sz);
-
-   if (!val_tmp)
-      return 2;
-
-   p1=val+val_sz-1;
-   p2=val_tmp;
-   count=val_sz;
-
-   for (;count--;)
-      *(p2++)=*(p1--);
-
-   memcpy(val, val_tmp, val_sz);
-
-   memset(val_tmp, 0, val_sz);
-
-   free(val_tmp);
 
    return 0;
 }

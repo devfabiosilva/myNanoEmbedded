@@ -5,5 +5,7 @@ tests
 *.la
 *.a
 *.so
+*.lo
 misc
+f_bitcoin.c
 

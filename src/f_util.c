@@ -37,6 +37,34 @@ static rnd_fn __rnd_fn=NULL;
 
 #endif
 
+#ifdef F_ESP32
+int IRAM_ATTR f_reverse(unsigned char *val, size_t val_sz)
+#else
+int f_reverse(unsigned char *val, size_t val_sz)
+#endif
+{
+   unsigned char *buf, *buf_tmp;
+   size_t sz_tmp;
+
+   if (!val_sz)
+      return 1;
+
+   if (!(buf=malloc(val_sz)))
+      return 2;
+
+   buf_tmp=buf;
+   sz_tmp=val_sz;
+
+   for (;sz_tmp;)
+      *(buf_tmp++)=val[--sz_tmp];
+
+   memcpy(val, buf, val_sz);
+   memset(buf, 0, val_sz);
+   free(buf);
+
+   return 0;
+}
+
 int f_verify_system_entropy_begin()
 {
    if (!__entropy_val) {
@@ -555,6 +583,41 @@ f_pbkdf2_err f_pbkdf2_hmac(unsigned char *f_msg, size_t f_msg_sz, unsigned char 
        return F_PBKDF2_ERR_PKCS5;
 
     return F_PBKDF2_RESULT_OK;
+}
+
+f_md_hmac_sha512 f_hmac_sha512(unsigned char *result, const unsigned char *key, size_t key_len, const unsigned char *data, size_t data_len)
+{
+   int err;
+   mbedtls_md_context_t *sha512_ctx;
+   const mbedtls_md_info_t *info_sha;
+
+   if (!(sha512_ctx=malloc(sizeof(mbedtls_md_context_t))))
+      return F_HMAC_SHA512_MALLOC;
+
+   if (!(info_sha=mbedtls_md_info_from_type(MBEDTLS_MD_SHA512))) {
+      err=F_HMAC_SHA512_ERR_INFO;
+      goto f_hmac_sha512_EXIT1;
+   }
+
+   mbedtls_md_init(sha512_ctx);
+
+   if (mbedtls_md_setup(sha512_ctx, info_sha, 1)) {
+      err=F_HMAC_SHA512_ERR_SETUP;
+      goto f_hmac_sha512_EXIT2;
+   }
+
+   err=F_HMAC_SHA512_OK;
+
+   if (mbedtls_md_hmac(info_sha, key, key_len, data, data_len, result))
+      err=F_HMAC_SHA512_DIGEST_ERROR;
+
+f_hmac_sha512_EXIT2:
+   mbedtls_md_free(sha512_ctx);
+
+f_hmac_sha512_EXIT1:
+   memset(sha512_ctx, 0, sizeof(mbedtls_md_context_t));
+   free(sha512_ctx);
+   return err;
 }
 
 f_aes_err f_aes256cipher(uint8_t *key, uint8_t *iv, void *data, size_t data_sz, void *data_out, int direction)
