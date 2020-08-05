@@ -7,5 +7,5 @@ tests
 *.so
 *.lo
 misc
-f_bitcoin.c
+
 
