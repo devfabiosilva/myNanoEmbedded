@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['f_5fbitcoin_5fserialize_5ft',['f_bitcoin_serialize_t',['../dc/d54/structf__bitcoin__serialize__t.html',1,'']]],
   ['f_5fblock_5ftransfer_5ft',['f_block_transfer_t',['../d2/dee/structf__block__transfer__t.html',1,'']]],
   ['f_5ffile_5finfo_5ferr_5ft',['f_file_info_err_t',['../d8/d4d/structf__file__info__err__t.html',1,'']]],
   ['f_5fnano_5fcrypto_5fwallet_5ft',['f_nano_crypto_wallet_t',['../d4/d42/structf__nano__crypto__wallet__t.html',1,'']]],

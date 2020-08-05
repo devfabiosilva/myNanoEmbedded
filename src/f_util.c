@@ -673,6 +673,61 @@ f_aes256cipher_EXIT1:
 
    return err;
 }
+// Checks if secret key generated in HMAC is valid = 0, error = non zero
+#define F_ECDSA_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_mpi))
+int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
+{
+   int err;
+   uint8_t *buffer;
+   mbedtls_ecdsa_context *ecdsa_ctx;
+   mbedtls_mpi *A;
+
+   if (!secret_key_len)
+      return 476;
+
+   if (!(buffer=malloc(F_ECDSA_BUFFER_SZ)))
+      return 477;
+
+   ecdsa_ctx=(mbedtls_ecdsa_context *)buffer;
+   A=(mbedtls_mpi *)(buffer+sizeof(mbedtls_ecdsa_context));
+
+   mbedtls_ecdsa_init(ecdsa_ctx);
+
+   if (err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid)))
+      goto f_ecdsa_secret_key_valid_EXIT1;
+
+/*
+   if (mbedtls_mpi_size(&ecdsa_ctx->d)!=secret_key_len) {
+      err=478;
+      goto f_ecdsa_secret_key_valid_EXIT1;
+   }
+*/
+   if (is_filled_with_value(secret_key, secret_key_len, 0)) {
+      err=479;
+      goto f_ecdsa_secret_key_valid_EXIT1;
+   }
+
+   mbedtls_mpi_init(A);
+
+   if (mbedtls_mpi_read_binary(A, secret_key, secret_key_len)) {
+      err=480;
+      goto f_ecdsa_secret_key_valid_EXIT2;
+   }
+
+   err=0;
+
+   if (mbedtls_mpi_cmp_mpi(A, &ecdsa_ctx->grp.N)>0)
+      err=481;
+
+f_ecdsa_secret_key_valid_EXIT2:
+   mbedtls_mpi_free(A);
+
+f_ecdsa_secret_key_valid_EXIT1:
+   mbedtls_ecdsa_free(ecdsa_ctx);
+   memset(buffer, 0, F_ECDSA_BUFFER_SZ);
+   free(buffer);
+   return err;
+}
 
 char *f_get_entropy_name(uint32_t val)
 {

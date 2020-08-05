@@ -4,11 +4,11 @@ var indexSectionsWithContent =
   1: "f",
   2: "fs",
   3: "_cfginptv",
-  4: "abdfhilmnprsvw",
+  4: "abcdfhilmnprsvw",
   5: "fnr",
   6: "f",
   7: "fnw",
-  8: "defmnprsx",
+  8: "defmnprstx",
   9: "o"
 };
 

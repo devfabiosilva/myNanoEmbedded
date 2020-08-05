@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include "mbedtls/sha256.h"
 #include "mbedtls/aes.h"
+#include "mbedtls/ecdsa.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -505,6 +506,7 @@ uint32_t crc32_init(unsigned char *, size_t, uint32_t);
 //
 int f_reverse(unsigned char *, size_t);
 f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, const unsigned char *, size_t);
+int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 
 #ifdef __cplusplus
 }

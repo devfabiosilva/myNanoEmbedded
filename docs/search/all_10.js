@@ -5,6 +5,7 @@ var searchData=
   ['sender_5fxrb',['SENDER_XRB',['../df/d1d/f__nano__crypto__util_8h.html#a780c390e75c8d7bca933024897c4123c',1,'f_nano_crypto_util.h']]],
   ['signature',['signature',['../d2/dee/structf__block__transfer__t.html#aa83b7555940a450e4c7bcaa284f584cd',1,'f_block_transfer_t::signature()'],['../df/d1d/f__nano__crypto__util_8h.html#aa83b7555940a450e4c7bcaa284f584cd',1,'signature():&#160;f_nano_crypto_util.h']]],
   ['sk_5fencrypted',['sk_encrypted',['../d4/db2/structf__nano__encrypted__wallet__t.html#a71ad7e30ecf48d72379221154015187d',1,'f_nano_encrypted_wallet_t::sk_encrypted()'],['../df/d1d/f__nano__crypto__util_8h.html#a71ad7e30ecf48d72379221154015187d',1,'sk_encrypted():&#160;f_nano_crypto_util.h']]],
+  ['sk_5for_5fpk_5fdata',['sk_or_pk_data',['../dc/d54/structf__bitcoin__serialize__t.html#a89fb85bad5830a518d037ef272f12c67',1,'f_bitcoin_serialize_t::sk_or_pk_data()'],['../d0/da6/f__bitcoin_8h.html#a89fb85bad5830a518d037ef272f12c67',1,'sk_or_pk_data():&#160;f_bitcoin.h']]],
   ['sodium_2eh',['sodium.h',['../d6/d3c/sodium_8h.html',1,'']]],
   ['str_5fnano_5fsz',['STR_NANO_SZ',['../df/d1d/f__nano__crypto__util_8h.html#ab865b59cda27be360c6591d864b443ec',1,'f_nano_crypto_util.h']]],
   ['sub_5fsalt',['sub_salt',['../d4/db2/structf__nano__encrypted__wallet__t.html#a5b55577cd7b4a38ea29c3714c8cc52a3',1,'f_nano_encrypted_wallet_t::sub_salt()'],['../df/d1d/f__nano__crypto__util_8h.html#a5b55577cd7b4a38ea29c3714c8cc52a3',1,'sub_salt():&#160;f_nano_crypto_util.h']]]

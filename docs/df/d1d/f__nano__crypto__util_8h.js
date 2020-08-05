@@ -108,7 +108,7 @@ var f__nano__crypto__util_8h =
       [ "WRITE_ERR_CREATING_FILE", "df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caa02c13e774f0888d8c00009fc65aa6d58", null ],
       [ "WRITE_ERR_WRITING_FILE", "df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caa24d1a60fcb491d78b049e123f63e2fda", null ]
     ] ],
-    [ "__attribute__", "df/d1d/f__nano__crypto__util_8h.html#ae119886ef7fe00a0b03c840dbaf756f3", null ],
+    [ "__attribute__", "df/d1d/f__nano__crypto__util_8h.html#a0f989c4f8e1ad2ddcb32a64c89d27f02", null ],
     [ "f_bip39_to_nano_seed", "df/d1d/f__nano__crypto__util_8h.html#a0e8f0380fe584268d63270c19da09701", null ],
     [ "f_cloud_crypto_wallet_nano_create_seed", "df/d1d/f__nano__crypto__util_8h.html#a26255892a474d8fda6b662a44c6b44b3", null ],
     [ "f_extract_seed_from_brainwallet", "df/d1d/f__nano__crypto__util_8h.html#a3477a2f2d6d1e36089fbbc0e33295a9b", null ],

@@ -83,16 +83,23 @@ $(document).ready(function(){initNavTree('d0/da6/f__bitcoin_8h.html','../../');}
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">f_bitcoin.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="../../de/dc6/f__util_8h_source.html">f_util.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;mbedtls/bignum.h&gt;</code><br />
 </div>
 <p><a href="../../d0/da6/f__bitcoin_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d54/structf__bitcoin__serialize__t.html">f_bitcoin_serialize_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:afe4f4113b6c9f8a65b44627c1561b7c0"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#afe4f4113b6c9f8a65b44627c1561b7c0">F_BITCOIN_WIF_MAINNET</a>&#160;&#160;&#160;(uint8_t)0x80</td></tr>
@@ -103,9 +110,23 @@ Macros</h2></td></tr>
 <tr class="separator:a8490abd1f1327342faf955b9dc38fc80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ec3093b5100c52408b2720db055894"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894">F_MAX_BASE58_LENGTH</a>&#160;&#160;&#160;(size_t)52</td></tr>
 <tr class="separator:a94ec3093b5100c52408b2720db055894"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb1926ea65fafffe6b4e961404f5c44c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#abb1926ea65fafffe6b4e961404f5c44c">F_BITCOIN_SEED_GENERATOR</a>&#160;&#160;&#160;&quot;Bitcoin seed&quot;</td></tr>
+<tr class="separator:abb1926ea65fafffe6b4e961404f5c44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65a3c1475a0d9287dcea2eb2e1e3cc36"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a65a3c1475a0d9287dcea2eb2e1e3cc36">MAINNET_PUBLIC</a>&#160;&#160;&#160;(size_t)0</td></tr>
+<tr class="separator:a65a3c1475a0d9287dcea2eb2e1e3cc36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34f9f05e3ac460b5e3d45b834fed47a3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a34f9f05e3ac460b5e3d45b834fed47a3">MAINNET_PRIVATE</a>&#160;&#160;&#160;(size_t)1</td></tr>
+<tr class="separator:a34f9f05e3ac460b5e3d45b834fed47a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4299c6a7a2b100a00ff56d1ce2f85272"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a4299c6a7a2b100a00ff56d1ce2f85272">TESTNET_PUBLIC</a>&#160;&#160;&#160;(size_t)2</td></tr>
+<tr class="separator:a4299c6a7a2b100a00ff56d1ce2f85272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac24ad7750ccc176fff0b3a338d7d0748"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#ac24ad7750ccc176fff0b3a338d7d0748">TESTNET_PRIVATE</a>&#160;&#160;&#160;(size_t)3</td></tr>
+<tr class="separator:ac24ad7750ccc176fff0b3a338d7d0748"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c1ff3dd8ae263f98dd2f68b4402a986"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a0c1ff3dd8ae263f98dd2f68b4402a986">F_VERSION_BYTES_IDX_LEN</a>&#160;&#160;&#160;(size_t)(sizeof(<a class="el" href="../../d0/da6/f__bitcoin_8h.html#a6556a4573328ff1721ab54243f821037">F_VERSION_BYTES</a>)/(4*sizeof(uint8_t)))</td></tr>
+<tr class="separator:a0c1ff3dd8ae263f98dd2f68b4402a986"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:af6eaced1d8282dfd043c865c0f40fec8"><td class="memItemLeft" align="right" valign="top">struct <a class="el" href="../../dc/d54/structf__bitcoin__serialize__t.html">f_bitcoin_serialize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#af6eaced1d8282dfd043c865c0f40fec8">__attribute__</a> ((packed)) BITCOIN_SERIALIZE</td></tr>
+<tr class="separator:af6eaced1d8282dfd043c865c0f40fec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9625e8502d8be05fd1dace64e3a82ed4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a9625e8502d8be05fd1dace64e3a82ed4">f_decode_b58_util</a> (uint8_t *, size_t, size_t *, const char *)</td></tr>
 <tr class="separator:a9625e8502d8be05fd1dace64e3a82ed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae360837b813c1a1eb80d0e64bad52d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#aae360837b813c1a1eb80d0e64bad52d1">f_encode_b58</a> (char *, size_t, size_t *, uint8_t *, size_t)</td></tr>
@@ -114,6 +135,27 @@ Functions</h2></td></tr>
 <tr class="separator:aa4f420a1e217f470ff23d48365a20514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c42e4c4f99dbbf4a3079fa78b47025e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a9c42e4c4f99dbbf4a3079fa78b47025e">f_wif_to_private_key</a> (uint8_t *, unsigned char *, const char *)</td></tr>
 <tr class="separator:a9c42e4c4f99dbbf4a3079fa78b47025e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4546df2355416fc6889a26eb6cc6a6db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a4546df2355416fc6889a26eb6cc6a6db">f_generate_master_key</a> (BITCOIN_SERIALIZE *, size_t, uint32_t)</td></tr>
+<tr class="separator:a4546df2355416fc6889a26eb6cc6a6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a6556a4573328ff1721ab54243f821037"><td class="memItemLeft" align="right" valign="top">static const uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a6556a4573328ff1721ab54243f821037">F_VERSION_BYTES</a> [][4]</td></tr>
+<tr class="separator:a6556a4573328ff1721ab54243f821037"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4eae60b2e43bae0eaad0683e4ae00591"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a4eae60b2e43bae0eaad0683e4ae00591">version_bytes</a> [4]</td></tr>
+<tr class="separator:a4eae60b2e43bae0eaad0683e4ae00591"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866731926361dfee03a437df1733f19b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a866731926361dfee03a437df1733f19b">master_node</a></td></tr>
+<tr class="separator:a866731926361dfee03a437df1733f19b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8af5a7d8457c3b9016fb892f7285e4d4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a8af5a7d8457c3b9016fb892f7285e4d4">finger_print</a> [4]</td></tr>
+<tr class="separator:a8af5a7d8457c3b9016fb892f7285e4d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36dac8f3b4737fc9ea52c2ef576f08a4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a36dac8f3b4737fc9ea52c2ef576f08a4">child_number</a> [4]</td></tr>
+<tr class="separator:a36dac8f3b4737fc9ea52c2ef576f08a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945b7ca1f35cdadb2b00403fb5c5d991"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a945b7ca1f35cdadb2b00403fb5c5d991">chain_code</a> [32]</td></tr>
+<tr class="separator:a945b7ca1f35cdadb2b00403fb5c5d991"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89fb85bad5830a518d037ef272f12c67"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a89fb85bad5830a518d037ef272f12c67">sk_or_pk_data</a> [33]</td></tr>
+<tr class="separator:a89fb85bad5830a518d037ef272f12c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c00883dda44b085801a7a95df2bb85"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a11c00883dda44b085801a7a95df2bb85">chksum</a> [4]</td></tr>
+<tr class="separator:a11c00883dda44b085801a7a95df2bb85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a8490abd1f1327342faf955b9dc38fc80"></a>
@@ -128,7 +170,23 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00005">5</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00008">8</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="abb1926ea65fafffe6b4e961404f5c44c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb1926ea65fafffe6b4e961404f5c44c">&#9670;&nbsp;</a></span>F_BITCOIN_SEED_GENERATOR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BITCOIN_SEED_GENERATOR&#160;&#160;&#160;&quot;Bitcoin seed&quot;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00010">10</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -144,7 +202,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00003">3</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00006">6</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -160,7 +218,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00004">4</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00007">7</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -176,11 +234,109 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00006">6</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00009">9</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a0c1ff3dd8ae263f98dd2f68b4402a986"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c1ff3dd8ae263f98dd2f68b4402a986">&#9670;&nbsp;</a></span>F_VERSION_BYTES_IDX_LEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_VERSION_BYTES_IDX_LEN&#160;&#160;&#160;(size_t)(sizeof(<a class="el" href="../../d0/da6/f__bitcoin_8h.html#a6556a4573328ff1721ab54243f821037">F_VERSION_BYTES</a>)/(4*sizeof(uint8_t)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00023">23</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a34f9f05e3ac460b5e3d45b834fed47a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34f9f05e3ac460b5e3d45b834fed47a3">&#9670;&nbsp;</a></span>MAINNET_PRIVATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAINNET_PRIVATE&#160;&#160;&#160;(size_t)1</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00013">13</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a65a3c1475a0d9287dcea2eb2e1e3cc36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65a3c1475a0d9287dcea2eb2e1e3cc36">&#9670;&nbsp;</a></span>MAINNET_PUBLIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MAINNET_PUBLIC&#160;&#160;&#160;(size_t)0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00012">12</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="ac24ad7750ccc176fff0b3a338d7d0748"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac24ad7750ccc176fff0b3a338d7d0748">&#9670;&nbsp;</a></span>TESTNET_PRIVATE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TESTNET_PRIVATE&#160;&#160;&#160;(size_t)3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00015">15</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a4299c6a7a2b100a00ff56d1ce2f85272"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4299c6a7a2b100a00ff56d1ce2f85272">&#9670;&nbsp;</a></span>TESTNET_PUBLIC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define TESTNET_PUBLIC&#160;&#160;&#160;(size_t)2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00014">14</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="af6eaced1d8282dfd043c865c0f40fec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6eaced1d8282dfd043c865c0f40fec8">&#9670;&nbsp;</a></span>__attribute__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="../../d8/d24/structf__nano__wallet__info__t.html">f_nano_wallet_info_t</a> __attribute__ </td>
+          <td>(</td>
+          <td class="paramtype">(packed)&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9625e8502d8be05fd1dace64e3a82ed4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9625e8502d8be05fd1dace64e3a82ed4">&#9670;&nbsp;</a></span>f_decode_b58_util()</h2>
 
@@ -255,6 +411,40 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4546df2355416fc6889a26eb6cc6a6db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4546df2355416fc6889a26eb6cc6a6db">&#9670;&nbsp;</a></span>f_generate_master_key()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_generate_master_key </td>
+          <td>(</td>
+          <td class="paramtype">BITCOIN_SERIALIZE *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>
@@ -344,6 +534,143 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a945b7ca1f35cdadb2b00403fb5c5d991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a945b7ca1f35cdadb2b00403fb5c5d991">&#9670;&nbsp;</a></span>chain_code</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t chain_code[32]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00022">22</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a36dac8f3b4737fc9ea52c2ef576f08a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36dac8f3b4737fc9ea52c2ef576f08a4">&#9670;&nbsp;</a></span>child_number</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t child_number[4]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00021">21</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a11c00883dda44b085801a7a95df2bb85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c00883dda44b085801a7a95df2bb85">&#9670;&nbsp;</a></span>chksum</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t chksum[4]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00024">24</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a6556a4573328ff1721ab54243f821037"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6556a4573328ff1721ab54243f821037">&#9670;&nbsp;</a></span>F_VERSION_BYTES</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const uint8_t F_VERSION_BYTES[][4]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">   {0x04, 0x88, 0xB2, 0x1E}, </div><div class="line">   {0x04, 0x88, 0xAD, 0xE4}, </div><div class="line">   {0x04, 0x35, 0x87, 0xCF}, </div><div class="line">   {0x04, 0x35, 0x83, 0x94} </div><div class="line">}</div></div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00017">17</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a8af5a7d8457c3b9016fb892f7285e4d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8af5a7d8457c3b9016fb892f7285e4d4">&#9670;&nbsp;</a></span>finger_print</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t finger_print[4]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00020">20</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a866731926361dfee03a437df1733f19b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a866731926361dfee03a437df1733f19b">&#9670;&nbsp;</a></span>master_node</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t master_node</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00019">19</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a89fb85bad5830a518d037ef272f12c67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89fb85bad5830a518d037ef272f12c67">&#9670;&nbsp;</a></span>sk_or_pk_data</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sk_or_pk_data[33]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00023">23</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a4eae60b2e43bae0eaad0683e4ae00591"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eae60b2e43bae0eaad0683e4ae00591">&#9670;&nbsp;</a></span>version_bytes</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t version_bytes[4]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00018">18</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>

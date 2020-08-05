@@ -1,5 +1,6 @@
 var annotated =
 [
+    [ "f_bitcoin_serialize_t", "dc/d54/structf__bitcoin__serialize__t.html", "dc/d54/structf__bitcoin__serialize__t" ],
     [ "f_block_transfer_t", "d2/dee/structf__block__transfer__t.html", "d2/dee/structf__block__transfer__t" ],
     [ "f_file_info_err_t", "d8/d4d/structf__file__info__err__t.html", null ],
     [ "f_nano_crypto_wallet_t", "d4/d42/structf__nano__crypto__wallet__t.html", "d4/d42/structf__nano__crypto__wallet__t" ],

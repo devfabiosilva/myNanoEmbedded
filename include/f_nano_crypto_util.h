@@ -6,7 +6,8 @@
 */
 
 #include <stdint.h>
-#include "f_util.h"
+#include <f_util.h>
+#include <f_bitcoin.h>
 
 #ifndef F_DOC_SKIP
 

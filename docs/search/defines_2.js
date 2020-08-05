@@ -1,6 +1,7 @@
 var searchData=
 [
   ['f_5fbitcoin_5fbuf_5fsz',['F_BITCOIN_BUF_SZ',['../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80',1,'f_bitcoin.h']]],
+  ['f_5fbitcoin_5fseed_5fgenerator',['F_BITCOIN_SEED_GENERATOR',['../d0/da6/f__bitcoin_8h.html#abb1926ea65fafffe6b4e961404f5c44c',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5fmainnet',['F_BITCOIN_WIF_MAINNET',['../d0/da6/f__bitcoin_8h.html#afe4f4113b6c9f8a65b44627c1561b7c0',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5ftestnet',['F_BITCOIN_WIF_TESTNET',['../d0/da6/f__bitcoin_8h.html#af59b1d2c222a8a7717c761f4393b26f7',1,'f_bitcoin.h']]],
   ['f_5fbrain_5fwallet_5fbad',['F_BRAIN_WALLET_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a9da10bb8ea76491520355d3fc04103e9',1,'f_nano_crypto_util.h']]],
@@ -43,5 +44,6 @@ var searchData=
   ['f_5fsignature_5fstring',['F_SIGNATURE_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a503d6dc03196c9a7dbbb81e9612118bb',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fascii_5fhex',['F_VERIFY_SIG_ASCII_HEX',['../df/d1d/f__nano__crypto__util_8h.html#a3fc1d0fdaeaf722bce672f93b19e4bfb',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fnano_5fwallet',['F_VERIFY_SIG_NANO_WALLET',['../df/d1d/f__nano__crypto__util_8h.html#a6f0e0d9c79084f462710bbf2c9e93d42',1,'f_nano_crypto_util.h']]],
-  ['f_5fverify_5fsig_5fraw_5fhex',['F_VERIFY_SIG_RAW_HEX',['../df/d1d/f__nano__crypto__util_8h.html#ade78b5a9195ed33cda8ec3f817cb3b3f',1,'f_nano_crypto_util.h']]]
+  ['f_5fverify_5fsig_5fraw_5fhex',['F_VERIFY_SIG_RAW_HEX',['../df/d1d/f__nano__crypto__util_8h.html#ade78b5a9195ed33cda8ec3f817cb3b3f',1,'f_nano_crypto_util.h']]],
+  ['f_5fversion_5fbytes_5fidx_5flen',['F_VERSION_BYTES_IDX_LEN',['../d0/da6/f__bitcoin_8h.html#a0c1ff3dd8ae263f98dd2f68b4402a986',1,'f_bitcoin.h']]]
 ];
