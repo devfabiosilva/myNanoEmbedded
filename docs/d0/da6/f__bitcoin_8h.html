@@ -108,7 +108,7 @@ Macros</h2></td></tr>
 <tr class="separator:af59b1d2c222a8a7717c761f4393b26f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8490abd1f1327342faf955b9dc38fc80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80">F_BITCOIN_BUF_SZ</a>&#160;&#160;&#160;(size_t)512</td></tr>
 <tr class="separator:a8490abd1f1327342faf955b9dc38fc80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94ec3093b5100c52408b2720db055894"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894">F_MAX_BASE58_LENGTH</a>&#160;&#160;&#160;(size_t)52</td></tr>
+<tr class="memitem:a94ec3093b5100c52408b2720db055894"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894">F_MAX_BASE58_LENGTH</a>&#160;&#160;&#160;(size_t)112</td></tr>
 <tr class="separator:a94ec3093b5100c52408b2720db055894"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb1926ea65fafffe6b4e961404f5c44c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#abb1926ea65fafffe6b4e961404f5c44c">F_BITCOIN_SEED_GENERATOR</a>&#160;&#160;&#160;&quot;Bitcoin seed&quot;</td></tr>
 <tr class="separator:abb1926ea65fafffe6b4e961404f5c44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,6 +137,8 @@ Functions</h2></td></tr>
 <tr class="separator:a9c42e4c4f99dbbf4a3079fa78b47025e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4546df2355416fc6889a26eb6cc6a6db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a4546df2355416fc6889a26eb6cc6a6db">f_generate_master_key</a> (BITCOIN_SERIALIZE *, size_t, uint32_t)</td></tr>
 <tr class="separator:a4546df2355416fc6889a26eb6cc6a6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30cbea5eda0efd84b1999c567877463"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#ad30cbea5eda0efd84b1999c567877463">f_bitcoin_valid_bip32</a> (BITCOIN_SERIALIZE *, void *, int)</td></tr>
+<tr class="separator:ad30cbea5eda0efd84b1999c567877463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -229,7 +231,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define F_MAX_BASE58_LENGTH&#160;&#160;&#160;(size_t)52</td>
+          <td class="memname">#define F_MAX_BASE58_LENGTH&#160;&#160;&#160;(size_t)112</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -331,6 +333,40 @@ Variables</h2></td></tr>
           <td class="paramtype">(packed)&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad30cbea5eda0efd84b1999c567877463"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad30cbea5eda0efd84b1999c567877463">&#9670;&nbsp;</a></span>f_bitcoin_valid_bip32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_bitcoin_valid_bip32 </td>
+          <td>(</td>
+          <td class="paramtype">BITCOIN_SERIALIZE *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">

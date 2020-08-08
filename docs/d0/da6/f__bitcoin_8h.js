@@ -12,6 +12,7 @@ var f__bitcoin_8h =
     [ "TESTNET_PRIVATE", "d0/da6/f__bitcoin_8h.html#ac24ad7750ccc176fff0b3a338d7d0748", null ],
     [ "TESTNET_PUBLIC", "d0/da6/f__bitcoin_8h.html#a4299c6a7a2b100a00ff56d1ce2f85272", null ],
     [ "__attribute__", "d0/da6/f__bitcoin_8h.html#af6eaced1d8282dfd043c865c0f40fec8", null ],
+    [ "f_bitcoin_valid_bip32", "d0/da6/f__bitcoin_8h.html#ad30cbea5eda0efd84b1999c567877463", null ],
     [ "f_decode_b58_util", "d0/da6/f__bitcoin_8h.html#a9625e8502d8be05fd1dace64e3a82ed4", null ],
     [ "f_encode_b58", "d0/da6/f__bitcoin_8h.html#aae360837b813c1a1eb80d0e64bad52d1", null ],
     [ "f_generate_master_key", "d0/da6/f__bitcoin_8h.html#a4546df2355416fc6889a26eb6cc6a6db", null ],
