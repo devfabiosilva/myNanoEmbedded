@@ -234,6 +234,21 @@ typedef enum f_md_hmac_sha512_t {
    F_HMAC_SHA512_ERR_SETUP,
    F_HMAC_SHA512_DIGEST_ERROR
 } f_md_hmac_sha512;
+///
+typedef enum f_ecdsa_key_pair_err_t {
+   F_ECDSA_KEY_PAIR_OK = 0,
+   F_ECDSA_KEY_PAIR_NULL = 330,
+   F_ECDSA_KEY_PAIR_MALLOC
+} f_ecdsa_key_pair_err;
+
+typedef struct f_ecdsa_key_pair_t {
+    size_t public_key_sz;
+    size_t private_key_sz;
+    mbedtls_ecdsa_context *ctx;
+    mbedtls_ecp_group_id gid;
+    unsigned char public_key[MBEDTLS_ECDSA_MAX_LEN];
+    unsigned char private_key[MBEDTLS_ECDSA_MAX_LEN];
+} f_ecdsa_key_pair;
 
 char *fhex2strv2(char *, const void *, size_t, int);
 uint8_t *f_sha256_digest(uint8_t *, size_t);
@@ -504,9 +519,12 @@ int f_convert_to_double(double *, const char *);
  */
 uint32_t crc32_init(unsigned char *, size_t, uint32_t);
 //
+typedef int (*fn_det)(void *, unsigned char *, size_t);
 int f_reverse(unsigned char *, size_t);
 f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, const unsigned char *, size_t);
 int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
+int f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
+f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *, int, fn_det, void *);
 
 #ifdef __cplusplus
 }

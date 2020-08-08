@@ -620,6 +620,42 @@ f_hmac_sha512_EXIT1:
    return err;
 }
 
+f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *f_key_pair, int format, fn_det fn, void *fn_det_ctx)
+{
+   int err;
+   mbedtls_ecdsa_context *f_ctx_tmp;
+
+   if (!f_key_pair)
+      return F_ECDSA_KEY_PAIR_NULL;
+
+   if (f_key_pair->ctx)
+      f_ctx_tmp=f_key_pair->ctx;
+   else if ((f_ctx_tmp=malloc(sizeof(mbedtls_ecdsa_context))))
+      mbedtls_ecdsa_init(f_ctx_tmp);
+   else
+      return F_ECDSA_KEY_PAIR_MALLOC;
+
+   if ((err=mbedtls_ecdsa_genkey(f_ctx_tmp, f_key_pair->gid, fn, fn_det_ctx)))
+      goto f_gen_ecdsa_key_pair_EXIT1;
+
+   f_key_pair->private_key_sz=mbedtls_mpi_size(&f_ctx_tmp->d);
+
+   if ((err=mbedtls_mpi_write_binary(&f_ctx_tmp->d, f_key_pair->private_key, f_key_pair->private_key_sz)))
+      goto f_gen_ecdsa_key_pair_EXIT1;
+
+   err=mbedtls_ecp_point_write_binary(
+      &f_ctx_tmp->grp, &f_ctx_tmp->Q, format, &f_key_pair->public_key_sz, f_key_pair->public_key, sizeof(f_key_pair->public_key));
+
+f_gen_ecdsa_key_pair_EXIT1:
+   if (!f_key_pair->ctx) {
+      mbedtls_ecdsa_free(f_ctx_tmp);
+      memset(f_ctx_tmp, 0, sizeof(mbedtls_ecdsa_context));
+      free(f_ctx_tmp);
+   }
+
+   return err;
+}
+
 f_aes_err f_aes256cipher(uint8_t *key, uint8_t *iv, void *data, size_t data_sz, void *data_out, int direction)
 {
    int err;
@@ -696,17 +732,6 @@ int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key
    if (err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid)))
       goto f_ecdsa_secret_key_valid_EXIT1;
 
-/*
-   if (mbedtls_mpi_size(&ecdsa_ctx->d)!=secret_key_len) {
-      err=478;
-      goto f_ecdsa_secret_key_valid_EXIT1;
-   }
-*/
-   if (is_filled_with_value(secret_key, secret_key_len, 0)) {
-      err=479;
-      goto f_ecdsa_secret_key_valid_EXIT1;
-   }
-
    mbedtls_mpi_init(A);
 
    if (mbedtls_mpi_read_binary(A, secret_key, secret_key_len)) {
@@ -716,7 +741,7 @@ int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key
 
    err=0;
 
-   if (mbedtls_mpi_cmp_mpi(A, &ecdsa_ctx->grp.N)>0)
+   if (mbedtls_ecp_check_privkey(&ecdsa_ctx->grp, A))
       err=481;
 
 f_ecdsa_secret_key_valid_EXIT2:
@@ -725,6 +750,45 @@ f_ecdsa_secret_key_valid_EXIT2:
 f_ecdsa_secret_key_valid_EXIT1:
    mbedtls_ecdsa_free(ecdsa_ctx);
    memset(buffer, 0, F_ECDSA_BUFFER_SZ);
+   free(buffer);
+   return err;
+}
+
+#define F_ECDSA_PUBLIC_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_ecp_point))
+int f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key, size_t public_key_len)
+{
+   int err;
+   uint8_t *buffer;
+   mbedtls_ecdsa_context *ecdsa_ctx;
+   mbedtls_ecp_point *P;
+
+   if (!public_key_len)
+      return 500;
+
+   if (!(buffer=malloc(F_ECDSA_PUBLIC_BUFFER_SZ)))
+      return 501;
+
+   ecdsa_ctx=(mbedtls_ecdsa_context *)buffer;
+   P=(mbedtls_ecp_point *)(buffer+sizeof(mbedtls_ecdsa_context));
+
+   mbedtls_ecdsa_init(ecdsa_ctx);
+   mbedtls_ecp_point_init(P);
+
+   if ((err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid))))
+      goto f_ecdsa_public_key_valid_EXIT1;
+// issue: https://github.com/ARMmbed/mbedtls/pull/1608
+   if ((err=mbedtls_ecp_point_read_binary(&ecdsa_ctx->grp, P, public_key, public_key_len)))
+      goto f_ecdsa_public_key_valid_EXIT1;
+
+   err=0;
+
+   if (mbedtls_ecp_check_pubkey(&ecdsa_ctx->grp, P))
+      err=503;
+
+f_ecdsa_public_key_valid_EXIT1:
+   mbedtls_ecp_point_free(P);
+   mbedtls_ecdsa_free(ecdsa_ctx);
+   memset(buffer, 0, F_ECDSA_PUBLIC_BUFFER_SZ);
    free(buffer);
    return err;
 }

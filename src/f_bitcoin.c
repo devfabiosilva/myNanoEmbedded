@@ -4,7 +4,13 @@
 
 const char *code_b58_string = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
-int 
+const char DECODE_B58_LT [] = {
+   0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+   0xFF, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0xFF, 0x11, 0x12, 0x13, 0x14, 0x15, 
+   0xFF, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0xFF, 0xFF, 0xFF, 
+   0xFF, 0xFF, 0xFF, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0xFF,
+   0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39,
+};
 
 #define DECODE_B58_BUFFER_ADJUST (size_t)(2*sizeof(mbedtls_mpi))
 int f_decode_b58_util(uint8_t *dec, size_t dec_sz, size_t *out_dec_sz, const char *text)
@@ -26,16 +32,19 @@ int f_decode_b58_util(uint8_t *dec, size_t dec_sz, size_t *out_dec_sz, const cha
    sz_tmp=sz;
 
    for (;sz_tmp;) {
-      k=0xFF;
       sz_tmp--;
 
-      for (i=0;i<58;i++)
-         if (text[sz_tmp]==code_b58_string[i]) {
-            k=(uint8_t)i;
-            break;
-         }
+      if ((k=(uint8_t)text[sz_tmp])<(uint8_t)'1') {
+         err=20009;
+         goto f_decode_b58_util_EXIT1;
+      }
 
-      if (k==0xFF) {
+      if (k>(uint8_t)'z') {
+         err=20010;
+         goto f_decode_b58_util_EXIT1;
+      }
+
+      if ((k=DECODE_B58_LT[(size_t)(k-(uint8_t)'1')])==0xFF) {
          err=20003;
          goto f_decode_b58_util_EXIT1;
       }
@@ -257,6 +266,84 @@ f_generate_master_key_EXIT2:
    memset(buffer, 0, F_BITCOIN_MASTER_KEY_BUFFER_SZ);
 f_generate_master_key_EXIT1:
    free(buffer);
+   return err;
+}
+
+// return 0 if is valid, otherwise invalid
+// output (optional) copy bip32 to binary if valid. It can be NULL
+// bip32 (binary or base58 encoded)
+// bip32_enc_base58. If bip32 is encoded base58 then non zero, 0 if binary
+int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, void *bip32, int bip32_enc_base58)
+{
+   int err;
+   BITCOIN_SERIALIZE *p;
+   size_t sz_tmp;
+
+   if (bip32_enc_base58) {
+      if (!(p=malloc(sizeof(BITCOIN_SERIALIZE))))
+         return 20060;
+
+      if ((err=f_decode_b58_util((uint8_t *)p, sizeof(BITCOIN_SERIALIZE), &sz_tmp, (const char *)bip32)))
+         goto f_bitcoin_valid_bip32_EXIT1;
+
+      if (sz_tmp!=sizeof(BITCOIN_SERIALIZE)) {
+         err=20061;
+         goto f_bitcoin_valid_bip32_EXIT1;
+      }
+   } else
+      p=(BITCOIN_SERIALIZE *)bip32;
+
+   err=20062;
+
+   for (sz_tmp=0;sz_tmp<F_VERSION_BYTES_IDX_LEN;)
+      if (memcmp(p, F_VERSION_BYTES[sz_tmp++], 4)==0) {
+         err=0;
+         break;
+      }
+
+   if (err)
+      goto f_bitcoin_valid_bip32_EXIT2;
+
+   if ((sz_tmp&1)==0) {
+      if (p->sk_or_pk_data[0]) {
+         err=20063;
+         goto f_bitcoin_valid_bip32_EXIT2;
+      }
+
+      if ((err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)&p->sk_or_pk_data[1], 32)))
+         goto f_bitcoin_valid_bip32_EXIT2;
+   }
+//https://bitcointalk.org/index.php?topic=129652.0
+//https://github.com/ARMmbed/mbedtls/pull/1608
+/*
+   if (sz_tmp&1) {
+      if ((err=f_ecdsa_public_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)p->sk_or_pk_data, 33)))
+         goto f_bitcoin_valid_bip32_EXIT2;
+   } else {
+      if (p->sk_or_pk_data[0]) {
+         err=20063;
+         goto f_bitcoin_valid_bip32_EXIT2;
+      }
+
+      if ((err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)&p->sk_or_pk_data[1], 32)))
+         goto f_bitcoin_valid_bip32_EXIT2;
+   }
+*/
+   if (memcmp(f_sha256_digest(f_sha256_digest((uint8_t *)p, sizeof(BITCOIN_SERIALIZE)-4), 32), p->chksum, 4)) {
+      err=20064;
+      goto f_bitcoin_valid_bip32_EXIT2;
+   }
+
+   if (output)
+      memcpy(output, p, sizeof(BITCOIN_SERIALIZE));
+
+f_bitcoin_valid_bip32_EXIT2:
+   if (bip32_enc_base58) {
+f_bitcoin_valid_bip32_EXIT1:
+      memset(p, 0, sizeof(BITCOIN_SERIALIZE));
+      free(p);
+   }
+
    return err;
 }
 
