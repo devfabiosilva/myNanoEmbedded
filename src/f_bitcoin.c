@@ -273,7 +273,7 @@ f_generate_master_key_EXIT1:
 // output (optional) copy bip32 to binary if valid. It can be NULL
 // bip32 (binary or base58 encoded)
 // bip32_enc_base58. If bip32 is encoded base58 then non zero, 0 if binary
-int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, void *bip32, int bip32_enc_base58)
+int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, int *type, void *bip32, int bip32_enc_base58)
 {
    int err;
    BITCOIN_SERIALIZE *p;
@@ -337,12 +337,41 @@ int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, void *bip32, int bip32_enc_
    if (output)
       memcpy(output, p, sizeof(BITCOIN_SERIALIZE));
 
+   if (type)
+      *type=(int)sz_tmp;
+
 f_bitcoin_valid_bip32_EXIT2:
    if (bip32_enc_base58) {
 f_bitcoin_valid_bip32_EXIT1:
       memset(p, 0, sizeof(BITCOIN_SERIALIZE));
       free(p);
    }
+
+   return err;
+}
+
+#define BIP32_TO_PK_SK_SZ (size_t)(sizeof(BITCOIN_SERIALIZE)+sizeof(uint32_t)+64)
+int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint32_t index, const char *bip32)
+{
+   int err, type;
+   uint8_t *buffer;
+   BITCOIN_SERIALIZE *bitcoin_bip32_ser;
+
+   if (!(bitcoin_bip32_ser=malloc(BIP32_TO_PK_SK_SZ)))
+      return 20070;
+
+   bitcoin_bip32_ser=(BITCOIN_SERIALIZE *)buffer;
+
+   if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, bip32, 1)))
+      goto f_bip32_to_public_key_or_private_key_EXIT1;
+
+   if (type&1) {
+
+   }
+
+f_bip32_to_public_key_or_private_key_EXIT1:
+   memset(buffer, 0, BIP32_TO_PK_SK_SZ);
+   free(buffer);
 
    return err;
 }

@@ -37,6 +37,6 @@ int f_encode_b58(char *, size_t, size_t *, uint8_t *, size_t);
 int f_private_key_to_wif(char *, size_t, size_t *, uint8_t, uint8_t *);
 int f_wif_to_private_key(uint8_t *, unsigned char *, const char *);
 int f_generate_master_key(BITCOIN_SERIALIZE *, size_t, uint32_t);
-int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *, void *, int);
+int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *, int *, void *, int);
 
 
