@@ -793,6 +793,116 @@ f_ecdsa_public_key_valid_EXIT1:
    return err;
 }
 
+#define UNCOMPRESS_BUFFER_SZ (size_t)(4*sizeof(mbedtls_mpi)+sizeof(mbedtls_ecdsa_context))
+int f_uncompress_elliptic_curve(uint8_t *output, size_t output_sz, size_t *olen, mbedtls_ecp_group_id gid, uint8_t *public_key, size_t public_key_sz)
+{
+   int err;
+   size_t sz_tmp, sz_tmp2;
+   mbedtls_mpi *_RR, *X, *R, *N;
+   mbedtls_ecdsa_context *ecdsa_ctx;
+   uint8_t *buffer;
+
+   if (!(buffer=malloc(UNCOMPRESS_BUFFER_SZ)))
+      return 600;
+
+   mbedtls_ecdsa_init(ecdsa_ctx=(mbedtls_ecdsa_context *)buffer);
+
+   if ((err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid))))
+      goto f_uncompress_elliptic_curve_EXIT1;
+
+   if ((sz_tmp=mbedtls_mpi_size(&ecdsa_ctx->grp.P))!=(sz_tmp2=(public_key_sz-1))) {
+      err=601;
+      goto f_uncompress_elliptic_curve_EXIT1;
+   }
+
+   if ((sz_tmp=(2*sz_tmp+1))>output_sz) {
+      err=602;
+      goto f_uncompress_elliptic_curve_EXIT1;
+   }
+
+   if ((public_key[0]==0x02)||(public_key[0]==0x03)) {
+      err=603;
+      goto f_uncompress_elliptic_curve_EXIT1;
+   }
+
+   output[0]=0x04;
+   memcpy(&output[1], &public_key[1], sz_tmp2);
+
+   if (olen)
+      *olen=sz_tmp;
+
+   mbedtls_mpi_init(_RR=(mbedtls_mpi *)(buffer+sizeof(mbedtls_ecdsa_context)));
+   mbedtls_mpi_init(X=&_RR[1]);
+   mbedtls_mpi_init(R=&X[1]);
+   mbedtls_mpi_init(N=&R[1]);
+
+   if (mbedtls_mpi_read_binary(X, &public_key[1], sz_tmp2)) {
+      err=604;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_mul_mpi(R, X, X)) {
+      err=605;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (&ecdsa_ctx->grp.A.p) {
+      if (mbedtls_mpi_add_mpi(R, R, &ecdsa_ctx->grp.A)) {
+         err=606;
+         goto f_uncompress_elliptic_curve_EXIT2;
+      }
+   } else if (mbedtls_mpi_sub_int(R, R, 3)) {
+      err=607;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_mul_mpi(R, R, X)) {
+      err=608;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_add_mpi(R, R, &ecdsa_ctx->grp.B)) {
+      err=609;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_add_int(N, &ecdsa_ctx->grp.P, 1)) {
+      err=610;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_shift_r(N, 2)) {
+      err=611;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_exp_mod(R, R, N, &ecdsa_ctx->grp.P, _RR)) {
+      err=612;
+      goto f_uncompress_elliptic_curve_EXIT2;
+   }
+
+   if (mbedtls_mpi_get_bit(R, 0)^(public_key[0]==0x03))
+      if (mbedtls_mpi_sub_mpi(R, &ecdsa_ctx->grp.P, R)) {
+         err=613;
+         goto f_uncompress_elliptic_curve_EXIT2;
+      }
+
+   err=mbedtls_mpi_write_binary(R, output+public_key_sz, sz_tmp2);
+
+f_uncompress_elliptic_curve_EXIT2:
+   mbedtls_mpi_free(N);
+   mbedtls_mpi_free(R);
+   mbedtls_mpi_free(X);
+   mbedtls_mpi_free(_RR);
+
+f_uncompress_elliptic_curve_EXIT1:
+   mbedtls_ecdsa_free(ecdsa_ctx);
+   memset(buffer, 0, UNCOMPRESS_BUFFER_SZ);
+   free(buffer);
+
+   return err;
+}
+
 char *f_get_entropy_name(uint32_t val)
 {
 
