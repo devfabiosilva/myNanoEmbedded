@@ -820,7 +820,7 @@ int f_uncompress_elliptic_curve(uint8_t *output, size_t output_sz, size_t *olen,
       goto f_uncompress_elliptic_curve_EXIT1;
    }
 
-   if ((public_key[0]==0x02)||(public_key[0]==0x03)) {
+   if ((public_key[0]!=0x02)&&(public_key[0]!=0x03)) {
       err=603;
       goto f_uncompress_elliptic_curve_EXIT1;
    }

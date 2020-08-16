@@ -362,11 +362,11 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint32_t index, cons
 
    bitcoin_bip32_ser=(BITCOIN_SERIALIZE *)buffer;
 
-   if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, bip32, 1)))
+   if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, (void *)bip32, 1)))
       goto f_bip32_to_public_key_or_private_key_EXIT1;
 
    if (type&1) {
-
+// in progress
    }
 
 f_bip32_to_public_key_or_private_key_EXIT1:

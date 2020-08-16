@@ -1,6 +1,5 @@
 ex11/
 tests
-*.mk
 *.o
 *.la
 *.a

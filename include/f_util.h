@@ -525,6 +525,7 @@ f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, c
 int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 int f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *, int, fn_det, void *);
+int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
 
 #ifdef __cplusplus
 }
