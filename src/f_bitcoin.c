@@ -350,12 +350,13 @@ f_bitcoin_valid_bip32_EXIT1:
    return err;
 }
 
-#define BIP32_TO_PK_SK_SZ (size_t)(sizeof(BITCOIN_SERIALIZE)+sizeof(uint32_t)+64)
+#define BIP32_TO_PK_SK_SZ (size_t)(sizeof(BITCOIN_SERIALIZE)+65+64+f_ecdsa_key_pair)
 int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint32_t index, const char *bip32)
 {
    int err, type;
    uint8_t *buffer;
    BITCOIN_SERIALIZE *bitcoin_bip32_ser;
+   f_ecdsa_key_pair *key_pair;
 
    if (!(bitcoin_bip32_ser=malloc(BIP32_TO_PK_SK_SZ)))
       return 20070;
@@ -365,8 +366,25 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint32_t index, cons
    if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, (void *)bip32, 1)))
       goto f_bip32_to_public_key_or_private_key_EXIT1;
 
+   if ((*((uint32_t *)bitcoin_bip32_ser->chksum)=index)>=(2<<31)) {
+      err=20071;
+      goto f_bip32_to_public_key_or_private_key_EXIT1;
+   }
+
+   if ((err=f_reverse((unsigned char *)bitcoin_bip32_ser->chksum, sizeof(bitcoin_bip32_ser->chksum))))
+      goto f_bip32_to_public_key_or_private_key_EXIT1;
+
+   if ((err=f_hmac_sha512(((unsigned char *)&bitcoin_bip32_ser[1])+65, (const unsigned char *)bitcoin_bip32_ser->chain_code, sizeof(bitcoin_bip32_ser->chain_code),
+      (const unsigned char *)bitcoin_bip32_ser->sk_or_pk_data, sizeof(bitcoin_bip32_ser->sk_or_pk_data)+sizeof(bitcoin_bip32_ser->chksum))))
+      goto f_bip32_to_public_key_or_private_key_EXIT1;
+
+   memset(key_pair=(f_ecdsa_key_pair *)(buffer+BIP32_TO_PK_SK_SZ-sizeof(f_ecdsa_key_pair)), 0, sizeof(f_ecdsa_key_pair));
+   f_ecdsa_key_pair->gid=MBEDTLS_ECP_DP_SECP256K1;
+
    if (type&1) {
-// in progress
+      if ((err=f_uncompress_elliptic_curve((uint8_t *)&bitcoin_bip32_ser[1], 65, NULL, MBEDTLS_ECP_DP_SECP256K1, bitcoin_bip32_ser->sk_or_pk_data, 
+         sizeof(bitcoin_bip32_ser->sk_or_pk_data)))) goto f_bip32_to_public_key_or_private_key_EXIT1;
+// to be continued...
    }
 
 f_bip32_to_public_key_or_private_key_EXIT1:
