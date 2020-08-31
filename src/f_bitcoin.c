@@ -369,7 +369,6 @@ typedef struct bip32_sk_t {
 typedef struct bip32_pk_t {
    mbedtls_mpi m;
    mbedtls_ecp_point Kpar;
-//   mbedtls_ecp_point Ki;
    mbedtls_ecp_point Result;
 } __attribute__((packed)) BIP32_PK;
 
@@ -432,7 +431,9 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
       (const unsigned char *)bitcoin_bip32_ser->sk_or_pk_data, sizeof(bitcoin_bip32_ser->sk_or_pk_data)+sizeof(bitcoin_bip32_ser->chksum))))
       goto f_bip32_to_public_key_or_private_key_EXIT2;
 
-   if ((err=mbedtls_ecp_group_load(grp=(mbedtls_ecp_group *)(((uint8_t  *)&bitcoin_bip32_ser[1])+65+64), MBEDTLS_ECP_DP_SECP256K1)))
+   mbedtls_ecp_group_init(grp=(mbedtls_ecp_group *)(((uint8_t  *)&bitcoin_bip32_ser[1])+65+64));
+   //if ((err=mbedtls_ecp_group_load(grp=(mbedtls_ecp_group *)(((uint8_t  *)&bitcoin_bip32_ser[1])+65+64), MBEDTLS_ECP_DP_SECP256K1)))
+   if ((err=mbedtls_ecp_group_load(grp, MBEDTLS_ECP_DP_SECP256K1)))
       goto f_bip32_to_public_key_or_private_key_EXIT2;
 
    PK_SK=(UNION_PK_SK *)(((uint8_t *)grp)+sizeof(mbedtls_ecp_group));
@@ -441,12 +442,7 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
       mbedtls_mpi_init(&PK_SK->PK.m);
       mbedtls_ecp_point_init(&PK_SK->PK.Kpar);
       mbedtls_ecp_point_init(&PK_SK->PK.Result);
-/*
-      if (mbedtls_mpi_lset(&PK_SK->PK.m, (mbedtls_mpi_sint)1)) {
-         err=20073;
-         goto f_bip32_to_public_key_or_private_key_EXIT4;
-      }
-*/
+
       if (mbedtls_ecp_point_read_binary(grp, &PK_SK->PK.Kpar, (const unsigned char *)&bitcoin_bip32_ser[1], 65)) {
          err=20074;
          goto f_bip32_to_public_key_or_private_key_EXIT4;
@@ -512,22 +508,11 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
          err=20080;
          goto f_bip32_to_public_key_or_private_key_EXIT5;
       }
-/*
-      if (mbedtls_mpi_mod_mpi(&PK_SK->SK.Result, &PK_SK->SK.kpar, &grp->N)) {
-         err=20082;
-         goto f_bip32_to_public_key_or_private_key_EXIT5;
-      }
-*/
+
       if (mbedtls_mpi_read_binary(&PK_SK->SK.ki, (const unsigned char *)(((uint8_t *)&bitcoin_bip32_ser[1])+65), 32)) {
          err=20083;
          goto f_bip32_to_public_key_or_private_key_EXIT5;
       }
-/*
-      if (mbedtls_mpi_add_mpi(&PK_SK->SK.Result, &PK_SK->SK.Result, &PK_SK->SK.ki)) {
-         err=20084;
-         goto f_bip32_to_public_key_or_private_key_EXIT5;
-      }
-*/
 
       // In case parse256(IL) ≥ n or ki = 0, the resulting key is invalid, and one should proceed with the next value for i. (Note: this has probability lower than 1 in 2^127.) // Ref.: https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
 ///////BEGIN
