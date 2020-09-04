@@ -1965,7 +1965,7 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
 #else
 
    f_random(buffer, WRITE_NANO_BUFFER_SZ);
-// #warning "EU PRECISO IMPLEMENTAR UM GERADOR DE VALORES ALEATORIOS AQUI"
+
 #endif
 
    err=WRITE_ERR_OK;

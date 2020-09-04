@@ -17,6 +17,7 @@
 
 #include "mbedtls/md.h"
 #include "mbedtls/pkcs5.h"
+#include "mbedtls/ripemd160.h"
 
 #include "f_util.h"
 
@@ -802,6 +803,9 @@ int f_uncompress_elliptic_curve(uint8_t *output, size_t output_sz, size_t *olen,
    mbedtls_ecdsa_context *ecdsa_ctx;
    uint8_t *buffer;
 
+   if ((public_key[0]!=0x02)&&(public_key[0]!=0x03))
+      return 603;
+
    if (!(buffer=malloc(UNCOMPRESS_BUFFER_SZ)))
       return 600;
 
@@ -819,12 +823,12 @@ int f_uncompress_elliptic_curve(uint8_t *output, size_t output_sz, size_t *olen,
       err=602;
       goto f_uncompress_elliptic_curve_EXIT1;
    }
-
+/*
    if ((public_key[0]!=0x02)&&(public_key[0]!=0x03)) {
       err=603;
       goto f_uncompress_elliptic_curve_EXIT1;
    }
-
+*/
    output[0]=0x04;
    memcpy(&output[1], &public_key[1], sz_tmp2);
 
@@ -901,6 +905,16 @@ f_uncompress_elliptic_curve_EXIT1:
    free(buffer);
 
    return err;
+}
+
+uint8_t *f_ripemd160(const uint8_t *data, size_t data_sz)
+{
+   static uint8_t hs[20];
+
+   if (mbedtls_ripemd160_ret((const unsigned char *)data, data_sz, (unsigned char *)hs))
+      return NULL;
+
+   return hs;
 }
 
 char *f_get_entropy_name(uint32_t val)

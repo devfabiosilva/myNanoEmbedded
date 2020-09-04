@@ -577,4 +577,50 @@ f_bip32_to_public_key_or_private_key_EXIT1:
 
    return err;
 }
+//https://en.bitcoin.it/wiki/Address
+//https://en.bitcoin.it/wiki/Base58Check_encoding
+//https://en.bitcoin.it/wiki/List_of_address_prefixes
+//#define PK2B58ADDR_BUF_SZ (size_t)(1+33)
+#define PK2B58ADDR_BUF_SZ (size_t)(1+65)
+int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *public_key, uint8_t pk_type)
+{
+   int err;
+   uint8_t *buf, *ripemd160;
+   size_t sz_tmp;
+
+   if (!(buf=malloc(PK2B58ADDR_BUF_SZ)))
+      return 20100;
+
+   if (public_key[0]==0x04) memcpy(&buf[1], public_key, 65);
+   else if ((err=f_uncompress_elliptic_curve(&buf[1], PK2B58ADDR_BUF_SZ-1, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
+      goto f_public_key_to_address_EXIT1;
+
+   buf[0]=pk_type;
+
+   if (!(ripemd160=f_ripemd160((const uint8_t *)f_sha256_digest(&buf[1], 65), 32))) {
+      err=20101;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   memcpy(&buf[1], ripemd160, 20);
+   memcpy(buf+20+1, f_sha256_digest(f_sha256_digest(buf, 20+1), 32), 4);
+
+   if (buf[0])
+      sz_tmp=0;
+   else {
+      *(dest++)='1';
+      dest_sz--;
+      sz_tmp=1;
+   }
+
+   if ((err=f_encode_b58(dest, dest_sz, olen, buf+sz_tmp, 1+20+4-sz_tmp))==0)
+      *olen+=sz_tmp;
+
+f_public_key_to_address_EXIT2:
+   memset(buf, 0, PK2B58ADDR_BUF_SZ);
+f_public_key_to_address_EXIT1:
+   free(buf);
+
+   return err;
+}
 
