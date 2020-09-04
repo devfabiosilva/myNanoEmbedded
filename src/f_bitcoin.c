@@ -172,7 +172,7 @@ f_encode_b58_EXIT1:
    return err;
 }
 //https://en.bitcoin.it/wiki/Wallet_import_format
-#define PRIV_KEY_WIF_BUF_SZ (size_t)(33+4+32)
+#define PRIV_KEY_WIF_BUF_SZ (size_t)(33+4)
 int f_private_key_to_wif(char *dest, size_t dest_sz, size_t *dest_len, uint8_t wif_type, uint8_t *private_key)
 {
    int err;
@@ -183,7 +183,7 @@ int f_private_key_to_wif(char *dest, size_t dest_sz, size_t *dest_len, uint8_t w
 
    buffer[0]=wif_type;
    memcpy(&buffer[1], private_key, 32);
-   memcpy(buffer+33, f_sha256_digest(memcpy(buffer+33+4, f_sha256_digest(buffer, 33), 32), 32), 4);
+   memcpy(buffer+33, f_sha256_digest(f_sha256_digest(buffer, 33), 32), 4);
 
    err=f_encode_b58(dest, dest_sz, dest_len, buffer, 33+4);
 
@@ -209,13 +209,22 @@ int f_wif_to_private_key(uint8_t *private_key, unsigned char *wif_type, const ch
    if ((err=f_decode_b58_util(buffer, WIF_PRIV_KEY_COMPOSED_SZ, NULL, wif)))
       goto f_wif_to_private_key_EXIT1;
 
+   if ((buffer[0]!=F_BITCOIN_WIF_MAINNET)&&(buffer[0]!=F_BITCOIN_WIF_TESTNET)) {
+      err=20032;
+      goto f_wif_to_private_key_EXIT1;
+   }
+
+   if (memcmp(f_sha256_digest(f_sha256_digest(buffer, 33), 32), buffer+33, 4)) {
+      err=20033;
+      goto f_wif_to_private_key_EXIT1;
+   }
+
    memcpy(private_key, &buffer[1], 32);
 
    if (wif_type)
       *wif_type=(unsigned char)buffer[0];
 
-   if (memcmp(f_sha256_digest(memcpy(buffer, f_sha256_digest(buffer, 33), 32), 32), buffer+33, 4))
-      err=20032;
+   //if (memcmp(f_sha256_digest(memcpy(buffer, f_sha256_digest(buffer, 33), 32), 32), buffer+33, 4))
 
 f_wif_to_private_key_EXIT1:
    memset(buffer, 0, WIF_PRIV_KEY_COMPOSED_SZ);
