@@ -2870,6 +2870,8 @@ int IRAM_ATTR f_nano_get_p2pow_block_hash(uint8_t *user_hash, uint8_t *fee_hash,
 int f_nano_get_p2pow_block_hash(uint8_t *user_hash, uint8_t *fee_hash, F_BLOCK_TRANSFER *block)
 #endif
 {
+   int err;
+   uint32_t mode;
 
    if (!f_nano_is_valid_block(block))
       return 601;
@@ -2877,15 +2879,48 @@ int f_nano_get_p2pow_block_hash(uint8_t *user_hash, uint8_t *fee_hash, F_BLOCK_T
    if (!f_nano_is_valid_block(&block[1]))
       return 602;
 
-   if (memcmp(&block[1].previous, &block[0].previous, 32))
+   if (is_null_hash(block->account))
       return 603;
 
-   if (f_nano_get_block_hash(user_hash, block))
+   if (memcmp(&block[1].account, block->account, 32))
       return 604;
 
-   if (f_nano_get_block_hash(fee_hash, &block[1]))
+   mode=F_NANO_A_RAW_128|F_NANO_B_RAW_128;
+
+   if ((err=f_nano_value_compare_value((void *)&block[1].balance, (void *)block->balance, &mode)))
+      return err;
+
+   if (mode&F_NANO_COMPARE_GEQ)
       return 605;
 
+   if (f_nano_get_block_hash(user_hash, block))
+      return 606;
+
+   if (memcmp(user_hash, &block[1].previous, 32))
+      return 607;
+
+   if (f_nano_get_block_hash(fee_hash, &block[1]))
+      return 608;
+
+/*
+   if (!f_nano_is_valid_block(block))
+      return 601;
+
+   if (!f_nano_is_valid_block(&block[1]))
+      return 602;
+
+   if (memcmp(&block[1].previous, &block[0].previous, 32)==0)
+      return 603;
+
+   if (is_null_hash(&block[1].previous))
+      return 604;
+
+   if (f_nano_get_block_hash(user_hash, block))
+      return 605;
+
+   if (f_nano_get_block_hash(fee_hash, &block[1]))
+      return 606;
+*/
    return 0;
 
 }
