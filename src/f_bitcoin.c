@@ -623,7 +623,8 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
    }
 
    if ((err=f_encode_b58(dest, dest_sz, olen, buf+sz_tmp, 1+20+4-sz_tmp))==0)
-      *olen+=sz_tmp;
+      if (olen)
+         *olen+=sz_tmp;
 
 f_public_key_to_address_EXIT2:
    memset(buf, 0, PK2B58ADDR_BUF_SZ);
