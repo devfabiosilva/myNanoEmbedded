@@ -69,19 +69,16 @@ int f_reverse(unsigned char *val, size_t val_sz)
 int f_verify_system_entropy_begin()
 {
    if (!__entropy_val) {
-      __entropy_val=malloc(256*sizeof(uint32_t));
-
-      if (!__entropy_val)
+      if (!(__entropy_val=malloc(256*sizeof(uint32_t))))
          return 5001;
-
    }
 
    if (!__rand_data) {
-      __rand_data=malloc(F_LOG_MAX);
-
-     if (!__rand_data)
+     if (!(__rand_data=malloc(F_LOG_MAX))) {
+        free(__entropy_val);
+        __entropy_val=NULL;
         return 5002;
-
+     }
    }
 
    return 0;
@@ -90,11 +87,13 @@ int f_verify_system_entropy_begin()
 void f_verify_system_entropy_finish()
 {
    if (__rand_data) {
+      memset(__rand_data, 0, F_LOG_MAX);
       free(__rand_data);
       __rand_data=NULL;
    }
 
    if (__entropy_val) {
+      memset(__entropy_val, 0, 256*sizeof(uint32_t));
       free(__entropy_val);
       __entropy_val=NULL;
    }
