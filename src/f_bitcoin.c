@@ -176,14 +176,26 @@ f_encode_b58_EXIT1:
 int f_private_key_to_wif(char *dest, size_t dest_sz, size_t *dest_len, uint8_t wif_type, uint8_t *private_key)
 {
    int err;
-   uint8_t *buffer;
+   uint8_t *buffer, *hash;
 
    if (!(buffer=malloc(PRIV_KEY_WIF_BUF_SZ)))
       return 20020;
 
    buffer[0]=wif_type;
    memcpy(&buffer[1], private_key, 32);
-   memcpy(buffer+33, f_sha256_digest(f_sha256_digest(buffer, 33), 32), 4);
+
+   if (f_sha256_digest((void **)&hash, 0, buffer, 33)) {
+      err=20021;
+      goto f_private_key_to_wif_EXIT1;
+   }
+
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20022;
+      goto f_private_key_to_wif_EXIT1;
+   }
+
+   memcpy(buffer+33, hash, 4);
+//   memcpy(buffer+33, f_sha256_digest(f_sha256_digest(buffer, 33), 32), 4);
 
    err=f_encode_b58(dest, dest_sz, dest_len, buffer, 33+4);
 
@@ -198,7 +210,7 @@ f_private_key_to_wif_EXIT1:
 int f_wif_to_private_key(uint8_t *private_key, unsigned char *wif_type, const char *wif)
 {
    int err;
-   uint8_t *buffer;
+   uint8_t *buffer, *hash;
 
    if (strnlen(wif, WIF_FIXED_SZ+1)!=WIF_FIXED_SZ)
       return 20030;
@@ -214,8 +226,19 @@ int f_wif_to_private_key(uint8_t *private_key, unsigned char *wif_type, const ch
       goto f_wif_to_private_key_EXIT1;
    }
 
-   if (memcmp(f_sha256_digest(f_sha256_digest(buffer, 33), 32), buffer+33, 4)) {
+   if (f_sha256_digest((void **)&hash, 0, buffer, 33)) {
       err=20033;
+      goto f_wif_to_private_key_EXIT1;
+   }
+
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20034;
+      goto f_wif_to_private_key_EXIT1;
+   }
+
+   if (memcmp(hash, buffer+33, 4)) {
+//   if (memcmp(f_sha256_digest(f_sha256_digest(buffer, 33), 32), buffer+33, 4)) {
+      err=20035;
       goto f_wif_to_private_key_EXIT1;
    }
 
@@ -235,7 +258,7 @@ f_wif_to_private_key_EXIT1:
 #define F_BITCOIN_MASTER_KEY_BUFFER_SZ (size_t)(64+32)
 int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, uint32_t entropy) {
    int err;
-   uint8_t *buffer, *entropy_bytes, *sha512;
+   uint8_t *buffer, *entropy_bytes, *sha512, *hash;
 
    if (version_bytes>(F_VERSION_BYTES_IDX_LEN-1))
       return 20040;
@@ -249,10 +272,14 @@ int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, u
    if ((err=f_verify_system_entropy_begin()))
       goto f_generate_master_key_EXIT1; 
 
-   if ((err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0)))
-      goto f_generate_master_key_EXIT2;
+   /*if ((err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0)))
+      goto f_generate_master_key_EXIT2;*/
+   err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0);
 
    f_verify_system_entropy_finish();
+
+   if (err)
+      goto f_generate_master_key_EXIT2;
 
    if ((err=f_hmac_sha512(
       (unsigned char *)sha512,
@@ -269,7 +296,15 @@ int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, u
    memcpy(master_key->version_bytes, &F_VERSION_BYTES[version_bytes], 4);
    memcpy(&master_key->sk_or_pk_data[1], sha512, 32);
    memcpy(master_key->chain_code, sha512+32, 32);
-   memcpy(master_key->chksum, f_sha256_digest(f_sha256_digest((uint8_t *)master_key, sizeof(BITCOIN_SERIALIZE)-4), 32), 4);
+
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)master_key, sizeof(BITCOIN_SERIALIZE)-4))) 
+      goto f_generate_master_key_EXIT2;
+
+   if ((err=f_sha256_digest((void **)&hash, 0, hash, 32)))
+      goto f_generate_master_key_EXIT2;
+
+//   memcpy(master_key->chksum, f_sha256_digest(f_sha256_digest((uint8_t *)master_key, sizeof(BITCOIN_SERIALIZE)-4), 32), 4);
+   memcpy(master_key->chksum, hash, 4);
 
 f_generate_master_key_EXIT2:
    memset(buffer, 0, F_BITCOIN_MASTER_KEY_BUFFER_SZ);
@@ -287,6 +322,7 @@ int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, int *type, void *bip32, int
    int err;
    BITCOIN_SERIALIZE *p;
    size_t sz_tmp;
+   uint8_t *hash;
 
    if (bip32_enc_base58) {
       if (!(p=malloc(sizeof(BITCOIN_SERIALIZE))))
@@ -324,22 +360,20 @@ int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *output, int *type, void *bip32, int
    }
 //https://bitcointalk.org/index.php?topic=129652.0
 //https://github.com/ARMmbed/mbedtls/pull/1608
-/*
-   if (sz_tmp&1) {
-      if ((err=f_ecdsa_public_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)p->sk_or_pk_data, 33)))
-         goto f_bitcoin_valid_bip32_EXIT2;
-   } else {
-      if (p->sk_or_pk_data[0]) {
-         err=20063;
-         goto f_bitcoin_valid_bip32_EXIT2;
-      }
 
-      if ((err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)&p->sk_or_pk_data[1], 32)))
-         goto f_bitcoin_valid_bip32_EXIT2;
-   }
-*/
-   if (memcmp(f_sha256_digest(f_sha256_digest((uint8_t *)p, sizeof(BITCOIN_SERIALIZE)-4), 32), p->chksum, 4)) {
+   if (f_sha256_digest((void **)&hash, 0, (uint8_t *)p, sizeof(BITCOIN_SERIALIZE)-4)) { 
       err=20064;
+      goto f_bitcoin_valid_bip32_EXIT2;
+   }
+
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20065;
+      goto f_bitcoin_valid_bip32_EXIT2;
+   }
+
+   if (memcmp(hash, p->chksum, 4)) {
+//   if (memcmp(f_sha256_digest(f_sha256_digest((uint8_t *)p, sizeof(BITCOIN_SERIALIZE)-4), 32), p->chksum, 4)) {
+      err=20066;
       goto f_bitcoin_valid_bip32_EXIT2;
    }
 
@@ -594,7 +628,7 @@ f_bip32_to_public_key_or_private_key_EXIT1:
 int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *public_key, uint8_t pk_type)
 {
    int err;
-   uint8_t *buf, *ripemd160;
+   uint8_t *buf, *ripemd160, *hash;
    size_t sz_tmp;
 
    if (!(buf=malloc(PK2B58ADDR_BUF_SZ)))
@@ -605,14 +639,38 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
       goto f_public_key_to_address_EXIT1;
 
    buf[0]=pk_type;
+//f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)
 
-   if (!(ripemd160=f_ripemd160((const uint8_t *)f_sha256_digest(&buf[1], 65), 32))) {
+   if (f_sha256_digest((void **)&hash, 0, &buf[1], 65)) { 
       err=20101;
       goto f_public_key_to_address_EXIT2;
    }
 
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20102;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   if (!(ripemd160=f_ripemd160((const uint8_t *)hash, 32))) {
+//   if (!(ripemd160=f_ripemd160((const uint8_t *)f_sha256_digest(&buf[1], 65), 32))) {
+      err=20103;;
+      goto f_public_key_to_address_EXIT2;
+   }
+
    memcpy(&buf[1], ripemd160, 20);
-   memcpy(buf+20+1, f_sha256_digest(f_sha256_digest(buf, 20+1), 32), 4);
+
+   if (f_sha256_digest((void **)&hash, 0, buf, 20+1)) { 
+      err=20104;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20105;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   memcpy(buf+20+1, hash, 4);
+//   memcpy(buf+20+1, f_sha256_digest(f_sha256_digest(buf, 20+1), 32), 4);
 
    if (buf[0])
       sz_tmp=0;

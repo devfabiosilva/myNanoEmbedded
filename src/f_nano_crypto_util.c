@@ -1496,7 +1496,9 @@ int f_nano_seed_to_bip39(char *buf, size_t buf_sz, size_t *out_buf_len, NANO_SEE
    if (!seed_tmp)
       return 2577;
 
-   hash=f_sha256_digest((uint8_t *)seed, sizeof(NANO_SEED));
+//   hash=f_sha256_digest((uint8_t *)seed, sizeof(NANO_SEED));
+   if ((err = f_sha256_digest((void **)&hash, 0, (uint8_t *)seed, sizeof(NANO_SEED))))
+      goto f_nano_seed_to_bip39_EXIT1;
 
    seed_tmp[32]=hash[0];
    memcpy(seed_tmp, seed, sizeof(NANO_SEED));
@@ -1671,7 +1673,9 @@ int f_bip39_to_nano_seed(uint8_t *seed, char *str, char *dictionary)
    if ((err=f_reverse((unsigned char *)seed_tmp, 33)))
       goto f_bip39_to_nano_seed_EXIT1;
 
-   hash=f_sha256_digest((uint8_t *)seed_tmp, 32);
+   //hash=f_sha256_digest((uint8_t *)seed_tmp, 32);
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)seed_tmp, 32)))
+      goto f_bip39_to_nano_seed_EXIT1;
 
    if (hash[0]^seed_tmp[32]) {
       err=5737;
@@ -1877,7 +1881,9 @@ f_read_seed_EXIT3_1:
 //f_pbkdf2_err f_pbkdf2_hmac(unsigned char *f_msg, size_t f_msg_sz, unsigned char *salt, size_t salt_sz, uint8_t *aes_32_dst);
 //uint8_t *f_sha256_digest(uint8_t *msg, size_t size);
 
-   hash=f_sha256_digest((unsigned char *)passwd, tmp);
+   //hash=f_sha256_digest((unsigned char *)passwd, tmp);
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)passwd, tmp)))
+      goto f_read_seed_EXIT2;
 
    for (i=0;i<32;i++)
       ((F_NANO_CRYPTOWALLET *)buffer)->salt[i]^=hash[i];
@@ -1909,10 +1915,14 @@ f_read_seed_EXIT3_1:
        goto f_read_seed_EXIT2;
    }
 
-   hash=f_sha256_digest((unsigned char *)buffer, 32);
+   //hash=f_sha256_digest((unsigned char *)buffer, 32);
+
+   if ((err=f_sha256_digest((void **)&hash, 0, buffer, 32)))
+      goto f_read_seed_EXIT2;
 
    if (memcmp(hash, ((F_ENCRYPTED_BLOCK *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+32))->hash_sk_unencrypted, 32)) {
-      if (err) {
+      //if (err) {
+      if (force_read) {
          err=-11;
          goto f_read_seed_EXIT3_3;
       }
@@ -1967,13 +1977,21 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
    f_random(buffer, WRITE_NANO_BUFFER_SZ);
 
 #endif
-
+//f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)
+   if ((err=f_sha256_digest((void **)&hash, 0, seed, 32)))
+      goto f_write_seed_EXIT1;
+/*
    err=WRITE_ERR_OK;
 
    memcpy(((F_ENCRYPTED_BLOCK *)((uint8_t *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+16+32)))->hash_sk_unencrypted,
           f_sha256_digest(seed, 32), 32);
+*/
 
-   hash=f_sha256_digest((uint8_t *)passwd, tmp);
+   memcpy(((F_ENCRYPTED_BLOCK *)((uint8_t *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+16+32)))->hash_sk_unencrypted, hash, 32);
+
+   //hash=f_sha256_digest((uint8_t *)passwd, tmp);
+   if ((err=f_sha256_digest((void **)&hash, 0, passwd, tmp)))
+      goto f_write_seed_EXIT1;
 
    memcpy(((F_NANO_CRYPTOWALLET *)buffer)->nano_hdr, NANO_WALLET_MAGIC, sizeof(NANO_WALLET_MAGIC));
 
@@ -1992,13 +2010,13 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
    if (f_pbkdf2_hmac((unsigned char *)passwd, tmp, buffer+sizeof(F_NANO_CRYPTOWALLET), 32,
        buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16+sizeof(F_ENCRYPTED_BLOCK))) {
        err=WRITE_ERR_GEN_SUB_PRIV_KEY;
-       goto f_write_seed_EXIT1;
+       goto f_write_seed_EXIT2;
    }
 
    if (f_aes256cipher(buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16+sizeof(F_ENCRYPTED_BLOCK), buffer+sizeof(F_NANO_CRYPTOWALLET)+32, 
        (void *)seed, 32, ((F_ENCRYPTED_BLOCK *)((uint8_t *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16)))->sk_encrypted, MBEDTLS_AES_ENCRYPT)) {
        err=WRITE_ERR_ENCRYPT_PRIV_KEY;
-       goto f_write_seed_EXIT1;
+       goto f_write_seed_EXIT2;
    }
 
 //memcpy(((F_ENCRYPTED_BLOCK *)((uint8_t *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16)))->sk_encrypted, seed, 32);
@@ -2011,33 +2029,33 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
    if (f_pbkdf2_hmac((unsigned char *)passwd, tmp, buffer+sizeof(F_NANO_CRYPTOWALLET), 32,
        buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16+sizeof(F_ENCRYPTED_BLOCK))) {
        err=WRITE_ERR_GEN_MAIN_PRIV_KEY;
-       goto f_write_seed_EXIT1;
+       goto f_write_seed_EXIT2;
    }
 
    if (f_aes256cipher(buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16+sizeof(F_ENCRYPTED_BLOCK), buffer+sizeof(F_NANO_CRYPTOWALLET)+32,
       (void *)(buffer+sizeof(F_NANO_CRYPTOWALLET)+32+16), sizeof(F_ENCRYPTED_BLOCK), (void *)&((F_NANO_CRYPTOWALLET *)buffer)->seed_block,
       MBEDTLS_AES_ENCRYPT)) {
       err=WRITE_ERR_ENCRYPT_SUB_BLOCK;
-      goto f_write_seed_EXIT1;
+      goto f_write_seed_EXIT2;
    }
 
    if (source&WRITE_SEED_TO_STREAM) {
       memcpy(source_data, buffer, sizeof(F_NANO_CRYPTOWALLET));
-      goto f_write_seed_EXIT1;
+      goto f_write_seed_EXIT2;
    }
 
    if (source&WRITE_SEED_TO_FILE) {
 
       if (f_file_exists((char *)source_data)) {
          err=WRITE_ERR_FILE_ALREDY_EXISTS;
-         goto f_write_seed_EXIT1;
+         goto f_write_seed_EXIT2;
       }
 
       f=fopen((char *)source_data, "w");
 
       if (!f) {
          err=WRITE_ERR_CREATING_FILE;
-         goto f_write_seed_EXIT1;
+         goto f_write_seed_EXIT2;
       }
 
       if (fwrite(buffer, 1, sizeof(F_NANO_CRYPTOWALLET), f)^sizeof(F_NANO_CRYPTOWALLET))
@@ -2045,14 +2063,15 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
 
       fclose(f);
 
-      goto f_write_seed_EXIT1;
+      goto f_write_seed_EXIT2;
    }
 
    err=WRITE_ERR_UNKNOWN_OPTION;
 
+f_write_seed_EXIT2:
+   memset(hash, 0, 32);
 f_write_seed_EXIT1:
    memset(buffer, 0, WRITE_NANO_BUFFER_SZ);
-   memset(hash, 0, 32);
    free(buffer);
 
    return err;
@@ -2475,6 +2494,7 @@ F_FILE_INFO_ERR f_get_nano_file_info(F_NANO_WALLET_INFO *info)
    F_FILE_INFO_ERR err;
    FILE *f, *g;
    void *buf;
+   uint8_t *hash;
 
    if (!(f=fopen(NANO_FILE_WALLETS_INFO, "r")))
       return F_FILE_INFO_ERR_CANT_OPEN_INFO_FILE;
@@ -2495,7 +2515,11 @@ F_FILE_INFO_ERR f_get_nano_file_info(F_NANO_WALLET_INFO *info)
 
    }
 
-   if (memcmp(info->file_info_integrity, f_sha256_digest((uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO_BODY)), 32)) {
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO_BODY))))
+      goto f_get_nano_file_info_EXIT1;
+
+   //if (memcmp(info->file_info_integrity, f_sha256_digest((uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO_BODY)), 32)) {
+   if (memcmp(info->file_info_integrity, hash, 32)) {
 
       err=F_FILE_INFO_ERR_INVALID_SHA256_INFO_FILE;
 
@@ -2549,7 +2573,11 @@ F_FILE_INFO_ERR f_get_nano_file_info(F_NANO_WALLET_INFO *info)
 
    }
 
-   if (memcmp(info->nanoseed_hash, f_sha256_digest((uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET)), 32)) {
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET))))
+      goto f_get_nano_file_info_EXIT3;
+
+   if (memcmp(info->nanoseed_hash, hash, 32)) {
+   //if (memcmp(info->nanoseed_hash, f_sha256_digest((uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET)), 32)) {
 
       err=F_FILE_INFO_ERR_NANO_SEED_HASH_FAIL;
       fclose(f);
@@ -2558,11 +2586,11 @@ F_FILE_INFO_ERR f_get_nano_file_info(F_NANO_WALLET_INFO *info)
       if (unlink(NANO_FILE_WALLETS_INFO))
          err=F_FILE_INFO_ERR_CANT_DELETE_NANO_INFO_FILE;
 
-      goto f_get_nano_file_info_EXIT3;
+//      goto f_get_nano_file_info_EXIT3;
 
    }
 
-   err=F_FILE_INFO_ERR_OK;
+//   err=F_FILE_INFO_ERR_OK;
 
 
 f_get_nano_file_info_EXIT3:
@@ -2590,6 +2618,7 @@ F_FILE_INFO_ERR f_set_nano_file_info(F_NANO_WALLET_INFO *info, int overwrite_exi
    F_FILE_INFO_ERR err;
    FILE *f, *g;
    void *buf;
+   uint8_t *hash;
 
    if (overwrite_existing_file)
       if (f_file_exists(NANO_FILE_WALLETS_INFO))
@@ -2635,10 +2664,19 @@ F_FILE_INFO_ERR f_set_nano_file_info(F_NANO_WALLET_INFO *info, int overwrite_exi
 
    }
 
-   memcpy(info->nanoseed_hash, f_sha256_digest((uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET)), 32);
-   memcpy(info->file_info_integrity, f_sha256_digest((uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO)), 32);
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET))))
+      goto f_set_nano_file_info_EXIT3;
 
-   err=F_FILE_INFO_ERR_OK;
+   memcpy(info->nanoseed_hash, hash, 32);
+   //memcpy(info->nanoseed_hash, f_sha256_digest((uint8_t *)buf, sizeof(F_NANO_CRYPTOWALLET)), 32);
+
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO))))
+      goto f_set_nano_file_info_EXIT3;
+
+   memcpy(info->file_info_integrity, hash, 32);
+   //memcpy(info->file_info_integrity, f_sha256_digest((uint8_t *)&info->body, sizeof(F_NANO_WALLET_INFO)), 32);
+
+//   err=F_FILE_INFO_ERR_OK;
 
    if (fwrite(info, 1, sizeof(F_NANO_WALLET_INFO), g)^sizeof(F_NANO_WALLET_INFO))
       err=F_FILE_INFO_ERR_CANT_WRITE_FILE_INFO;

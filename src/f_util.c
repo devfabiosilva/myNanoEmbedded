@@ -535,7 +535,7 @@ char *fhex2strv2(char *res, const void *buf, size_t buf_sz, int is_uppercase)
    return res;
 
 }
-
+/*
 uint8_t *f_sha256_digest(uint8_t *msg, size_t size)
 {
     static uint8_t result256sum[32];
@@ -553,6 +553,43 @@ uint8_t *f_sha256_digest(uint8_t *msg, size_t size)
     mbedtls_sha256_free(&sha256);
 
     return result256sum;
+}
+*/
+
+#ifdef F_ESP32
+int IRAM_ATTR f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)
+#else
+int f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)
+#endif
+{
+   int err;
+   mbedtls_sha256_context *sha256;
+   static uint8_t result256sum[32+65];
+
+   *res = NULL;
+
+   if (!(sha256 = malloc(sizeof(mbedtls_sha256_context))))
+      return 5862;
+
+   mbedtls_sha256_init(sha256);
+
+   if ((err = mbedtls_sha256_starts_ret(sha256, 0)))
+      goto f_sha256_digest_EXIT;
+
+   if ((err = mbedtls_sha256_update_ret(sha256, msg, msg_size)))
+      goto f_sha256_digest_EXIT;
+
+   if ((err = mbedtls_sha256_finish_ret(sha256, result256sum)))
+      goto f_sha256_digest_EXIT;
+
+   *res = (void *)(ret_hex_string)?(void *)fhex2strv2((char *)(result256sum + 32), result256sum, 32, 0):(void *)result256sum;
+
+f_sha256_digest_EXIT:
+   mbedtls_sha256_free(sha256);
+   memset(sha256, 0, sizeof(mbedtls_sha256_context));
+   free(sha256);
+
+   return err;
 }
 
 f_pbkdf2_err f_pbkdf2_hmac(unsigned char *f_msg, size_t f_msg_sz, unsigned char *salt, size_t salt_sz, uint8_t *aes_32_dst)

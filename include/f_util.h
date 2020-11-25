@@ -251,7 +251,8 @@ typedef struct f_ecdsa_key_pair_t {
 } f_ecdsa_key_pair;
 
 char *fhex2strv2(char *, const void *, size_t, int);
-uint8_t *f_sha256_digest(uint8_t *, size_t);
+//uint8_t *f_sha256_digest(uint8_t *, size_t);
+int f_sha256_digest(void **, int, uint8_t *, size_t);
 f_pbkdf2_err f_pbkdf2_hmac(unsigned char *, size_t, unsigned char *, size_t, uint8_t *);
 f_aes_err f_aes256cipher(uint8_t *, uint8_t *, void *, size_t, void *, int);
 
