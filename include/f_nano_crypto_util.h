@@ -596,6 +596,26 @@ typedef enum f_file_info_err_t {
 
 #endif
 
+#ifndef F_ESP32
+typedef enum f_nano_create_block_dyn_err_t {
+   NANO_CREATE_BLK_DYN_OK = 0,
+   NANO_CREATE_BLK_DYN_BLOCK_NULL = 8000,
+   NANO_CREATE_BLK_DYN_ACCOUNT_NULL,
+   NANO_CREATE_BLK_DYN_PREV_NULL,
+   NANO_CREATE_BLK_DYN_REP_NULL,
+   NANO_CREATE_BLK_DYN_BALANCE_NULL,
+   NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL,
+   NANO_CREATE_BLK_DYN_LINK_NULL,
+   NANO_CREATE_BLK_DYN_BUF_MALLOC,
+   NANO_CREATE_BLK_DYN_MALLOC,
+   NANO_CREATE_BL_DYN_WRONG_PREVIOUS_SZ,
+   NANO_CREATE_BL_DYN_WRONG_PREVIOUS_STR_SZ,
+   NANO_CREATE_BL_DYN_PARSE_STR_HEX_ERR
+
+} F_NANO_CREATE_BLOCK_DYN_ERR;
+
+#endif
+
 /**
  * @fn double to_multiplier(uint64_t difficulty, uint64_t base_difficulty)
  * @brief Calculates a relative difficulty compared PoW with another
@@ -1405,6 +1425,21 @@ int f_verify_signed_data( const unsigned char *, const unsigned char *, size_t, 
 int f_is_valid_nano_seed_encrypted(void *, size_t, int);
 
 #ifndef F_ESP32
+
+int nano_create_block_dynamic(
+   F_BLOCK_TRANSFER **,
+   const void *,
+   size_t,
+   const void *,
+   size_t,
+   const void *,
+   size_t,
+   const void *,
+   const void *,
+   uint32_t,
+   const void *,
+   int
+);
 
 /**
  * @fn int f_nano_pow(uint64_t *PoW_res, unsigned char *hash, const uint64_t threshold, int n_thr)

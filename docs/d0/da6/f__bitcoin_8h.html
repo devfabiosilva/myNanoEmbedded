@@ -106,6 +106,10 @@ Macros</h2></td></tr>
 <tr class="separator:afe4f4113b6c9f8a65b44627c1561b7c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af59b1d2c222a8a7717c761f4393b26f7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#af59b1d2c222a8a7717c761f4393b26f7">F_BITCOIN_WIF_TESTNET</a>&#160;&#160;&#160;(uint8_t)0xEF</td></tr>
 <tr class="separator:af59b1d2c222a8a7717c761f4393b26f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e8e1b2d2acf744cb0bd3a20fbe5b2a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a35e8e1b2d2acf744cb0bd3a20fbe5b2a">F_BITCOIN_P2PKH</a>&#160;&#160;&#160;(uint8_t)0x00</td></tr>
+<tr class="separator:a35e8e1b2d2acf744cb0bd3a20fbe5b2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81460f37eeddf968dcaee8da25647b4f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a81460f37eeddf968dcaee8da25647b4f">F_BITCOIN_T2PKH</a>&#160;&#160;&#160;(uint8_t)0x6F</td></tr>
+<tr class="separator:a81460f37eeddf968dcaee8da25647b4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8490abd1f1327342faf955b9dc38fc80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80">F_BITCOIN_BUF_SZ</a>&#160;&#160;&#160;(size_t)512</td></tr>
 <tr class="separator:a8490abd1f1327342faf955b9dc38fc80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94ec3093b5100c52408b2720db055894"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894">F_MAX_BASE58_LENGTH</a>&#160;&#160;&#160;(size_t)112</td></tr>
@@ -137,8 +141,14 @@ Functions</h2></td></tr>
 <tr class="separator:a9c42e4c4f99dbbf4a3079fa78b47025e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4546df2355416fc6889a26eb6cc6a6db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a4546df2355416fc6889a26eb6cc6a6db">f_generate_master_key</a> (BITCOIN_SERIALIZE *, size_t, uint32_t)</td></tr>
 <tr class="separator:a4546df2355416fc6889a26eb6cc6a6db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad30cbea5eda0efd84b1999c567877463"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#ad30cbea5eda0efd84b1999c567877463">f_bitcoin_valid_bip32</a> (BITCOIN_SERIALIZE *, void *, int)</td></tr>
-<tr class="separator:ad30cbea5eda0efd84b1999c567877463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9495fa620fb5e82582ed02a9f0e022e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a9495fa620fb5e82582ed02a9f0e022e2">f_bitcoin_valid_bip32</a> (BITCOIN_SERIALIZE *, int *, void *, int)</td></tr>
+<tr class="separator:a9495fa620fb5e82582ed02a9f0e022e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1510e0790496ed2db058b588d638db1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#ad1510e0790496ed2db058b588d638db1">f_uncompress_elliptic_curve</a> (uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t)</td></tr>
+<tr class="separator:ad1510e0790496ed2db058b588d638db1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc688ea6ca982cc1ece280fe2e770a02"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#afc688ea6ca982cc1ece280fe2e770a02">f_bip32_to_public_key_or_private_key</a> (uint8_t *, uint8_t *, uint32_t, const char *)</td></tr>
+<tr class="separator:afc688ea6ca982cc1ece280fe2e770a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f49bd8010ad114743f2fd251b760e0b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/da6/f__bitcoin_8h.html#a0f49bd8010ad114743f2fd251b760e0b">f_public_key_to_address</a> (char *, size_t, size_t *, uint8_t *, uint8_t)</td></tr>
+<tr class="separator:a0f49bd8010ad114743f2fd251b760e0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -172,6 +182,22 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00010">10</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a35e8e1b2d2acf744cb0bd3a20fbe5b2a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35e8e1b2d2acf744cb0bd3a20fbe5b2a">&#9670;&nbsp;</a></span>F_BITCOIN_P2PKH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BITCOIN_P2PKH&#160;&#160;&#160;(uint8_t)0x00</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00008">8</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
@@ -188,7 +214,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00010">10</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00012">12</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+
+</div>
+</div>
+<a id="a81460f37eeddf968dcaee8da25647b4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81460f37eeddf968dcaee8da25647b4f">&#9670;&nbsp;</a></span>F_BITCOIN_T2PKH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BITCOIN_T2PKH&#160;&#160;&#160;(uint8_t)0x6F</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00009">9</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -236,7 +278,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00009">9</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00011">11</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -252,7 +294,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00023">23</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00025">25</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -268,7 +310,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00013">13</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00015">15</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +326,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00012">12</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00014">14</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -300,7 +342,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00015">15</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00017">17</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -316,7 +358,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00014">14</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00016">16</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -339,8 +381,48 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="ad30cbea5eda0efd84b1999c567877463"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad30cbea5eda0efd84b1999c567877463">&#9670;&nbsp;</a></span>f_bitcoin_valid_bip32()</h2>
+<a id="afc688ea6ca982cc1ece280fe2e770a02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc688ea6ca982cc1ece280fe2e770a02">&#9670;&nbsp;</a></span>f_bip32_to_public_key_or_private_key()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_bip32_to_public_key_or_private_key </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9495fa620fb5e82582ed02a9f0e022e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9495fa620fb5e82582ed02a9f0e022e2">&#9670;&nbsp;</a></span>f_bitcoin_valid_bip32()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -349,6 +431,12 @@ Variables</h2></td></tr>
           <td class="memname">int f_bitcoin_valid_bip32 </td>
           <td>(</td>
           <td class="paramtype">BITCOIN_SERIALIZE *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
           <td class="paramname">, </td>
         </tr>
         <tr>
@@ -539,6 +627,104 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a0f49bd8010ad114743f2fd251b760e0b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f49bd8010ad114743f2fd251b760e0b">&#9670;&nbsp;</a></span>f_public_key_to_address()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_public_key_to_address </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad1510e0790496ed2db058b588d638db1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1510e0790496ed2db058b588d638db1">&#9670;&nbsp;</a></span>f_uncompress_elliptic_curve()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_uncompress_elliptic_curve </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mbedtls_ecp_group_id&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9c42e4c4f99dbbf4a3079fa78b47025e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9c42e4c4f99dbbf4a3079fa78b47025e">&#9670;&nbsp;</a></span>f_wif_to_private_key()</h2>
 
@@ -586,7 +772,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00022">22</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00024">24</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -602,7 +788,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00021">21</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00023">23</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -618,7 +804,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00024">24</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00026">26</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -642,7 +828,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {</div><div class="line">   {0x04, 0x88, 0xB2, 0x1E}, </div><div class="line">   {0x04, 0x88, 0xAD, 0xE4}, </div><div class="line">   {0x04, 0x35, 0x87, 0xCF}, </div><div class="line">   {0x04, 0x35, 0x83, 0x94} </div><div class="line">}</div></div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00017">17</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00019">19</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -658,7 +844,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00020">20</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00022">22</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -674,7 +860,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00019">19</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00021">21</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -690,7 +876,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00023">23</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00025">25</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>
@@ -706,7 +892,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00018">18</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html#l00020">20</a> of file <a class="el" href="../../d0/da6/f__bitcoin_8h_source.html">f_bitcoin.h</a>.</p>
 
 </div>
 </div>

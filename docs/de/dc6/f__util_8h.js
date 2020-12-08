@@ -42,8 +42,10 @@ var f__util_8h =
     [ "f_random_attach", "de/dc6/f__util_8h.html#ac002f5f0a0ce2e3da7c90022254ce5a3", null ],
     [ "f_random_detach", "de/dc6/f__util_8h.html#a65f14d7a91d631c8eb4dc7ac1246305b", null ],
     [ "f_reverse", "de/dc6/f__util_8h.html#aed2081a171968db74a6f4afd7a52e804", null ],
+    [ "f_ripemd160", "de/dc6/f__util_8h.html#a245b2a337872e64faf40085423c15f77", null ],
     [ "f_sel_to_entropy_level", "de/dc6/f__util_8h.html#a5fff90f1cb24f0978f9c828a7eef428e", null ],
     [ "f_str_to_hex", "de/dc6/f__util_8h.html#ac1bb50469f73d98b1e8a7b8e1aa7debd", null ],
+    [ "f_uncompress_elliptic_curve", "de/dc6/f__util_8h.html#ad1510e0790496ed2db058b588d638db1", null ],
     [ "f_verify_system_entropy", "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e", null ],
     [ "get_console_passwd", "de/dc6/f__util_8h.html#a9473b62cadda2ce3936bb58bc791bc4d", null ]
 ];

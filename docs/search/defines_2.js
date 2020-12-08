@@ -1,7 +1,9 @@
 var searchData=
 [
   ['f_5fbitcoin_5fbuf_5fsz',['F_BITCOIN_BUF_SZ',['../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80',1,'f_bitcoin.h']]],
+  ['f_5fbitcoin_5fp2pkh',['F_BITCOIN_P2PKH',['../d0/da6/f__bitcoin_8h.html#a35e8e1b2d2acf744cb0bd3a20fbe5b2a',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fseed_5fgenerator',['F_BITCOIN_SEED_GENERATOR',['../d0/da6/f__bitcoin_8h.html#abb1926ea65fafffe6b4e961404f5c44c',1,'f_bitcoin.h']]],
+  ['f_5fbitcoin_5ft2pkh',['F_BITCOIN_T2PKH',['../d0/da6/f__bitcoin_8h.html#a81460f37eeddf968dcaee8da25647b4f',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5fmainnet',['F_BITCOIN_WIF_MAINNET',['../d0/da6/f__bitcoin_8h.html#afe4f4113b6c9f8a65b44627c1561b7c0',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5ftestnet',['F_BITCOIN_WIF_TESTNET',['../d0/da6/f__bitcoin_8h.html#af59b1d2c222a8a7717c761f4393b26f7',1,'f_bitcoin.h']]],
   ['f_5fbrain_5fwallet_5fbad',['F_BRAIN_WALLET_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a9da10bb8ea76491520355d3fc04103e9',1,'f_nano_crypto_util.h']]],

@@ -42,6 +42,7 @@ var f__nano__crypto__util_8h =
     [ "STR_NANO_SZ", "df/d1d/f__nano__crypto__util_8h.html#ab865b59cda27be360c6591d864b443ec", null ],
     [ "XRB_PREFIX", "df/d1d/f__nano__crypto__util_8h.html#a03304a5e9e43b808266d65d54817b231", null ],
     [ "F_FILE_INFO_ERR", "df/d1d/f__nano__crypto__util_8h.html#a016da69f9a6eb386c13763da8866b3a8", null ],
+    [ "F_NANO_CREATE_BLOCK_DYN_ERR", "df/d1d/f__nano__crypto__util_8h.html#a728b9dddf900881bfcdf77316085731b", null ],
     [ "f_nano_err", "df/d1d/f__nano__crypto__util_8h.html#a45db4c051f03f1ee8f76369a7a5c2721", null ],
     [ "F_TOKEN", "df/d1d/f__nano__crypto__util_8h.html#ac9ac42e5afe2e3a314ae3ca38c143850", null ],
     [ "f_uint128_t", "df/d1d/f__nano__crypto__util_8h.html#aa2c193d9108b22fda3da8fbdc272aac2", null ],
@@ -67,6 +68,21 @@ var f__nano__crypto__util_8h =
       [ "F_FILE_INFO_ERR_OPEN_FOR_WRITE_INFO", "df/d1d/f__nano__crypto__util_8h.html#a35ce19e93634d641aa08fc7dbc16addaa5f3942486c995d89b237ae728a6d8734", null ],
       [ "F_FILE_INFO_ERR_EXISTING_FILE", "df/d1d/f__nano__crypto__util_8h.html#a35ce19e93634d641aa08fc7dbc16addaabe2d19e437316d4a8054286f58046b50", null ],
       [ "F_FILE_INFO_ERR_CANT_WRITE_FILE_INFO", "df/d1d/f__nano__crypto__util_8h.html#a35ce19e93634d641aa08fc7dbc16addaac1bd6d41cb98a648b1e6b3e8bc689817", null ]
+    ] ],
+    [ "f_nano_create_block_dyn_err_t", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99", [
+      [ "NANO_CREATE_BLK_DYN_OK", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99af7864fb604409553b5d8081d4322eee8", null ],
+      [ "NANO_CREATE_BLK_DYN_BLOCK_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a851c1c7ad7a5ac99719fb8eac8bf063c", null ],
+      [ "NANO_CREATE_BLK_DYN_ACCOUNT_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a63e39528eec3a04c984d36a6d796ca76", null ],
+      [ "NANO_CREATE_BLK_DYN_PREV_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99af454eb9ee34bf15445aee6beb0223a36", null ],
+      [ "NANO_CREATE_BLK_DYN_REP_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a4a501bff243705acd321d3d5f2d8b8f1", null ],
+      [ "NANO_CREATE_BLK_DYN_BALANCE_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ab6166572316d3d7bdc2d7c4604b4f970", null ],
+      [ "NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a364aebe5bfc0f9ea6808c040c0303e02", null ],
+      [ "NANO_CREATE_BLK_DYN_LINK_NULL", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a3269a786339abd23c3927775a2f9fad8", null ],
+      [ "NANO_CREATE_BLK_DYN_BUF_MALLOC", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ada587db67c801ac7d9b0cce1258a3357", null ],
+      [ "NANO_CREATE_BLK_DYN_MALLOC", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ad43513436f1edc4823d218767502c7bc", null ],
+      [ "NANO_CREATE_BL_DYN_WRONG_PREVIOUS_SZ", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a1240da9f29edfc6ad07e4907a07addfa", null ],
+      [ "NANO_CREATE_BL_DYN_WRONG_PREVIOUS_STR_SZ", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a5f91922a0743d5adf5bcb7bb1a56eca4", null ],
+      [ "NANO_CREATE_BL_DYN_PARSE_STR_HEX_ERR", "df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a7b64df22fad3e969918dce1bfd9cccad", null ]
     ] ],
     [ "f_nano_err_t", "df/d1d/f__nano__crypto__util_8h.html#ae074b28c7eee3839a229f291851b194c", [
       [ "NANO_ERR_OK", "df/d1d/f__nano__crypto__util_8h.html#ae074b28c7eee3839a229f291851b194cadecb56779e71ee678b73cec1cc5cbefc", null ],
@@ -149,6 +165,7 @@ var f__nano__crypto__util_8h =
     [ "is_nano_prefix", "df/d1d/f__nano__crypto__util_8h.html#a3c456dc91a46acdc6f837fa50341002b", null ],
     [ "is_null_hash", "df/d1d/f__nano__crypto__util_8h.html#a33d0195a592347a82dd2cfbfe6a32efb", null ],
     [ "nano_base_32_2_hex", "df/d1d/f__nano__crypto__util_8h.html#ab7705b19465d7a834c0fd5da2e356ede", null ],
+    [ "nano_create_block_dynamic", "df/d1d/f__nano__crypto__util_8h.html#a2ea2308a17c103e34720f8681694d065", null ],
     [ "pk_to_wallet", "df/d1d/f__nano__crypto__util_8h.html#addc5e8bf02ecbda4d1db4a3f827a9632", null ],
     [ "to_multiplier", "df/d1d/f__nano__crypto__util_8h.html#ac8faeab3c93f559cd5af1f9c8dfdfddf", null ],
     [ "valid_nano_wallet", "df/d1d/f__nano__crypto__util_8h.html#a6f03b63fafaa956e01e7011b9b07755d", null ],

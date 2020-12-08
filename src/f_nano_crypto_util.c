@@ -3503,6 +3503,158 @@ int f_verify_token(F_TOKEN signature, void *data, size_t data_sz, const char *pa
 */
 #ifndef F_ESP32
 
+enum f_nano_account_or_pk_string_to_pk_util_err_t {
+   NANO_ACCOUNT_TO_PK_OK = 0,
+   NANO_ACCOUNT_TO_PK_OVFL = 8100,
+   NANO_ACCOUNT_TO_PK_NULL_STRING,
+   NANO_ACCOUNT_WRONG_PK_STR_SZ,
+   NANO_ACCOUNT_WRONG_HEX_STRING,
+   NANO_ACCOUNT_BASE32_CONVERT_ERROR,
+   NANO_ACCOUNT_TO_PK_WRONG_ACCOUNT_LEN
+};
+
+int nano_account_or_pk_string_to_pk_util(uint8_t *buffer, int *is_xrb_prefix, const unsigned char *str, size_t str_len)
+{
+   int err;
+
+   *is_xrb_prefix=0;
+
+   if (str_len==32) {
+      memcpy(buffer, str, 32);
+      return NANO_ACCOUNT_TO_PK_OK;
+   }
+
+   if (str_len)
+      return NANO_ACCOUNT_TO_PK_WRONG_ACCOUNT_LEN;
+
+   if ((str_len=strnlen((const char *)str, MAX_STR_NANO_CHAR))==MAX_STR_NANO_CHAR)
+      return NANO_ACCOUNT_TO_PK_OVFL;
+
+   if (!str_len)
+      return NANO_ACCOUNT_TO_PK_NULL_STRING;
+
+   if (((err=is_nano_prefix(str, NANO_PREFIX)))?(err<<=1):(err=is_nano_prefix(str, XRB_PREFIX))) {
+      *is_xrb_prefix=err&1;
+
+      if ((err=nano_base_32_2_hex(buffer, (char *)str)))
+         err=NANO_ACCOUNT_BASE32_CONVERT_ERROR;
+
+   } else if (str_len!=64)
+      err=NANO_ACCOUNT_WRONG_PK_STR_SZ;
+   else if ((err=f_str_to_hex(buffer, (char *)str)))
+      err=NANO_ACCOUNT_WRONG_HEX_STRING;
+
+   return err;
+}
+
+#define NANO_CREATE_BLK_DYN_BUF_SZ (size_t)256
+// in any len is 0 then void * is string with null char at the end
+int nano_create_block_dynamic(
+   F_BLOCK_TRANSFER **block,
+   const void *account,
+   size_t account_len,
+   const void *previous,
+   size_t previous_len,
+   const void *representative,
+   size_t representative_len,
+   const void *balance,
+   const void *value_to_send_receive,
+   uint32_t balance_val_to_send_type,
+   const void *link,
+   int direction
+)
+{
+   int err, is_xrb_prefix;
+   size_t sz_tmp;
+   uint8_t *buffer;
+   F_BLOCK_TRANSFER *blk_tmp;
+   uint8_t *p;
+
+   if (!block)
+      return NANO_CREATE_BLK_DYN_BLOCK_NULL;
+
+   *block=NULL;
+
+   if (!account)
+      return NANO_CREATE_BLK_DYN_ACCOUNT_NULL;
+
+   if (!previous)
+      return NANO_CREATE_BLK_DYN_PREV_NULL;
+
+   if (!representative)
+      return NANO_CREATE_BLK_DYN_REP_NULL;
+
+   if (!balance)
+      return NANO_CREATE_BLK_DYN_BALANCE_NULL;
+
+   if (!value_to_send_receive)
+      return NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL;
+
+   if (!link)
+      return NANO_CREATE_BLK_DYN_LINK_NULL;
+
+   if (!(buffer=malloc(NANO_CREATE_BLK_DYN_BUF_SZ)))
+      return NANO_CREATE_BLK_DYN_BUF_MALLOC;
+
+   if (!(blk_tmp=malloc(sizeof(F_BLOCK_TRANSFER)))) {
+      err=NANO_CREATE_BLK_DYN_MALLOC;
+      goto nano_create_block_dynamic_EXIT1;
+   }
+
+   memset(blk_tmp, 0, sizeof(F_BLOCK_TRANSFER));
+
+   if ((err=nano_account_or_pk_string_to_pk_util(buffer, &is_xrb_prefix, (const unsigned char *)account, account_len)))
+      goto nano_create_block_dynamic_EXIT2;
+
+   blk_tmp->preamble[31]=0x06;
+   memcpy(blk_tmp->account, buffer, 32);
+
+   if (is_xrb_prefix)
+      blk_tmp->prefixes=SENDER_XRB;
+
+   if (previous_len==32)
+      p=(uint8_t *)previous;
+   else if (previous_len) {
+      err=NANO_CREATE_BL_DYN_WRONG_PREVIOUS_SZ;
+      goto nano_create_block_dynamic_EXIT3;
+   } else if (strnlen((const char *)previous, 65)==64) {
+      if (f_str_to_hex(p=buffer, (char *)previous)) {
+         err=NANO_CREATE_BL_DYN_PARSE_STR_HEX_ERR;
+         goto nano_create_block_dynamic_EXIT3;
+      }
+   } else {
+      err=NANO_CREATE_BL_DYN_WRONG_PREVIOUS_STR_SZ;
+      goto nano_create_block_dynamic_EXIT3;
+   }
+
+   memcpy(blk_tmp->previous, p, 32);
+
+   if ((err=nano_account_or_pk_string_to_pk_util(buffer, &is_xrb_prefix, (const unsigned char *)representative, representative_len)))
+      goto nano_create_block_dynamic_EXIT3;
+
+   memcpy(blk_tmp->representative, buffer, 32);
+
+   if (is_xrb_prefix)
+      blk_tmp->prefixes|=REP_XRB;
+// to be continued...
+   goto nano_create_block_dynamic_FINAL;
+
+nano_create_block_dynamic_EXIT3:
+   memset(blk_tmp, 0, sizeof(F_BLOCK_TRANSFER));
+
+nano_create_block_dynamic_EXIT2:
+   free(blk_tmp);
+   blk_tmp=NULL;
+
+nano_create_block_dynamic_FINAL:
+   *block=blk_tmp;
+
+nano_create_block_dynamic_EXIT1:
+   free(buffer);
+
+   return err;
+}
+
 void *nano_pow_thread_util(LOCAL_POW_THREAD *local_pow)
 {
 
