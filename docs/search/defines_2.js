@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['f_5fbalance_5fraw_5f128',['F_BALANCE_RAW_128',['../df/d1d/f__nano__crypto__util_8h.html#af1956c4dd15805a9ffc7e674bd63f3da',1,'f_nano_crypto_util.h']]],
+  ['f_5fbalance_5fraw_5fstring',['F_BALANCE_RAW_STRING',['../df/d1d/f__nano__crypto__util_8h.html#ae0f0960d8a4dbeca143e95f5fe86bcb4',1,'f_nano_crypto_util.h']]],
+  ['f_5fbalance_5freal_5fstring',['F_BALANCE_REAL_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a933f301a52052abec0b5bf3a8071ce77',1,'f_nano_crypto_util.h']]],
   ['f_5fbitcoin_5fbuf_5fsz',['F_BITCOIN_BUF_SZ',['../d0/da6/f__bitcoin_8h.html#a8490abd1f1327342faf955b9dc38fc80',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fp2pkh',['F_BITCOIN_P2PKH',['../d0/da6/f__bitcoin_8h.html#a35e8e1b2d2acf744cb0bd3a20fbe5b2a',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fseed_5fgenerator',['F_BITCOIN_SEED_GENERATOR',['../d0/da6/f__bitcoin_8h.html#abb1926ea65fafffe6b4e961404f5c44c',1,'f_bitcoin.h']]],
@@ -44,6 +47,11 @@ var searchData=
   ['f_5fsignature_5foutput_5fxrb_5fpk',['F_SIGNATURE_OUTPUT_XRB_PK',['../df/d1d/f__nano__crypto__util_8h.html#a7f28956dfd363ee9184c6123845e8f9b',1,'f_nano_crypto_util.h']]],
   ['f_5fsignature_5fraw',['F_SIGNATURE_RAW',['../df/d1d/f__nano__crypto__util_8h.html#ac34268a53a0cb5bd405baad9e8cee20f',1,'f_nano_crypto_util.h']]],
   ['f_5fsignature_5fstring',['F_SIGNATURE_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a503d6dc03196c9a7dbbb81e9612118bb',1,'f_nano_crypto_util.h']]],
+  ['f_5fvalue_5fsend_5freceive_5fraw_5f128',['F_VALUE_SEND_RECEIVE_RAW_128',['../df/d1d/f__nano__crypto__util_8h.html#a6ef31ef1eb57b467bbac00f298716853',1,'f_nano_crypto_util.h']]],
+  ['f_5fvalue_5fsend_5freceive_5fraw_5fstring',['F_VALUE_SEND_RECEIVE_RAW_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a6d0dc70400fe955a6089c4e05537e7a6',1,'f_nano_crypto_util.h']]],
+  ['f_5fvalue_5fsend_5freceive_5freal_5fstring',['F_VALUE_SEND_RECEIVE_REAL_STRING',['../df/d1d/f__nano__crypto__util_8h.html#abc43a1f9a2f14118a3ae6156a1d1854d',1,'f_nano_crypto_util.h']]],
+  ['f_5fvalue_5fto_5freceive',['F_VALUE_TO_RECEIVE',['../df/d1d/f__nano__crypto__util_8h.html#a779faba2a762d5b45dcfc05a61d5d2a9',1,'f_nano_crypto_util.h']]],
+  ['f_5fvalue_5fto_5fsend',['F_VALUE_TO_SEND',['../df/d1d/f__nano__crypto__util_8h.html#a2e34bebdf0cfeaf2fed546e6a4e5368f',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fascii_5fhex',['F_VERIFY_SIG_ASCII_HEX',['../df/d1d/f__nano__crypto__util_8h.html#a3fc1d0fdaeaf722bce672f93b19e4bfb',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fnano_5fwallet',['F_VERIFY_SIG_NANO_WALLET',['../df/d1d/f__nano__crypto__util_8h.html#a6f0e0d9c79084f462710bbf2c9e93d42',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fraw_5fhex',['F_VERIFY_SIG_RAW_HEX',['../df/d1d/f__nano__crypto__util_8h.html#ade78b5a9195ed33cda8ec3f817cb3b3f',1,'f_nano_crypto_util.h']]],

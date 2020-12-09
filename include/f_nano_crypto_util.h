@@ -608,10 +608,13 @@ typedef enum f_nano_create_block_dyn_err_t {
    NANO_CREATE_BLK_DYN_LINK_NULL,
    NANO_CREATE_BLK_DYN_BUF_MALLOC,
    NANO_CREATE_BLK_DYN_MALLOC,
-   NANO_CREATE_BL_DYN_WRONG_PREVIOUS_SZ,
-   NANO_CREATE_BL_DYN_WRONG_PREVIOUS_STR_SZ,
-   NANO_CREATE_BL_DYN_PARSE_STR_HEX_ERR
-
+   NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ,
+   NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_STR_SZ,
+   NANO_CREATE_BLK_DYN_PARSE_STR_HEX_ERR,
+   NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE,
+   NANO_CREATE_BLK_DYN_COMPARE,
+   NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC,
+   NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION
 } F_NANO_CREATE_BLOCK_DYN_ERR;
 
 #endif
@@ -1044,7 +1047,7 @@ F_FILE_INFO_ERR f_set_nano_file_info(F_NANO_WALLET_INFO *, int);
  *     - <i>F_NANO_B_RAW_STRING</i> if <i>valB</i> is big number raw string type
  *     - <i>F_NANO_B_REAL_STRING</i> if <i>valB</i> is real number string type
  *     <br/><br/>Output type:
- *     - <i>F_NANO_COMPARE_EQ</i> If <i>valA</i> is greater than <i>valB</i>
+ *     - <i>F_NANO_COMPARE_EQ</i> If <i>valA</i> is equal <i>valB</i>
  *     - <i>F_NANO_COMPARE_LT</i> if <i>valA</i> is lesser than <i>valB</i>
  *     - <i>F_NANO_COMPARE_GT</i> if <i>valA</i> is greater than <i>valB</i>
  *
@@ -1426,6 +1429,15 @@ int f_is_valid_nano_seed_encrypted(void *, size_t, int);
 
 #ifndef F_ESP32
 
+#define F_BALANCE_RAW_128 F_NANO_A_RAW_128
+#define F_BALANCE_REAL_STRING F_NANO_A_REAL_STRING
+#define F_BALANCE_RAW_STRING F_NANO_A_RAW_STRING
+#define F_VALUE_SEND_RECEIVE_RAW_128 F_NANO_B_RAW_128
+#define F_VALUE_SEND_RECEIVE_REAL_STRING F_NANO_B_REAL_STRING
+#define F_VALUE_SEND_RECEIVE_RAW_STRING F_NANO_B_RAW_STRING
+#define F_VALUE_TO_SEND (int)(1<<0)
+#define F_VALUE_TO_RECEIVE (int)(1<<1)
+
 int nano_create_block_dynamic(
    F_BLOCK_TRANSFER **,
    const void *,
@@ -1438,6 +1450,7 @@ int nano_create_block_dynamic(
    const void *,
    uint32_t,
    const void *,
+   size_t,
    int
 );
 

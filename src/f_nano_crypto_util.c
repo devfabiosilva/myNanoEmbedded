@@ -3547,7 +3547,7 @@ int nano_account_or_pk_string_to_pk_util(uint8_t *buffer, int *is_xrb_prefix, co
    return err;
 }
 
-#define NANO_CREATE_BLK_DYN_BUF_SZ (size_t)256
+#define NANO_CREATE_BLK_DYN_BUF_SZ (size_t)128
 // in any len is 0 then void * is string with null char at the end
 int nano_create_block_dynamic(
    F_BLOCK_TRANSFER **block,
@@ -3558,15 +3558,17 @@ int nano_create_block_dynamic(
    const void *representative,
    size_t representative_len,
    const void *balance,
-   const void *value_to_send_receive,
-   uint32_t balance_val_to_send_type,
+   const void *value_to_send_or_receive,
+   uint32_t balance_and_val_to_send_or_rec_types,
    const void *link,
+   size_t link_len,
    int direction
 )
 {
    int err, is_xrb_prefix;
    size_t sz_tmp;
    uint8_t *buffer;
+   uint32_t compare;
    F_BLOCK_TRANSFER *blk_tmp;
    uint8_t *p;
 
@@ -3587,7 +3589,7 @@ int nano_create_block_dynamic(
    if (!balance)
       return NANO_CREATE_BLK_DYN_BALANCE_NULL;
 
-   if (!value_to_send_receive)
+   if (!value_to_send_or_receive)
       return NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL;
 
    if (!link)
@@ -3615,15 +3617,15 @@ int nano_create_block_dynamic(
    if (previous_len==32)
       p=(uint8_t *)previous;
    else if (previous_len) {
-      err=NANO_CREATE_BL_DYN_WRONG_PREVIOUS_SZ;
+      err=NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ;
       goto nano_create_block_dynamic_EXIT3;
    } else if (strnlen((const char *)previous, 65)==64) {
       if (f_str_to_hex(p=buffer, (char *)previous)) {
-         err=NANO_CREATE_BL_DYN_PARSE_STR_HEX_ERR;
+         err=NANO_CREATE_BLK_DYN_PARSE_STR_HEX_ERR;
          goto nano_create_block_dynamic_EXIT3;
       }
    } else {
-      err=NANO_CREATE_BL_DYN_WRONG_PREVIOUS_STR_SZ;
+      err=NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_STR_SZ;
       goto nano_create_block_dynamic_EXIT3;
    }
 
@@ -3636,13 +3638,49 @@ int nano_create_block_dynamic(
 
    if (is_xrb_prefix)
       blk_tmp->prefixes|=REP_XRB;
-// to be continued...
+
+   if (balance_and_val_to_send_or_rec_types&(~(F_BALANCE_RAW_128|F_BALANCE_REAL_STRING|F_BALANCE_RAW_STRING|
+      F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING))) {
+      err=NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE;
+      goto nano_create_block_dynamic_EXIT3;
+   }
+
+   compare=balance_and_val_to_send_or_rec_types&(F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING);
+
+   if (f_nano_value_compare_value(memset(buffer, 0, sizeof(f_uint128_t)), (void *)value_to_send_or_receive, &compare)) {
+      err=NANO_CREATE_BLK_DYN_COMPARE;
+      goto nano_create_block_dynamic_EXIT3;
+   }
+
+   if (compare&F_NANO_COMPARE_EQ) {
+      err=NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC;
+      goto nano_create_block_dynamic_EXIT3;
+   }
+
+   if (direction&(~(F_VALUE_TO_SEND|F_VALUE_TO_RECEIVE))) {
+      err=NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION;
+      goto nano_create_block_dynamic_EXIT3;
+   }
+
+   if ((err=f_nano_add_sub(blk_tmp->balance, (void *)balance, (void *)value_to_send_or_receive,
+      balance_and_val_to_send_or_rec_types|((direction&F_VALUE_TO_RECEIVE)?F_NANO_ADD_A_B:F_NANO_SUB_A_B)|F_NANO_RES_RAW_128)))
+      goto nano_create_block_dynamic_EXIT3;
+
+   if ((err=nano_account_or_pk_string_to_pk_util(buffer, &is_xrb_prefix, (const unsigned char *)link, link_len)))
+      goto nano_create_block_dynamic_EXIT3;
+
+   memcpy(blk_tmp->link, buffer, 32);
+
+   if (is_xrb_prefix)
+      blk_tmp->prefixes|=SENDER_XRB;
+
    goto nano_create_block_dynamic_FINAL;
 
 nano_create_block_dynamic_EXIT3:
    memset(blk_tmp, 0, sizeof(F_BLOCK_TRANSFER));
 
 nano_create_block_dynamic_EXIT2:
+   memset(buffer, 0, NANO_CREATE_BLK_DYN_BUF_SZ);
    free(blk_tmp);
    blk_tmp=NULL;
 
