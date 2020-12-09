@@ -2698,7 +2698,7 @@ f_set_nano_file_info_EXIT1:
 
 }
 /////////////////////
-#define F_P2POW_JSON_SZ (size_t)352
+#define F_P2POW_JSON_SZ (size_t)320//352
 //#define F_P2POW_JSON_MAX_SZ 4*F_P2POW_JSON_SZ
 #define F_P2POW_JSON_MAX_SZ (size_t)4096
 #ifdef F_ESP32
