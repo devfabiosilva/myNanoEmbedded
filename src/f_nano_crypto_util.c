@@ -3645,7 +3645,7 @@ int nano_create_block_dynamic(
       goto nano_create_block_dynamic_EXIT3;
    }
 
-   compare=balance_and_val_to_send_or_rec_types&(F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING);
+   compare=(balance_and_val_to_send_or_rec_types&(F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING))|F_NANO_A_RAW_128;
 
    if (f_nano_value_compare_value(memset(buffer, 0, sizeof(f_uint128_t)), (void *)value_to_send_or_receive, &compare)) {
       err=NANO_CREATE_BLK_DYN_COMPARE;
