@@ -1051,13 +1051,14 @@ int f_nano_block_to_json(char *dest, size_t *olen, size_t dest_size, F_BLOCK_TRA
 
    }
 
+   err=0;
    memcpy(dest, data, size_tmp);
 
 f_block_to_JSON_EXIT1:
    memset(data, 0, 4*NANO_JSON_MAX_SZ+(MAX_STR_NANO_CHAR+64+3*crypto_sign_BYTES)+1);
    free(data);
 
-   return 0;
+   return err;
 
 }
 

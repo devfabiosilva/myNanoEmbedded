@@ -33,13 +33,13 @@ all: part main
 
 %.o: %.S
 	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
-	@$(CC) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #Node
+	@$(CC) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #Node/Java
 	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "Assembly $<"
 
 %.o: %.c
 	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
-	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #NODE
+	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #NODE/JAVA
 	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
 	@echo "CC $<"
 
