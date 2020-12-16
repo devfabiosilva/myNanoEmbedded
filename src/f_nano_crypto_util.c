@@ -3694,6 +3694,71 @@ nano_create_block_dynamic_EXIT1:
    return err;
 }
 
+#define NANO_P2POW_CREATE_BLOCK_BUFFER (size_t)(2*sizeof(F_BLOCK_TRANSFER))
+int nano_create_p2pow_block_dynamic(
+   F_BLOCK_TRANSFER **p2pow_block,
+   F_BLOCK_TRANSFER *block,
+   const void *worker_account,
+   size_t worker_account_len,
+   const void *worker_fee,
+   uint32_t worker_fee_type,
+   const void *worker_representative,
+   size_t worker_representative_len
+)
+{
+   int err;
+   uint8_t *prv, rep_xrb_prefix;
+   F_BLOCK_TRANSFER *p2pow_tmp;
+
+   if (!p2pow_block)
+      return NANO_P2POW_CREATE_OUTPUT;
+
+   *p2pow_block=NULL;
+
+   if (!block)
+      return NANO_P2POW_CREATE_BLOCK_NULL;
+
+   if (!f_nano_is_valid_block(block))
+      return NANO_P2POW_CREATE_BLOCK_INVALID_USER_BLOCK;
+
+   if (!(prv=malloc(32)))
+      return NANO_P2POW_CREATE_BLOCK_MALLOC;
+
+   if ((err=f_nano_get_block_hash(prv, block)))
+      goto nano_create_p2pow_block_dynamic_EXIT1;
+
+   rep_xrb_prefix=0;
+
+   if (!worker_representative) {
+      worker_representative=(const void *)block->representative;
+      worker_representative_len=32;
+      rep_xrb_prefix=block->prefixes&REP_XRB;
+   }
+
+   if ((err=nano_create_block_dynamic(&p2pow_tmp, (const void *)block->account, 32, (const void *)prv, 32, worker_representative, worker_representative_len,
+      block->balance, worker_fee, F_BALANCE_RAW_128|worker_fee_type, worker_account, worker_account_len, F_VALUE_TO_SEND)))
+      goto nano_create_p2pow_block_dynamic_EXIT1;
+
+   if (!(*p2pow_block=malloc(2*sizeof(F_BLOCK_TRANSFER)))) {
+      err=NANO_P2POW_CREATE_OUTPUT_MALLOC;
+      goto nano_create_p2pow_block_dynamic_EXIT2;
+   }
+
+   p2pow_tmp->prefixes|=(rep_xrb_prefix|(block->prefixes&SENDER_XRB));
+   memcpy(*p2pow_block, block, sizeof(F_BLOCK_TRANSFER));
+   memcpy(&(*p2pow_block)[1], p2pow_tmp, sizeof(F_BLOCK_TRANSFER));
+
+nano_create_p2pow_block_dynamic_EXIT2:
+   memset(p2pow_tmp, 0, sizeof(F_BLOCK_TRANSFER));
+   free(p2pow_tmp);
+
+nano_create_p2pow_block_dynamic_EXIT1:
+   memset(prv, 0, 32);
+   free(prv);
+
+   return err;
+}
+
 void *nano_pow_thread_util(LOCAL_POW_THREAD *local_pow)
 {
 

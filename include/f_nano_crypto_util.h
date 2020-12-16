@@ -617,6 +617,15 @@ typedef enum f_nano_create_block_dyn_err_t {
    NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION
 } F_NANO_CREATE_BLOCK_DYN_ERR;
 
+typedef enum f_nano_p2pow_block_dyn_err_t {
+   NANO_P2POW_CREATE_BLOCK_OK = 0,
+   NANO_P2POW_CREATE_BLOCK_INVALID_USER_BLOCK = 8400,
+   NANO_P2POW_CREATE_BLOCK_MALLOC,
+   NANO_P2POW_CREATE_BLOCK_NULL,
+   NANO_P2POW_CREATE_OUTPUT,
+   NANO_P2POW_CREATE_OUTPUT_MALLOC
+} F_NANO_P2POW_BLOCK_DYN_ERR;
+
 #endif
 
 /**
@@ -1452,6 +1461,17 @@ int nano_create_block_dynamic(
    const void *,
    size_t,
    int
+);
+
+int nano_create_p2pow_block_dynamic(
+   F_BLOCK_TRANSFER **,
+   F_BLOCK_TRANSFER *,
+   const void *,
+   size_t,
+   const void *,
+   uint32_t,
+   const void *,
+   size_t
 );
 
 /**
