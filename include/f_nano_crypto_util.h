@@ -285,6 +285,9 @@ typedef struct f_block_transfer_t {
    uint64_t work;
 } __attribute__((packed)) F_BLOCK_TRANSFER;
 
+#define F_BLOCK_TRANSFER_SIZE (size_t)sizeof(F_BLOCK_TRANSFER)
+#define F_P2POW_BLOCK_TRANSFER_SIZE 2*F_BLOCK_TRANSFER_SIZE
+
 #ifndef F_DOC_SKIP
  #define F_BLOCK_TRANSFER_SIGNABLE_SZ (size_t)(sizeof(F_BLOCK_TRANSFER)-64-sizeof(uint64_t)-sizeof(uint8_t))
 #endif
