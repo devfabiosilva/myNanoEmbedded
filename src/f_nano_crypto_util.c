@@ -254,7 +254,8 @@ int nano_base_32_2_hex(uint8_t *res, char *str_wallet)
 
    memcpy(fp, ((uint8_t *)displace)+3, 32);
 
-   crypto_generichash((unsigned char *)buf, 5, fp, 32, NULL, 0);
+   if (crypto_generichash((unsigned char *)buf, 5, fp, 32, NULL, 0))
+      return 24;
 
    if (memcmp(fp+33, buf, 5))
       return 23;
@@ -314,12 +315,31 @@ int IRAM_ATTR f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, co
 
    }
 
-   crypto_generichash_init(hs, NULL, 0, 64);
-   crypto_generichash_update(hs, sig, 32);
+   if (crypto_generichash_init(hs, NULL, 0, 64)) {
+      err=12524;
+      goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
 
-   crypto_generichash_update(hs, pk, 32);
-   crypto_generichash_update(hs, m, mlen);
-   crypto_generichash_final(hs, h, 64);
+   if (crypto_generichash_update(hs, sig, 32)) {
+      err=12525;
+      goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_update(hs, pk, 32)) {
+      err=12526;
+      goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_update(hs, m, mlen)) {
+      err=12527;
+      goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_final(hs, h, 64)) {
+      err=12528;
+      goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
    sc_reduce(h);
 
    ge_double_scalarmult_vartime(R, h, A, sig+32);
@@ -347,7 +367,7 @@ int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsign
    uint8_t *buf;
 
    if (!(buf=malloc(F_SIGN_BUF_SZ)))
-      return 12520;
+      return 12620;
 
    hs=(crypto_generichash_state *)buf;
    h=(unsigned char *)(buf+sizeof(crypto_generichash_state));
@@ -357,7 +377,7 @@ int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsign
 
    if ((sc25519_is_canonical(sig+32)==0)||(ge25519_has_small_order(sig)!=0)) {
 
-       err=12521;
+       err=12621;
 
        goto f_crypto_sign_ed25519_verify_detached_EXIT1;
 
@@ -365,7 +385,7 @@ int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsign
 
    if ((ge25519_is_canonical(pk)==0)||(ge25519_has_small_order(pk)!=0)) {
 
-       err=12522;
+       err=12622;
 
        goto f_crypto_sign_ed25519_verify_detached_EXIT1;
 
@@ -373,18 +393,37 @@ int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsign
 
    if (ge25519_frombytes_negate_vartime(A, pk)!=0) {
 
-       err=12523;
+       err=12623;
 
        goto f_crypto_sign_ed25519_verify_detached_EXIT1;
 
    }
 
-   crypto_generichash_init(hs, NULL, 0, 64);
-   crypto_generichash_update(hs, sig, 32);
+   if (crypto_generichash_init(hs, NULL, 0, 64)) {
+       err=12624;
+       goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
 
-   crypto_generichash_update(hs, pk, 32);
-   crypto_generichash_update(hs, m, mlen);
-   crypto_generichash_final(hs, h, 64);
+   if (crypto_generichash_update(hs, sig, 32)) {
+       err=12625;
+       goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_update(hs, pk, 32)) {
+       err=12626;
+       goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_update(hs, m, mlen)) {
+       err=12627;
+       goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
+   if (crypto_generichash_final(hs, h, 64)) {
+       err=12628;
+       goto f_crypto_sign_ed25519_verify_detached_EXIT1;
+   }
+
    sc25519_reduce(h);
 
    ge25519_double_scalarmult_vartime(R, h, A, sig+32);
@@ -432,10 +471,25 @@ int f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, s
    az[31]&=63;
    az[31]|=64;
 
-   crypto_generichash_init(hs, NULL, 0, 64);
-   crypto_generichash_update(hs, az+32, 32);
-   crypto_generichash_update(hs, m, mlen);
-   crypto_generichash_final(hs, nonce, 64);
+   if (crypto_generichash_init(hs, NULL, 0, 64)) {
+      err=6302;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_update(hs, az+32, 32)) {
+      err=6303;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_update(hs, m, mlen)) {
+      err=6304;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_final(hs, nonce, 64)) {
+      err=6305;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
 
    memmove(sig+32, sk+32, 32);
 
@@ -443,10 +497,25 @@ int f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, s
    ge_scalarmult_base(R, nonce);
    ge_p3_tobytes(sig, R);
 
-   crypto_generichash_init(hs, NULL, 0, 64);
-   crypto_generichash_update(hs, sig, 64);
-   crypto_generichash_update(hs, m, mlen);
-   crypto_generichash_final(hs, hram, 64);
+   if (crypto_generichash_init(hs, NULL, 0, 64)) {
+      err=6306;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_update(hs, sig, 64)) {
+      err=6307;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_update(hs, m, mlen)) {
+      err=6308;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
+
+   if (crypto_generichash_final(hs, hram, 64)) {
+      err=6309;
+      goto f_crypto_sign_ed25519_detached_EXIT2;
+   }
 
    sc_reduce(hram);
 
@@ -464,6 +533,7 @@ int f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, s
 
    err=0;
 
+f_crypto_sign_ed25519_detached_EXIT2:
    free(hs);
 
 f_crypto_sign_ed25519_detached_EXIT1:
@@ -639,9 +709,15 @@ int f_seed_to_nano_wallet(NANO_PRIVATE_KEY private_key, NANO_PUBLIC_KEY public_k
       goto f_seed_to_nano_walle_EXIT2;
    }
 
-   crypto_generichash_init(state, NULL, 0, 32);
+   if (crypto_generichash_init(state, NULL, 0, 32)) {
+      err=30;
+      goto f_seed_to_nano_walle_EXIT3;
+   }
 
-   crypto_generichash_update(state, seed, sizeof(NANO_SEED));
+   if (crypto_generichash_update(state, seed, sizeof(NANO_SEED))) {
+      err=31;
+      goto f_seed_to_nano_walle_EXIT3;
+   }
 
    asm volatile(
 #if F_ARM_A||F_ARM_M||F_THUMB
@@ -691,9 +767,16 @@ int f_seed_to_nano_wallet(NANO_PRIVATE_KEY private_key, NANO_PUBLIC_KEY public_k
       ::"r"(&seed[0]),"r"(wallet_number),"r"(err)
    );
 
-   crypto_generichash_update(state, (unsigned char *)seed, sizeof(uint32_t));
 
-   crypto_generichash_final(state, (unsigned char *)bseed, sizeof(NANO_SEED));
+   if (crypto_generichash_update(state, (unsigned char *)seed, sizeof(uint32_t))) {
+      err=32;
+      goto f_seed_to_nano_walle_EXIT3;
+   }
+
+   if (crypto_generichash_final(state, (unsigned char *)bseed, sizeof(NANO_SEED))) {
+      err=33;
+      goto f_seed_to_nano_walle_EXIT3;
+   }
 
    err=crypto_sign_ed25519_seed_keypair2((unsigned char *)public_key, (unsigned char *)priv_key_extended, (const unsigned char *)bseed);
 
@@ -705,6 +788,7 @@ int f_seed_to_nano_wallet(NANO_PRIVATE_KEY private_key, NANO_PUBLIC_KEY public_k
 
    memset(bseed, 0, sizeof(NANO_SEED));
 
+f_seed_to_nano_walle_EXIT3:
    free(priv_key_extended);
 
 f_seed_to_nano_walle_EXIT2:
@@ -3132,13 +3216,17 @@ int f_verify_work(uint64_t *result, const unsigned char *hash, uint64_t *work, u
    if (!(state=malloc(sizeof(crypto_generichash_state))))
       return -27;
 
-   crypto_generichash_init(state, NULL, 0, sizeof(uint64_t));
+   if (crypto_generichash_init(state, NULL, 0, sizeof(uint64_t)))
+      return -28;
 
-   crypto_generichash_update(state, (unsigned char *)work, sizeof(uint64_t));
+   if (crypto_generichash_update(state, (unsigned char *)work, sizeof(uint64_t)))
+      return -29;
 
-   crypto_generichash_update(state, hash, 32);
+   if (crypto_generichash_update(state, hash, 32))
+      return -30;
 
-   crypto_generichash_final(state, (unsigned char *)&res, sizeof(uint64_t));
+   if (crypto_generichash_final(state, (unsigned char *)&res, sizeof(uint64_t)))
+      return -31;
 
    if (result)
       *result=res;
@@ -3403,11 +3491,20 @@ int f_generate_token(F_TOKEN signature, void *data, size_t data_sz, const char *
 
    *((uint32_t *)signature)=crc32_init((unsigned char *)data, data_sz, *((uint32_t *)(((uint8_t *)signature)+(sizeof(F_TOKEN)>>2))));
 
-   crypto_generichash_init(state, NULL, 0, (sizeof(F_TOKEN)>>1));
-   crypto_generichash_update(state, (unsigned char *)data, data_sz);
-   crypto_generichash_update(state, (unsigned char *)password, passwd_len);
-   crypto_generichash_update(state, (unsigned char *)signature, (sizeof(F_TOKEN)>>1));
-   crypto_generichash_final(state, (unsigned char *)(((uint8_t *)signature)+(sizeof(F_TOKEN)>>1)), (sizeof(F_TOKEN)>>1));
+   if (crypto_generichash_init(state, NULL, 0, (sizeof(F_TOKEN)>>1)))
+      return 3864;
+
+   if (crypto_generichash_update(state, (unsigned char *)data, data_sz))
+      return 3865;
+
+   if (crypto_generichash_update(state, (unsigned char *)password, passwd_len))
+      return 3866;
+
+   if (crypto_generichash_update(state, (unsigned char *)signature, (sizeof(F_TOKEN)>>1)))
+      return 3867;
+
+   if (crypto_generichash_final(state, (unsigned char *)(((uint8_t *)signature)+(sizeof(F_TOKEN)>>1)), (sizeof(F_TOKEN)>>1)))
+      return 3868;
 
    *((uint64_t *)signature)^=*((uint64_t *)((uint8_t *)(signature)+(sizeof(F_TOKEN)>>1)));
 
@@ -3445,11 +3542,20 @@ int f_verify_token(F_TOKEN signature, void *data, size_t data_sz, const char *pa
    if (!(state=malloc(sizeof(crypto_generichash_state))))
       return -17863;
 
-   crypto_generichash_init(state, NULL, 0, sizeof(tmp));
-   crypto_generichash_update(state, (unsigned char *)data, data_sz);
-   crypto_generichash_update(state, (unsigned char *)password, passwd_len);
-   crypto_generichash_update(state, tmp, sizeof(tmp));
-   crypto_generichash_final(state, tmp, sizeof(tmp));
+   if (crypto_generichash_init(state, NULL, 0, sizeof(tmp)))
+      return -17864;
+
+   if (crypto_generichash_update(state, (unsigned char *)data, data_sz))
+      return -17865;
+
+   if (crypto_generichash_update(state, (unsigned char *)password, passwd_len))
+      return -17866;
+
+   if (crypto_generichash_update(state, tmp, sizeof(tmp)))
+      return -17867;
+
+   if (crypto_generichash_final(state, tmp, sizeof(tmp)))
+      return -17868;
 
    memset(state, 0, sizeof(crypto_generichash_state));
    free(state);
@@ -3759,6 +3865,128 @@ nano_create_p2pow_block_dynamic_EXIT1:
    return err;
 }
 
+/////TODO Implement fast blake2b for POW
+/*
+
+static const uint64_t blake2b_IV[8] = {
+    0x6a09e667f3bcc908ULL, 0xbb67ae8584caa73bULL, 0x3c6ef372fe94f82bULL,
+    0xa54ff53a5f1d36f1ULL, 0x510e527fade682d1ULL, 0x9b05688c2b3e6c1fULL,
+    0x1f83d9abfb41bd6bULL, 0x5be0cd19137e2179ULL
+};
+
+enum blake2b_constant {
+    BLAKE2B_BLOCKBYTES    = 128,
+    BLAKE2B_OUTBYTES      = 64,
+    BLAKE2B_KEYBYTES      = 64,
+    BLAKE2B_SALTBYTES     = 16,
+    BLAKE2B_PERSONALBYTES = 16
+};
+
+typedef struct blake2b_state {
+    uint64_t h[8];
+    uint64_t t[2];
+    uint64_t f[2];
+    uint8_t  buf[2 * 128];
+    size_t   buflen;
+    uint8_t  last_node;
+} blake2b_state;
+
+typedef struct blake2b_param_ {
+    uint8_t digest_length;
+    uint8_t key_length;
+    uint8_t fanout;
+    uint8_t depth;
+    uint8_t leaf_length[4];
+    uint8_t node_offset[8];
+    uint8_t node_depth;
+    uint8_t inner_length;
+    uint8_t reserved[14];
+    uint8_t salt[BLAKE2B_SALTBYTES];
+    uint8_t personal[BLAKE2B_PERSONALBYTES];
+} blake2b_param;
+
+static inline int
+blake2b_init0(blake2b_state *S)
+{
+    int i;
+
+    for (i  = 0; i < 8; i++) {
+        S->h[i] = blake2b_IV[i];
+    }
+    // zero everything between .t and .last_node
+    memset((void *) &S->t, 0,
+           offsetof(blake2b_state, last_node) + sizeof(S->last_node)
+           - offsetof(blake2b_state, t));
+    return 0;
+}
+
+int
+blake2b_init_param(blake2b_state *S, const blake2b_param *P)
+{
+    size_t         i;
+    const uint8_t *p;
+
+    blake2b_init0(S);
+    p = (const uint8_t *) (P);
+
+    // IV XOR ParamBlock 
+    for (i = 0; i < 8; i++) {
+        S->h[i] ^= LOAD64_LE(p + sizeof(S->h[i]) * i);
+    }
+    return 0;
+}
+
+int
+blake2b_init(blake2b_state *S)
+{
+    blake2b_param P[1];
+
+    P->digest_length = (const uint8_t)sizeof(uint64_t);
+    P->key_length    = 0;
+    P->fanout        = 1;
+    P->depth         = 1;
+    STORE32_LE(P->leaf_length, 0);
+    STORE64_LE(P->node_offset, 0);
+    P->node_depth   = 0;
+    P->inner_length = 0;
+    memset(P->reserved, 0, sizeof(P->reserved));
+    memset(P->salt, 0, sizeof(P->salt));
+    memset(P->personal, 0, sizeof(P->personal));
+    return blake2b_init_param(S, P);
+}
+
+//// end init
+
+// begin update
+int
+blake2b_update(blake2b_state *S, const uint8_t *in, uint64_t inlen)
+{
+   memcpy(S->buf + S->buflen, in, inlen);
+   S->buflen += inlen;
+   return 0;
+}
+// end update
+
+int nano_pow_fast_util(uint64_t *nonce, uint64_t *pow, const uint8_t *hash, crypto_generichash_blake2b_state *state) {
+//init
+//crypto_generichash_init(state, NULL, 0, sizeof(uint64_t));
+
+   if (blake2b_init((blake2b_state *)state) != 0) {
+
+   }
+//update
+   if (blake2b_update((blake2b_state *)state, (const uint8_t *)pow, sizeof(uint64_t))) {
+
+   }
+
+   if (blake2b_update((blake2b_state *)state, hash, 32)) {
+
+   }
+
+
+
+}
+*/
 void *nano_pow_thread_util(LOCAL_POW_THREAD *local_pow)
 {
 
@@ -3895,8 +4123,10 @@ int f_nano_pow(uint64_t *PoW_res, unsigned char *hash, const uint64_t threshold,
 
       pthread_mutex_lock(&thr_mtx);
 
-      if ((err=local_pow.err)|(local_pow.flag))
+      if ((err=local_pow.err)|(local_pow.flag)) {
+         usleep(10000);
          break;
+      }
 
       pthread_mutex_unlock(&thr_mtx);
 
