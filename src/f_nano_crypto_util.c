@@ -3679,6 +3679,16 @@ int nano_create_block_dynamic(
    F_BLOCK_TRANSFER *blk_tmp;
    uint8_t *p;
 
+   if (direction&(~(F_VALUE_TO_SEND|F_VALUE_TO_RECEIVE)))
+      return NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION;
+
+   if (direction==(F_VALUE_TO_SEND|F_VALUE_TO_RECEIVE))
+      return NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION;
+
+   if (balance_and_val_to_send_or_rec_types&(~(F_BALANCE_RAW_128|F_BALANCE_REAL_STRING|F_BALANCE_RAW_STRING|
+      F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING)))
+      return NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE;
+
    if (!block)
       return NANO_CREATE_BLK_DYN_BLOCK_NULL;
 
@@ -3688,7 +3698,7 @@ int nano_create_block_dynamic(
       return NANO_CREATE_BLK_DYN_ACCOUNT_NULL;
 
    if (!previous)
-      return NANO_CREATE_BLK_DYN_PREV_NULL;
+      previous=account;
 
    if (!representative)
       return NANO_CREATE_BLK_DYN_REP_NULL;
@@ -3721,7 +3731,28 @@ int nano_create_block_dynamic(
    if (is_xrb_prefix)
       blk_tmp->prefixes=SENDER_XRB;
 
-   if (previous_len==32)
+   if (previous==account) {
+
+      if (direction&F_VALUE_TO_SEND) {
+         err=NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK;
+         goto nano_create_block_dynamic_EXIT3;
+      }
+
+      compare=(balance_and_val_to_send_or_rec_types&(F_BALANCE_RAW_128|F_BALANCE_REAL_STRING|F_BALANCE_RAW_STRING))|F_NANO_B_RAW_128;
+
+      if (f_nano_value_compare_value((void *)balance, memset(buffer, 0, sizeof(f_uint128_t)), &compare)) {
+         err=NANO_CREATE_BLK_DYN_COMPARE_BALANCE;
+         goto nano_create_block_dynamic_EXIT3;
+      }
+
+      if (!(compare&F_NANO_COMPARE_EQ)) {
+         err=NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE;
+         goto nano_create_block_dynamic_EXIT3;
+      }
+
+      p=blk_tmp->account;
+
+   } else if (previous_len==32)
       p=(uint8_t *)previous;
    else if (previous_len) {
       err=NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ;
@@ -3746,12 +3777,6 @@ int nano_create_block_dynamic(
    if (is_xrb_prefix)
       blk_tmp->prefixes|=REP_XRB;
 
-   if (balance_and_val_to_send_or_rec_types&(~(F_BALANCE_RAW_128|F_BALANCE_REAL_STRING|F_BALANCE_RAW_STRING|
-      F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING))) {
-      err=NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE;
-      goto nano_create_block_dynamic_EXIT3;
-   }
-
    compare=(balance_and_val_to_send_or_rec_types&(F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING))|F_NANO_A_RAW_128;
 
    if (f_nano_value_compare_value(memset(buffer, 0, sizeof(f_uint128_t)), (void *)value_to_send_or_receive, &compare)) {
@@ -3761,11 +3786,6 @@ int nano_create_block_dynamic(
 
    if (compare&F_NANO_COMPARE_EQ) {
       err=NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC;
-      goto nano_create_block_dynamic_EXIT3;
-   }
-
-   if (direction&(~(F_VALUE_TO_SEND|F_VALUE_TO_RECEIVE))) {
-      err=NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION;
       goto nano_create_block_dynamic_EXIT3;
    }
 
