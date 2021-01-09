@@ -1480,6 +1480,8 @@ int nano_create_p2pow_block_dynamic(
    size_t
 );
 
+int f_verify_signed_block(F_BLOCK_TRANSFER *);
+
 /**
  * @fn int f_nano_pow(uint64_t *PoW_res, unsigned char *hash, const uint64_t threshold, int n_thr)
  * @brief Calculates a Proof of Work given a <i>hash</i>, <i>threshold</i> and number of threads <i>n_thr</i>

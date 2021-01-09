@@ -3349,6 +3349,30 @@ f_sign_data_EXIT1:
 }
 
 #ifdef F_ESP32
+int IRAM_ATTR f_verify_signed_block(F_BLOCK_TRANSFER *nano_block)
+#else
+int f_verify_signed_block(F_BLOCK_TRANSFER *nano_block)
+#endif
+{
+
+   int err;
+   uint8_t hash[32];
+
+   if ((err=f_nano_get_block_hash(hash, nano_block)))
+      return err;
+
+   if ((err=f_crypto_sign_ed25519_verify_detached(
+      (const unsigned char *)nano_block->signature,
+      (const unsigned char *)hash,
+      sizeof(hash),
+      (const unsigned char *)nano_block->account)))
+      return err;
+
+   return 0;
+
+}
+
+#ifdef F_ESP32
 int IRAM_ATTR f_verify_signed_data(
    const unsigned char *signature,
    const unsigned char *message,
