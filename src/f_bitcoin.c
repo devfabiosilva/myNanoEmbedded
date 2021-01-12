@@ -422,7 +422,7 @@ typedef union u_pk_sk_t {
 
 
 #define BIP32_TO_PK_SK_SZ (size_t)(sizeof(BITCOIN_SERIALIZE)+65+64+sizeof(mbedtls_ecp_group)+sizeof(UNION_PK_SK)+sizeof(mbedtls_ecdsa_context)+sizeof(f_ecdsa_key_pair))
-int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code, uint32_t index, const char *bip32)
+int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code, uint32_t index, const void *bip32, int bip32_enc_base58)
 {
 //chain_code is optional
    int err, type;
@@ -438,7 +438,7 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
 
    bitcoin_bip32_ser=(BITCOIN_SERIALIZE *)buffer;
 
-   if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, (void *)bip32, 1)))
+   if ((err=f_bitcoin_valid_bip32(bitcoin_bip32_ser, &type, (void *)bip32, bip32_enc_base58)))
       goto f_bip32_to_public_key_or_private_key_EXIT1;
 
    if ((*((uint32_t *)bitcoin_bip32_ser->chksum)=index)>=(1<<31)) {

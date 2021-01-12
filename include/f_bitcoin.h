@@ -41,6 +41,6 @@ int f_wif_to_private_key(uint8_t *, unsigned char *, const char *);
 int f_generate_master_key(BITCOIN_SERIALIZE *, size_t, uint32_t);
 int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *, int *, void *, int);
 int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
-int f_bip32_to_public_key_or_private_key(uint8_t *, uint8_t *, uint32_t, const char *);
+int f_bip32_to_public_key_or_private_key(uint8_t *, uint8_t *, uint32_t, const void *, int);
 int f_public_key_to_address(char *, size_t, size_t *, uint8_t *, uint8_t);
 
