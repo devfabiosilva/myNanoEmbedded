@@ -734,17 +734,22 @@ int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int 
 
    memcpy(((BITCOIN_SERIALIZE *)buf)->chksum, hash, sizeof(((BITCOIN_SERIALIZE *)0)->chksum));
 
-   err=20133;
    if (enc&F_XPUB_BASE58) {
-      if ((err=f_encode_b58((char *)xpub, xpub_sz, xpub_len, buf, sizeof(BITCOIN_SERIALIZE))))
-         goto f_xpriv2xpub_EXIT1;
-   } else if (xpub_sz>=sizeof(BITCOIN_SERIALIZE)) {
-      err=0;
-      memcpy(xpub, buf, sizeof(BITCOIN_SERIALIZE));
-
-      if (xpub_len)
-         *xpub_len=sizeof(BITCOIN_SERIALIZE);
+      err=f_encode_b58((char *)xpub, xpub_sz, xpub_len, buf, sizeof(BITCOIN_SERIALIZE));
+      goto f_xpriv2xpub_EXIT1;
    }
+
+   err=0;
+
+   if (sizeof(BITCOIN_SERIALIZE)>xpub_sz) {
+      err=20133;
+      goto f_xpriv2xpub_EXIT1;
+   }
+
+   memcpy(xpub, buf, sizeof(BITCOIN_SERIALIZE));
+
+   if (xpub_len)
+      *xpub_len=sizeof(BITCOIN_SERIALIZE);
 
 f_xpriv2xpub_EXIT1:
    memset(buf, 0, XPRIV2PUB_BUF_SZ);
