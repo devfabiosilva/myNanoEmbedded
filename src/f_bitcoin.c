@@ -692,3 +692,63 @@ f_public_key_to_address_EXIT1:
    return err;
 }
 
+#define XPRIV2PUB_BUF_SZ (size_t)sizeof(BITCOIN_SERIALIZE)+sizeof(f_ecdsa_key_pair)
+#define F_XPRIV_BASE58 (int)1
+#define F_XPUB_BASE58 (int)2
+int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int enc)
+{
+   int err, type;
+   uint8_t *buf, *hash;
+   f_ecdsa_key_pair *key_pair;
+
+   if (!(buf=malloc(XPRIV2PUB_BUF_SZ)))
+      return 20130;
+
+   if ((err=f_bitcoin_valid_bip32((BITCOIN_SERIALIZE *)buf, &type, xpriv, enc&F_XPRIV_BASE58)))
+      goto f_xpriv2xpub_EXIT1;
+
+   if (type&1) {
+      err=20131;
+      goto f_xpriv2xpub_EXIT1;
+   }
+
+   (key_pair=(f_ecdsa_key_pair *)(buf+sizeof(BITCOIN_SERIALIZE)))->gid=MBEDTLS_ECP_DP_SECP256K1;
+   key_pair->ctx=NULL;
+
+   if ((err=f_gen_ecdsa_key_pair(key_pair, MBEDTLS_ECP_PF_COMPRESSED, load_master_private_key, (void *)&((BITCOIN_SERIALIZE *)buf)->sk_or_pk_data[1])))
+      goto f_xpriv2xpub_EXIT1;
+
+   if (key_pair->public_key_sz!=sizeof(((BITCOIN_SERIALIZE *)0)->sk_or_pk_data)) {
+      err=20132;
+      goto f_xpriv2xpub_EXIT1;
+   }
+
+   memcpy(((BITCOIN_SERIALIZE *)buf)->version_bytes, F_VERSION_BYTES[(size_t)type-1], sizeof(((BITCOIN_SERIALIZE *)0)->version_bytes));
+   memcpy(((BITCOIN_SERIALIZE *)buf)->sk_or_pk_data, key_pair->public_key, sizeof(((BITCOIN_SERIALIZE *)0)->sk_or_pk_data));
+
+   if ((err=f_sha256_digest((void **)&hash, 0, buf, sizeof(BITCOIN_SERIALIZE)-4))) 
+      goto f_xpriv2xpub_EXIT1;
+
+   if ((err=f_sha256_digest((void **)&hash, 0, hash, 32)))
+      goto f_xpriv2xpub_EXIT1;
+
+   memcpy(((BITCOIN_SERIALIZE *)buf)->chksum, hash, sizeof(((BITCOIN_SERIALIZE *)0)->chksum));
+
+   err=20133;
+   if (enc&F_XPUB_BASE58) {
+      if ((err=f_encode_b58((char *)xpub, xpub_sz, xpub_len, buf, sizeof(BITCOIN_SERIALIZE))))
+         goto f_xpriv2xpub_EXIT1;
+   } else if (xpub_sz>=sizeof(BITCOIN_SERIALIZE)) {
+      err=0;
+      memcpy(xpub, buf, sizeof(BITCOIN_SERIALIZE));
+
+      if (xpub_len)
+         *xpub_len=sizeof(BITCOIN_SERIALIZE);
+   }
+
+f_xpriv2xpub_EXIT1:
+   memset(buf, 0, XPRIV2PUB_BUF_SZ);
+   free(buf);
+   return err;
+}
+
