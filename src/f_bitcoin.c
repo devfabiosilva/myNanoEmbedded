@@ -693,8 +693,6 @@ f_public_key_to_address_EXIT1:
 }
 
 #define XPRIV2PUB_BUF_SZ (size_t)sizeof(BITCOIN_SERIALIZE)+sizeof(f_ecdsa_key_pair)
-#define F_XPRIV_BASE58 (int)1
-#define F_XPUB_BASE58 (int)2
 int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int enc)
 {
    int err, type;
@@ -723,7 +721,7 @@ int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int 
       goto f_xpriv2xpub_EXIT1;
    }
 
-   memcpy(((BITCOIN_SERIALIZE *)buf)->version_bytes, F_VERSION_BYTES[(size_t)type-1], sizeof(((BITCOIN_SERIALIZE *)0)->version_bytes));
+   memcpy(((BITCOIN_SERIALIZE *)buf)->version_bytes, F_VERSION_BYTES[(size_t)type-2], sizeof(((BITCOIN_SERIALIZE *)0)->version_bytes));
    memcpy(((BITCOIN_SERIALIZE *)buf)->sk_or_pk_data, key_pair->public_key, sizeof(((BITCOIN_SERIALIZE *)0)->sk_or_pk_data));
 
    if ((err=f_sha256_digest((void **)&hash, 0, buf, sizeof(BITCOIN_SERIALIZE)-4))) 
