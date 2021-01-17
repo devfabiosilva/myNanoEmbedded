@@ -639,6 +639,66 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
       goto f_public_key_to_address_EXIT1;
 
    buf[0]=pk_type;
+
+   if (f_sha256_digest((void **)&hash, 0, &buf[1], 65)) { 
+      err=20101;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   if (!(ripemd160=f_ripemd160((const uint8_t *)hash, 32))) {
+      err=20102;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   memcpy(&buf[1], ripemd160, 20);
+
+   if (f_sha256_digest((void **)&hash, 0, buf, 20+1)) { 
+      err=20103;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   if (f_sha256_digest((void **)&hash, 0, hash, 32)) {
+      err=20104;
+      goto f_public_key_to_address_EXIT2;
+   }
+
+   memcpy(buf+20+1, hash, 4);
+
+   if (buf[0])
+      sz_tmp=0;
+   else {
+      *(dest++)='1';
+      dest_sz--;
+      sz_tmp=1;
+   }
+
+   if ((err=f_encode_b58(dest, dest_sz, olen, buf+sz_tmp, 1+20+4-sz_tmp))==0)
+      if (olen)
+         *olen+=sz_tmp;
+
+f_public_key_to_address_EXIT2:
+   memset(buf, 0, PK2B58ADDR_BUF_SZ);
+f_public_key_to_address_EXIT1:
+   free(buf);
+
+   return err;
+}
+/*
+WRONG
+int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *public_key, uint8_t pk_type)
+{
+   int err;
+   uint8_t *buf, *ripemd160, *hash;
+   size_t sz_tmp;
+
+   if (!(buf=malloc(PK2B58ADDR_BUF_SZ)))
+      return 20100;
+
+   if (public_key[0]==0x04) memcpy(&buf[1], public_key, 65);
+   else if ((err=f_uncompress_elliptic_curve(&buf[1], PK2B58ADDR_BUF_SZ-1, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
+      goto f_public_key_to_address_EXIT1;
+
+   buf[0]=pk_type;
 //f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)
 
    if (f_sha256_digest((void **)&hash, 0, &buf[1], 65)) { 
@@ -691,6 +751,7 @@ f_public_key_to_address_EXIT1:
 
    return err;
 }
+*/
 
 #define XPRIV2PUB_BUF_SZ (size_t)sizeof(BITCOIN_SERIALIZE)+sizeof(f_ecdsa_key_pair)
 int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int enc)
