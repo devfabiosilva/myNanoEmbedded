@@ -46,4 +46,6 @@ int f_public_key_to_address(char *, size_t, size_t *, uint8_t *, uint8_t);
 #define F_XPRIV_BASE58 (int)1
 #define F_XPUB_BASE58 (int)2
 int f_xpriv2xpub(void *, size_t, size_t *, void *, int);
+int load_master_private_key(void *, unsigned char *, size_t);
+
 

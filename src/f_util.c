@@ -657,6 +657,45 @@ f_hmac_sha512_EXIT1:
    return err;
 }
 
+#define GET_EC_SZ_UTIL_NOT_IMPLEMENTED_YET (int)35000
+int get_ec_sz_util(size_t *sz, mbedtls_ecp_group_id gid)
+{
+
+   switch (gid) {
+      case MBEDTLS_ECP_DP_SECP256K1:
+      case MBEDTLS_ECP_DP_BP256R1:
+      case MBEDTLS_ECP_DP_SECP256R1:
+         *sz=32;
+         return 0;
+
+      case MBEDTLS_ECP_DP_SECP384R1:
+      case MBEDTLS_ECP_DP_BP384R1:
+         *sz=48;
+         return 0;
+
+      case MBEDTLS_ECP_DP_SECP224R1:
+      case MBEDTLS_ECP_DP_SECP224K1:
+         *sz=28;
+         return 0;
+
+      case MBEDTLS_ECP_DP_SECP192R1:
+      case MBEDTLS_ECP_DP_SECP192K1:
+         *sz=24;
+         return 0;
+
+      case MBEDTLS_ECP_DP_CURVE448:
+         *sz=56;
+         return 0;
+
+      case MBEDTLS_ECP_DP_BP512R1:
+         *sz=64;
+         return 0;
+
+   }
+
+   return GET_EC_SZ_UTIL_NOT_IMPLEMENTED_YET;
+}
+
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *f_key_pair, int format, fn_det fn, void *fn_det_ctx)
 {
    int err;
@@ -675,7 +714,15 @@ f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *f_key_pair, int form
    if ((err=mbedtls_ecdsa_genkey(f_ctx_tmp, f_key_pair->gid, fn, fn_det_ctx)))
       goto f_gen_ecdsa_key_pair_EXIT1;
 
+/* WARNING !!!
+The value returned by this function may be less than the number of bytes used to store X internally. This happens if and only if there are trailing bytes of value zero.
+https://tls.mbed.org/api/bignum_8h.html#a681ab2710d044c0cb091b6497c6ed395
+
    f_key_pair->private_key_sz=mbedtls_mpi_size(&f_ctx_tmp->d);
+   using int get_ec_sz_util(size_t *sz, int format) instead
+*/
+   if ((err=get_ec_sz_util(&f_key_pair->private_key_sz, f_key_pair->gid)))
+      goto f_gen_ecdsa_key_pair_EXIT1;
 
    if ((err=mbedtls_mpi_write_binary(&f_ctx_tmp->d, f_key_pair->private_key, f_key_pair->private_key_sz)))
       goto f_gen_ecdsa_key_pair_EXIT1;
