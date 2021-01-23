@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['nano_5fbase_5f32_5f2_5fhex',['nano_base_32_2_hex',['../df/d1d/f__nano__crypto__util_8h.html#ab7705b19465d7a834c0fd5da2e356ede',1,'f_nano_crypto_util.h']]],
-  ['nano_5fcreate_5fblock_5fdynamic',['nano_create_block_dynamic',['../df/d1d/f__nano__crypto__util_8h.html#a4100450d64005cdafbc5bd2cc7bc9774',1,'f_nano_crypto_util.h']]]
+  ['load_5fmaster_5fprivate_5fkey',['load_master_private_key',['../d0/da6/f__bitcoin_8h.html#a1fffc81fde63b74be3ee71b100b450a9',1,'f_bitcoin.h']]]
 ];

@@ -939,3 +939,93 @@ f_derive_xpriv_or_xpub_dynamic_EXIT1:
    return err;
 }
 
+static int f_parse_index_string_to_uint32_t_util(uint32_t *value, const char *str_val, size_t str_val_sz)
+{
+   int err;
+   char out[11];
+   unsigned long int value_out;
+
+   if (str_val_sz>(sizeof(out)-1))
+      return 900;
+
+   memcpy(out, str_val, str_val_sz);
+   out[str_val_sz]=0;
+
+   if (f_convert_to_long_int(&value_out, out, sizeof(out)))
+      return 901;
+
+   if (value_out>(unsigned long int)((uint32_t)((int)-1)))
+      return 902;
+
+   *value=(uint32_t)value_out;
+
+   return 0;
+}
+
+#define F_DERIVE_M_DEPTH_MAX_SZ (size_t)3072
+int f_derive_xkey_dynamic(void **out, void *mkey, const char *m_depth, int out_type)
+{
+   int err;
+   char *p1, *p2;
+   uint32_t index;
+   size_t val_sz;
+   void *out1, *out2;
+
+   *out=NULL;
+   if ((val_sz=strnlen(m_depth, F_DERIVE_M_DEPTH_MAX_SZ))==F_DERIVE_M_DEPTH_MAX_SZ)
+      return 20160;
+
+   if (val_sz==0)
+      return 20161;
+
+   p1=(char *)m_depth;
+
+   if (*(p1++)!='m')
+      return 20162;
+
+   if (*(p1++)!='/')
+      return 20163;
+//m / 1 / 2 / 3
+//0 1 2 3 4 5 6
+   out2=mkey;
+   while (p2=strchr(p1, '/')) {
+      if (p1==p2) {
+         err=20164;
+         goto f_derive_xkey_EXIT1;
+      }
+
+      if ((err=f_parse_index_string_to_uint32_t_util(&index, (const char *)p1, p2-p1)))
+         goto f_derive_xkey_EXIT1;
+
+      if ((err=f_derive_xpriv_or_xpub_dynamic(&out1, NULL, NULL, out2, index, out_type&(~(DERIVE_XPRIV_XPUB_DYN_OUT_BASE58)))))
+         goto f_derive_xkey_EXIT1;
+
+      if (out2!=mkey)
+         free(out2);
+
+      p1=p2+1;
+
+      out2=out1;
+
+   }
+
+   if ((val_sz+=m_depth)>(size_t)p1) {
+
+      if ((err=f_parse_index_string_to_uint32_t_util(&index, (const char *)p1, val_sz-(size_t)p1+1)))
+         goto f_derive_xkey_EXIT1;
+
+      if ((err=f_derive_xpriv_or_xpub_dynamic(&out1, NULL, NULL, out2, index, out_type)))
+         goto f_derive_xkey_EXIT1;
+
+      *out=out1;
+
+   } else
+      err=20167;
+
+f_derive_xkey_EXIT1:
+   if (out2!=mkey)
+      free(out2);
+
+   return err;
+}
+

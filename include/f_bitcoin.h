@@ -62,5 +62,6 @@ int f_fingerprint(uint8_t *, uint8_t *, uint8_t *);
 #define F_GET_XKEY_IS_BASE58 (int)0x00008000
 int f_get_xkey_type(void *);
 int f_derive_xpriv_or_xpub_dynamic(void **, uint8_t *, uint32_t *, void *, uint32_t, int);
+int f_derive_xkey_dynamic(void **, void *, const char *, int);
 
 

@@ -132,6 +132,10 @@ Macros</h2></td></tr>
 <tr class="separator:ab865b59cda27be360c6591d864b443ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97e600f71ae0a21e0d3dedc2321f7927"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a97e600f71ae0a21e0d3dedc2321f7927">NANO_FILE_WALLETS_INFO</a>&#160;&#160;&#160;&quot;/spiffs/secure/walletsinfo.i&quot;</td></tr>
 <tr class="separator:a97e600f71ae0a21e0d3dedc2321f7927"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29993e3c3aae95f4210732c3f3774bff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a29993e3c3aae95f4210732c3f3774bff">F_BLOCK_TRANSFER_SIZE</a>&#160;&#160;&#160;(size_t)sizeof(F_BLOCK_TRANSFER)</td></tr>
+<tr class="separator:a29993e3c3aae95f4210732c3f3774bff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a386db596587d3d2b3a363d8a8ee8770f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a386db596587d3d2b3a363d8a8ee8770f">F_P2POW_BLOCK_TRANSFER_SIZE</a>&#160;&#160;&#160;2*<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a29993e3c3aae95f4210732c3f3774bff">F_BLOCK_TRANSFER_SIZE</a></td></tr>
+<tr class="separator:a386db596587d3d2b3a363d8a8ee8770f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab81c2fc73451c0e931c44f97728df3af"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab81c2fc73451c0e931c44f97728df3af">REP_XRB</a>&#160;&#160;&#160;(uint8_t)0x4</td></tr>
 <tr class="separator:ab81c2fc73451c0e931c44f97728df3af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a780c390e75c8d7bca933024897c4123c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a780c390e75c8d7bca933024897c4123c">SENDER_XRB</a>&#160;&#160;&#160;(uint8_t)0x02</td></tr>
@@ -227,6 +231,8 @@ Typedefs</h2></td></tr>
 <tr class="separator:a016da69f9a6eb386c13763da8866b3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a728b9dddf900881bfcdf77316085731b"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99">f_nano_create_block_dyn_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a728b9dddf900881bfcdf77316085731b">F_NANO_CREATE_BLOCK_DYN_ERR</a></td></tr>
 <tr class="separator:a728b9dddf900881bfcdf77316085731b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48a13dfb9397b457711bba52fdcd82a2"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610">f_nano_p2pow_block_dyn_err_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a48a13dfb9397b457711bba52fdcd82a2">F_NANO_P2POW_BLOCK_DYN_ERR</a></td></tr>
+<tr class="separator:a48a13dfb9397b457711bba52fdcd82a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -307,27 +313,40 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99af7864fb604409553b5d8081d4322eee8">NANO_CREATE_BLK_DYN_OK</a> = 0, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a851c1c7ad7a5ac99719fb8eac8bf063c">NANO_CREATE_BLK_DYN_BLOCK_NULL</a> = 8000, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a63e39528eec3a04c984d36a6d796ca76">NANO_CREATE_BLK_DYN_ACCOUNT_NULL</a>, 
-<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99af454eb9ee34bf15445aee6beb0223a36">NANO_CREATE_BLK_DYN_PREV_NULL</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ad6d20377f7fe4f6a0ba80964c5e0adb2">NANO_CREATE_BLK_DYN_COMPARE_BALANCE</a>, 
 <br />
-&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a4a501bff243705acd321d3d5f2d8b8f1">NANO_CREATE_BLK_DYN_REP_NULL</a>, 
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a4279e5e8aee75f1da1fed1bf6804acd7">NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99afeb4173827325b9c29772e39ece50910">NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a4a501bff243705acd321d3d5f2d8b8f1">NANO_CREATE_BLK_DYN_REP_NULL</a>, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ab6166572316d3d7bdc2d7c4604b4f970">NANO_CREATE_BLK_DYN_BALANCE_NULL</a>, 
-<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a364aebe5bfc0f9ea6808c040c0303e02">NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a364aebe5bfc0f9ea6808c040c0303e02">NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL</a>, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a3269a786339abd23c3927775a2f9fad8">NANO_CREATE_BLK_DYN_LINK_NULL</a>, 
-<br />
-&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ada587db67c801ac7d9b0cce1258a3357">NANO_CREATE_BLK_DYN_BUF_MALLOC</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ada587db67c801ac7d9b0cce1258a3357">NANO_CREATE_BLK_DYN_BUF_MALLOC</a>, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ad43513436f1edc4823d218767502c7bc">NANO_CREATE_BLK_DYN_MALLOC</a>, 
-<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a426be49938057d038877e7fbd8fe025b">NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a426be49938057d038877e7fbd8fe025b">NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ</a>, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a6638d8fd941fc6abc1c3fb89ba240e34">NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_STR_SZ</a>, 
-<br />
-&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a7d5f54338064b1b46f7fe7c8f55ac182">NANO_CREATE_BLK_DYN_PARSE_STR_HEX_ERR</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a7d5f54338064b1b46f7fe7c8f55ac182">NANO_CREATE_BLK_DYN_PARSE_STR_HEX_ERR</a>, 
 <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a6a2bee4939e8f920801fdf85aea3a4fa">NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE</a>, 
-<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a51f40aceeb82be697da960ee4743bf82">NANO_CREATE_BLK_DYN_COMPARE</a>, 
-<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99acfea070a7f2144ac8709734b782e2d90">NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC</a>, 
 <br />
-&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99aa67e6a08878e242721e18e5d7e0fb5b6">NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION</a>
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a51f40aceeb82be697da960ee4743bf82">NANO_CREATE_BLK_DYN_COMPARE</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99acfea070a7f2144ac8709734b782e2d90">NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99aa67e6a08878e242721e18e5d7e0fb5b6">NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION</a>
 <br />
  }</td></tr>
 <tr class="separator:af2c70881adfbe2bcfcc6b05cbe4a1c99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab153c5a867732ab2184f2d8e3e929610"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610">f_nano_p2pow_block_dyn_err_t</a> { <br />
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610af9c386b539de5a9dc1f7b4f83103aee3">NANO_P2POW_CREATE_BLOCK_OK</a> = 0, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610a62efc806cd8ea687a6b4742f449191b5">NANO_P2POW_CREATE_BLOCK_INVALID_USER_BLOCK</a> = 8400, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610afa141dcfdad510dad8d192b751c3b238">NANO_P2POW_CREATE_BLOCK_MALLOC</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610aa2062b2fbfd2b5ab5b62a293149c884e">NANO_P2POW_CREATE_BLOCK_NULL</a>, 
+<br />
+&#160;&#160;<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610a9d2b9a246611654b20760dd785f885d1">NANO_P2POW_CREATE_OUTPUT</a>, 
+<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610a7db7cb7b968010b9543387d6f01aa8b6">NANO_P2POW_CREATE_OUTPUT_MALLOC</a>
+<br />
+ }</td></tr>
+<tr class="separator:ab153c5a867732ab2184f2d8e3e929610"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -421,6 +440,10 @@ Functions</h2></td></tr>
 <tr class="separator:a8d1a4cca9cfa3f11e38dd9ad993e258d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4100450d64005cdafbc5bd2cc7bc9774"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4100450d64005cdafbc5bd2cc7bc9774">nano_create_block_dynamic</a> (F_BLOCK_TRANSFER **, const void *, size_t, const void *, size_t, const void *, size_t, const void *, const void *, uint32_t, const void *, size_t, int)</td></tr>
 <tr class="separator:a4100450d64005cdafbc5bd2cc7bc9774"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f6a647a8992be104092e97d2c66ab79"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a8f6a647a8992be104092e97d2c66ab79">nano_create_p2pow_block_dynamic</a> (F_BLOCK_TRANSFER **, F_BLOCK_TRANSFER *, const void *, size_t, const void *, uint32_t, const void *, size_t)</td></tr>
+<tr class="separator:a8f6a647a8992be104092e97d2c66ab79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c547ea562ddc27d4c48e351e46dcd17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a0c547ea562ddc27d4c48e351e46dcd17">f_verify_signed_block</a> (F_BLOCK_TRANSFER *)</td></tr>
+<tr class="separator:a0c547ea562ddc27d4c48e351e46dcd17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420">f_nano_pow</a> (uint64_t *, unsigned char *, const uint64_t, int)</td></tr>
 <tr class="separator:a4b8347fe7afb8ead037ec9f9d4e5b420"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -502,7 +525,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00434">434</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00437">437</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -518,7 +541,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01432">1432</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01447">1447</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -534,7 +557,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01434">1434</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01449">1449</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -550,7 +573,23 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01433">1433</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01448">1448</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
+<a id="a29993e3c3aae95f4210732c3f3774bff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29993e3c3aae95f4210732c3f3774bff">&#9670;&nbsp;</a></span>F_BLOCK_TRANSFER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_BLOCK_TRANSFER_SIZE&#160;&#160;&#160;(size_t)sizeof(F_BLOCK_TRANSFER)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00288">288</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -569,7 +608,7 @@ Variables</h2></td></tr>
 <p>[bad]. </p>
 <p>Crack within one day </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01191">1191</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01206">1206</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -588,7 +627,7 @@ Variables</h2></td></tr>
 <p>[good]. </p>
 <p>Crack within one thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01222">1222</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01237">1237</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -607,7 +646,7 @@ Variables</h2></td></tr>
 <p>[maybe good for you]. </p>
 <p>Crack within one century </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01215">1215</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01230">1230</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -626,7 +665,7 @@ Variables</h2></td></tr>
 <p>[very nice]. </p>
 <p>Crack withing one hundred thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01234">1234</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01249">1249</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -644,7 +683,7 @@ Variables</h2></td></tr>
 
 <p>[Perfect!] 3.34x10^53 Years to crack </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01240">1240</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01255">1255</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -663,7 +702,7 @@ Variables</h2></td></tr>
 <p>[poor]. </p>
 <p>Crack within minutes </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01179">1179</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01194">1194</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -682,7 +721,7 @@ Variables</h2></td></tr>
 <p>[still weak]. </p>
 <p>Crack within one year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01209">1209</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01224">1224</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +740,7 @@ Variables</h2></td></tr>
 <p>[very bad]. </p>
 <p>Crack within one hour </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01185">1185</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01200">1200</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -720,7 +759,7 @@ Variables</h2></td></tr>
 <p>[very good]. </p>
 <p>Crack within ten thousand year </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01228">1228</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01243">1243</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +778,7 @@ Variables</h2></td></tr>
 <p>[very poor]. </p>
 <p>Crack within seconds or less </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01173">1173</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01188">1188</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -758,7 +797,7 @@ Variables</h2></td></tr>
 <p>[very weak]. </p>
 <p>Crack within one week </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01197">1197</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01212">1212</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -777,7 +816,7 @@ Variables</h2></td></tr>
 <p>[weak]. </p>
 <p>Crack within one month </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01203">1203</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01218">1218</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +834,7 @@ Variables</h2></td></tr>
 
 <p>Default Nano Proof of Work Threshold. </p>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01343">1343</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01358">1358</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -814,7 +853,7 @@ Variables</h2></td></tr>
 <p>Signature is raw hex string flag. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01330">1330</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01345">1345</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -833,7 +872,7 @@ Variables</h2></td></tr>
 <p>Message is raw hex hash string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01337">1337</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01352">1352</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -856,6 +895,22 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a386db596587d3d2b3a363d8a8ee8770f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a386db596587d3d2b3a363d8a8ee8770f">&#9670;&nbsp;</a></span>F_P2POW_BLOCK_TRANSFER_SIZE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define F_P2POW_BLOCK_TRANSFER_SIZE&#160;&#160;&#160;2*<a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a29993e3c3aae95f4210732c3f3774bff">F_BLOCK_TRANSFER_SIZE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00289">289</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
 <a id="a9be604eec38d2857421eb3fb05c6e92f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9be604eec38d2857421eb3fb05c6e92f">&#9670;&nbsp;</a></span>F_SIGNATURE_OUTPUT_NANO_PK</h2>
 
@@ -871,7 +926,7 @@ Variables</h2></td></tr>
 <p>Public key is a NANO wallet encoded base32 string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01323">1323</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01338">1338</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -890,7 +945,7 @@ Variables</h2></td></tr>
 <p>Public key is raw data. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01302">1302</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01317">1317</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -909,7 +964,7 @@ Variables</h2></td></tr>
 <p>Public key is hex ASCII encoded string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01309">1309</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01324">1324</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -928,7 +983,7 @@ Variables</h2></td></tr>
 <p>Public key is a XRB wallet encoded base32 string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01316">1316</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01331">1331</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -947,7 +1002,7 @@ Variables</h2></td></tr>
 <p>Signature is raw data. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01288">1288</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01303">1303</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -966,7 +1021,7 @@ Variables</h2></td></tr>
 <p>Signature is hex ASCII encoded string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#af4e439f45ed4b10d55efe13fb720ddd5" title="Signs a message with a deterministic signature given a private key ">f_sign_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01295">1295</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01310">1310</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -982,7 +1037,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01435">1435</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01450">1450</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -998,7 +1053,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01437">1437</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01452">1452</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1014,7 +1069,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01436">1436</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01451">1451</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1085,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01439">1439</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01454">1454</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1046,7 +1101,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01438">1438</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01453">1453</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1065,7 +1120,7 @@ Variables</h2></td></tr>
 <p>Public key is a hex ASCII encoded string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01395">1395</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01410">1410</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1084,7 +1139,7 @@ Variables</h2></td></tr>
 <p>Public key is a NANO wallet with <em>XRB</em> or <em>NANO</em> prefixes encoded base32 string. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01381">1381</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01396">1396</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1103,7 +1158,7 @@ Variables</h2></td></tr>
 <p>Public key raw 32 bytes data. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345" title="Verifies if a signed message is valid. ">f_verify_signed_data()</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01388">1388</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l01403">1403</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1247,7 +1302,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00428">428</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00431">431</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1332,6 +1387,20 @@ Variables</h2></td></tr>
 
 <p>Error function enumerator. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ae074b28c7eee3839a229f291851b194c">f_nano_err_t</a> </dd></dl>
+
+</div>
+</div>
+<a id="a48a13dfb9397b457711bba52fdcd82a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48a13dfb9397b457711bba52fdcd82a2">&#9670;&nbsp;</a></span>F_NANO_P2POW_BLOCK_DYN_ERR</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef enum <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610">f_nano_p2pow_block_dyn_err_t</a>  <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#a48a13dfb9397b457711bba52fdcd82a2">F_NANO_P2POW_BLOCK_DYN_ERR</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1518,7 +1587,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00540">540</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00543">543</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1606,9 @@ Variables</h2></td></tr>
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99af7864fb604409553b5d8081d4322eee8"></a>NANO_CREATE_BLK_DYN_OK&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99a851c1c7ad7a5ac99719fb8eac8bf063c"></a>NANO_CREATE_BLK_DYN_BLOCK_NULL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99a63e39528eec3a04c984d36a6d796ca76"></a>NANO_CREATE_BLK_DYN_ACCOUNT_NULL&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99af454eb9ee34bf15445aee6beb0223a36"></a>NANO_CREATE_BLK_DYN_PREV_NULL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99ad6d20377f7fe4f6a0ba80964c5e0adb2"></a>NANO_CREATE_BLK_DYN_COMPARE_BALANCE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99a4279e5e8aee75f1da1fed1bf6804acd7"></a>NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99afeb4173827325b9c29772e39ece50910"></a>NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99a4a501bff243705acd321d3d5f2d8b8f1"></a>NANO_CREATE_BLK_DYN_REP_NULL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99ab6166572316d3d7bdc2d7c4604b4f970"></a>NANO_CREATE_BLK_DYN_BALANCE_NULL&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99a364aebe5bfc0f9ea6808c040c0303e02"></a>NANO_CREATE_BLK_DYN_SEND_RECEIVE_NULL&#160;</td><td class="fielddoc"></td></tr>
@@ -1553,7 +1624,7 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="af2c70881adfbe2bcfcc6b05cbe4a1c99aa67e6a08878e242721e18e5d7e0fb5b6"></a>NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00600">600</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00603">603</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1619,7 +1690,31 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00299">299</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00302">302</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+
+</div>
+</div>
+<a id="ab153c5a867732ab2184f2d8e3e929610"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab153c5a867732ab2184f2d8e3e929610">&#9670;&nbsp;</a></span>f_nano_p2pow_block_dyn_err_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="../../df/d1d/f__nano__crypto__util_8h.html#ab153c5a867732ab2184f2d8e3e929610">f_nano_p2pow_block_dyn_err_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610af9c386b539de5a9dc1f7b4f83103aee3"></a>NANO_P2POW_CREATE_BLOCK_OK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610a62efc806cd8ea687a6b4742f449191b5"></a>NANO_P2POW_CREATE_BLOCK_INVALID_USER_BLOCK&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610afa141dcfdad510dad8d192b751c3b238"></a>NANO_P2POW_CREATE_BLOCK_MALLOC&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610aa2062b2fbfd2b5ab5b62a293149c884e"></a>NANO_P2POW_CREATE_BLOCK_NULL&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610a9d2b9a246611654b20760dd785f885d1"></a>NANO_P2POW_CREATE_OUTPUT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="ab153c5a867732ab2184f2d8e3e929610a7db7cb7b968010b9543387d6f01aa8b6"></a>NANO_P2POW_CREATE_OUTPUT_MALLOC&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00626">626</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -1661,7 +1756,7 @@ Variables</h2></td></tr>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00436">436</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html#l00439">439</a> of file <a class="el" href="../../df/d1d/f__nano__crypto__util_8h_source.html">f_nano_crypto_util.h</a>.</p>
 
 </div>
 </div>
@@ -3408,6 +3503,24 @@ Output type:</li>
 
 </div>
 </div>
+<a id="a0c547ea562ddc27d4c48e351e46dcd17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c547ea562ddc27d4c48e351e46dcd17">&#9670;&nbsp;</a></span>f_verify_signed_block()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int f_verify_signed_block </td>
+          <td>(</td>
+          <td class="paramtype">F_BLOCK_TRANSFER *&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a46976d4225f8a3f8f4a3b3c563849345"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46976d4225f8a3f8f4a3b3c563849345">&#9670;&nbsp;</a></span>f_verify_signed_data()</h2>
 
@@ -3906,6 +4019,70 @@ Output type:</li>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8f6a647a8992be104092e97d2c66ab79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f6a647a8992be104092e97d2c66ab79">&#9670;&nbsp;</a></span>nano_create_p2pow_block_dynamic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nano_create_p2pow_block_dynamic </td>
+          <td>(</td>
+          <td class="paramtype">F_BLOCK_TRANSFER **&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F_BLOCK_TRANSFER *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname">&#160;</td>
         </tr>
         <tr>

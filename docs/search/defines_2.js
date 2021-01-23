@@ -9,6 +9,7 @@ var searchData=
   ['f_5fbitcoin_5ft2pkh',['F_BITCOIN_T2PKH',['../d0/da6/f__bitcoin_8h.html#a81460f37eeddf968dcaee8da25647b4f',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5fmainnet',['F_BITCOIN_WIF_MAINNET',['../d0/da6/f__bitcoin_8h.html#afe4f4113b6c9f8a65b44627c1561b7c0',1,'f_bitcoin.h']]],
   ['f_5fbitcoin_5fwif_5ftestnet',['F_BITCOIN_WIF_TESTNET',['../d0/da6/f__bitcoin_8h.html#af59b1d2c222a8a7717c761f4393b26f7',1,'f_bitcoin.h']]],
+  ['f_5fblock_5ftransfer_5fsize',['F_BLOCK_TRANSFER_SIZE',['../df/d1d/f__nano__crypto__util_8h.html#a29993e3c3aae95f4210732c3f3774bff',1,'f_nano_crypto_util.h']]],
   ['f_5fbrain_5fwallet_5fbad',['F_BRAIN_WALLET_BAD',['../df/d1d/f__nano__crypto__util_8h.html#a9da10bb8ea76491520355d3fc04103e9',1,'f_nano_crypto_util.h']]],
   ['f_5fbrain_5fwallet_5fgood',['F_BRAIN_WALLET_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adf59258863cbd983409dde603a614839',1,'f_nano_crypto_util.h']]],
   ['f_5fbrain_5fwallet_5fmaybe_5fgood',['F_BRAIN_WALLET_MAYBE_GOOD',['../df/d1d/f__nano__crypto__util_8h.html#adc5a8728a7e3c4d0a15f3bf4f304d0a5',1,'f_nano_crypto_util.h']]],
@@ -29,10 +30,12 @@ var searchData=
   ['f_5fentropy_5ftype_5fparanoic',['F_ENTROPY_TYPE_PARANOIC',['../de/dc6/f__util_8h.html#a3b34feb49b9b50965bdbcc37f4670792',1,'f_util.h']]],
   ['f_5fget_5fch_5fmode_5fany_5fkey',['F_GET_CH_MODE_ANY_KEY',['../de/dc6/f__util_8h.html#a37f18a5a28eebb68a2f53535c6ea111e',1,'f_util.h']]],
   ['f_5fget_5fch_5fmode_5fno_5fecho',['F_GET_CH_MODE_NO_ECHO',['../de/dc6/f__util_8h.html#af4f3a8f72413cecdb5f8775a8e2d2447',1,'f_util.h']]],
+  ['f_5fget_5fxkey_5fis_5fbase58',['F_GET_XKEY_IS_BASE58',['../d0/da6/f__bitcoin_8h.html#acab854550d09cd5e871589efef007348',1,'f_bitcoin.h']]],
   ['f_5fis_5fsignature_5fraw_5fhex_5fstring',['F_IS_SIGNATURE_RAW_HEX_STRING',['../df/d1d/f__nano__crypto__util_8h.html#a075e66cda4b1f83771abadc8298ce73e',1,'f_nano_crypto_util.h']]],
   ['f_5fmax_5fbase58_5flength',['F_MAX_BASE58_LENGTH',['../d0/da6/f__bitcoin_8h.html#a94ec3093b5100c52408b2720db055894',1,'f_bitcoin.h']]],
   ['f_5fmessage_5fis_5fhash_5fstring',['F_MESSAGE_IS_HASH_STRING',['../df/d1d/f__nano__crypto__util_8h.html#ac40004079934aa1d76678f128c44f8b0',1,'f_nano_crypto_util.h']]],
   ['f_5fnano_5fpow_5fmax_5fthread',['F_NANO_POW_MAX_THREAD',['../df/d1d/f__nano__crypto__util_8h.html#a39cb5d21c557f6919d9e062e30be830f',1,'f_nano_crypto_util.h']]],
+  ['f_5fp2pow_5fblock_5ftransfer_5fsize',['F_P2POW_BLOCK_TRANSFER_SIZE',['../df/d1d/f__nano__crypto__util_8h.html#a386db596587d3d2b3a363d8a8ee8770f',1,'f_nano_crypto_util.h']]],
   ['f_5fpass_5fis_5fout_5fovf',['F_PASS_IS_OUT_OVF',['../de/dc6/f__util_8h.html#a318e831d56063ecb61ac55987235f024',1,'f_util.h']]],
   ['f_5fpass_5fis_5ftoo_5flong',['F_PASS_IS_TOO_LONG',['../de/dc6/f__util_8h.html#ad502e72a6c7de525643600cb662d90e5',1,'f_util.h']]],
   ['f_5fpass_5fis_5ftoo_5fshort',['F_PASS_IS_TOO_SHORT',['../de/dc6/f__util_8h.html#a4702e1a26ce5cbae4c0e2347c37c403f',1,'f_util.h']]],
@@ -55,5 +58,7 @@ var searchData=
   ['f_5fverify_5fsig_5fascii_5fhex',['F_VERIFY_SIG_ASCII_HEX',['../df/d1d/f__nano__crypto__util_8h.html#a3fc1d0fdaeaf722bce672f93b19e4bfb',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fnano_5fwallet',['F_VERIFY_SIG_NANO_WALLET',['../df/d1d/f__nano__crypto__util_8h.html#a6f0e0d9c79084f462710bbf2c9e93d42',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsig_5fraw_5fhex',['F_VERIFY_SIG_RAW_HEX',['../df/d1d/f__nano__crypto__util_8h.html#ade78b5a9195ed33cda8ec3f817cb3b3f',1,'f_nano_crypto_util.h']]],
-  ['f_5fversion_5fbytes_5fidx_5flen',['F_VERSION_BYTES_IDX_LEN',['../d0/da6/f__bitcoin_8h.html#a0c1ff3dd8ae263f98dd2f68b4402a986',1,'f_bitcoin.h']]]
+  ['f_5fversion_5fbytes_5fidx_5flen',['F_VERSION_BYTES_IDX_LEN',['../d0/da6/f__bitcoin_8h.html#a0c1ff3dd8ae263f98dd2f68b4402a986',1,'f_bitcoin.h']]],
+  ['f_5fxpriv_5fbase58',['F_XPRIV_BASE58',['../d0/da6/f__bitcoin_8h.html#ab12514b0a712078caf4121c082b479f0',1,'f_bitcoin.h']]],
+  ['f_5fxpub_5fbase58',['F_XPUB_BASE58',['../d0/da6/f__bitcoin_8h.html#ac8d99b0f04591efb58eac865a07c3c7b',1,'f_bitcoin.h']]]
 ];
