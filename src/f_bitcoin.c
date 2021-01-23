@@ -425,6 +425,7 @@ typedef union u_pk_sk_t {
 int f_bip32_to_public_key_or_private_key(
    uint8_t *sk_or_pk,
    int *xtype,
+   uint8_t *depth,
    uint8_t *fingerprint,
    uint8_t *chain_code,
    uint32_t index,
@@ -629,6 +630,9 @@ f_bip32_to_public_key_or_private_key_EXIT3:
 
       if (xtype)
          *xtype=type;
+
+      if (depth)
+         *depth=bitcoin_bip32_ser->master_node;
    }
 
 f_bip32_to_public_key_or_private_key_EXIT2:
@@ -881,8 +885,13 @@ int f_derive_xpriv_or_xpub_dynamic(void **out, uint8_t *depth, uint32_t *fingerp
 
    btc_ser_out=&((BITCOIN_SERIALIZE *)buffer)[1];
 
-   if ((err=f_bip32_to_public_key_or_private_key(btc_ser_out->sk_or_pk_data, &type, btc_ser_out->finger_print, btc_ser_out->chain_code, 
+   if ((err=f_bip32_to_public_key_or_private_key(btc_ser_out->sk_or_pk_data, &type, &btc_ser_out->master_node, btc_ser_out->finger_print, btc_ser_out->chain_code, 
       index, (const void *)p, in_out_type&DERIVE_XPRIV_XPUB_DYN_IN_BASE58))) goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+   if (!(++btc_ser_out->master_node)) {
+      err=20155;
+      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+   }
 
    memcpy(btc_ser_out->version_bytes, F_VERSION_BYTES[(size_t)(type-1)], sizeof(((BITCOIN_SERIALIZE *)0)->version_bytes));
 
@@ -900,7 +909,7 @@ int f_derive_xpriv_or_xpub_dynamic(void **out, uint8_t *depth, uint32_t *fingerp
    memcpy(btc_ser_out->chksum, hash, sizeof(((BITCOIN_SERIALIZE *)0)->chksum));
 
    if (!(*out=malloc(DERIVE_DYN_SZ))) {
-      err=20155;
+      err=20156;
       goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
    }
 
