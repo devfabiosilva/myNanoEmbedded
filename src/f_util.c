@@ -535,26 +535,6 @@ char *fhex2strv2(char *res, const void *buf, size_t buf_sz, int is_uppercase)
    return res;
 
 }
-/*
-uint8_t *f_sha256_digest(uint8_t *msg, size_t size)
-{
-    static uint8_t result256sum[32];
-
-    mbedtls_sha256_context sha256;
-
-    mbedtls_sha256_init(&sha256);
-
-    mbedtls_sha256_starts_ret(&sha256, 0);
-
-    mbedtls_sha256_update_ret(&sha256, msg, size);
-
-    mbedtls_sha256_finish(&sha256, result256sum);
-
-    mbedtls_sha256_free(&sha256);
-
-    return result256sum;
-}
-*/
 
 #ifdef F_ESP32
 int IRAM_ATTR f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_size)

@@ -422,7 +422,15 @@ typedef union u_pk_sk_t {
 
 
 #define BIP32_TO_PK_SK_SZ (size_t)(sizeof(BITCOIN_SERIALIZE)+65+64+sizeof(mbedtls_ecp_group)+sizeof(UNION_PK_SK)+sizeof(mbedtls_ecdsa_context)+sizeof(f_ecdsa_key_pair))
-int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code, uint32_t index, const void *bip32, int bip32_enc_base58)
+int f_bip32_to_public_key_or_private_key(
+   uint8_t *sk_or_pk,
+   int *xtype,
+   uint8_t *fingerprint,
+   uint8_t *chain_code,
+   uint32_t index,
+   const void *bip32,
+   int bip32_enc_base58
+)
 {
 //chain_code is optional
    int err, type;
@@ -457,6 +465,10 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
       if ((err=f_uncompress_elliptic_curve((uint8_t *)&bitcoin_bip32_ser[1], 65, NULL, MBEDTLS_ECP_DP_SECP256K1, bitcoin_bip32_ser->sk_or_pk_data, 
          sizeof(bitcoin_bip32_ser->sk_or_pk_data)))) goto f_bip32_to_public_key_or_private_key_EXIT2;
 
+      if (fingerprint)
+         if ((err=f_fingerprint(NULL, fingerprint, (uint8_t *)&bitcoin_bip32_ser[1])))
+            goto f_bip32_to_public_key_or_private_key_EXIT2;
+
    } else {
       if ((err=f_gen_ecdsa_key_pair(key_pair, MBEDTLS_ECP_PF_COMPRESSED, load_master_private_key, (void *)&bitcoin_bip32_ser->sk_or_pk_data[1])))
          goto f_bip32_to_public_key_or_private_key_EXIT2;
@@ -465,6 +477,10 @@ int f_bip32_to_public_key_or_private_key(uint8_t *sk_or_pk, uint8_t *chain_code,
          err=20072;
          goto f_bip32_to_public_key_or_private_key_EXIT2;
       }
+
+      if (fingerprint)
+         if ((err=f_fingerprint(NULL, fingerprint, key_pair->public_key)))
+            goto f_bip32_to_public_key_or_private_key_EXIT2;
 
       memcpy((uint8_t *)&bitcoin_bip32_ser[1], &bitcoin_bip32_ser->sk_or_pk_data[1], 32);
       memcpy(bitcoin_bip32_ser->sk_or_pk_data, key_pair->public_key, sizeof(bitcoin_bip32_ser->sk_or_pk_data));
@@ -607,9 +623,13 @@ f_bip32_to_public_key_or_private_key_EXIT4:
 f_bip32_to_public_key_or_private_key_EXIT3:
    mbedtls_ecp_group_free(grp);
 
-   if (err==0)
+   if (err==0) {
       if (chain_code)
          memcpy(chain_code, (((uint8_t *)&bitcoin_bip32_ser[1])+65+32), 32);
+
+      if (xtype)
+         *xtype=type;
+   }
 
 f_bip32_to_public_key_or_private_key_EXIT2:
    mbedtls_ecdsa_free(key_pair->ctx);
@@ -729,8 +749,6 @@ int f_xpriv2xpub(void *xpub, size_t xpub_sz, size_t *xpub_len, void *xpriv, int 
       goto f_xpriv2xpub_EXIT1;
    }
 
-   err=0;
-
    if (sizeof(BITCOIN_SERIALIZE)>xpub_sz) {
       err=20133;
       goto f_xpriv2xpub_EXIT1;
@@ -752,7 +770,7 @@ f_xpriv2xpub_EXIT1:
 int f_fingerprint(uint8_t *out_expanded_pk, uint8_t *fingerprint, uint8_t *public_key)
 {
    int err;
-   uint8_t *buf, *hash, f_ripemd160;
+   uint8_t *buf, *hash, *ripemd160;
 
    if (out_expanded_pk)
       buf=out_expanded_pk;
@@ -781,50 +799,134 @@ f_fingerprint_EXIT1:
    return err;
 }
 
-#define DERIVE_XPRIV_XPUB_DYN_IN_BASE58 (int)1
-#define DERIVE_XPRIV_XPUB_DYN_OUT_BASE58 (int)2
-#define DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV (int)8
-#define DERIVE_XPRIV_XPUB_DYN_OUT_XPUB (int)16
-#define DERIVE_XPRIV_XPUB_DYN_BUFFER_SZ (size_t)(2*sizeof(BITCOIN_SERIALIZE)+sizeof(f_ecdsa_key_pair))
+int f_get_xkey_type(void *xkey)
+{
+
+   if (memcmp(xkey, "xpub", 4)==0)
+      return MAINNET_PUBLIC+1;
+
+   if (memcmp(xkey, F_VERSION_BYTES[MAINNET_PUBLIC], 4)==0)
+      return (MAINNET_PUBLIC+1);
+
+   if (memcmp(xkey, "xprv", 4)==0)
+      return (F_GET_XKEY_IS_BASE58|(MAINNET_PRIVATE+1));
+
+   if (memcmp(xkey, F_VERSION_BYTES[MAINNET_PRIVATE], 4)==0)
+      return MAINNET_PRIVATE+1;
+
+   if (memcmp(xkey, "tpub", 4)==0)
+      return (F_GET_XKEY_IS_BASE58|(TESTNET_PUBLIC+1));
+
+   if (memcmp(xkey, F_VERSION_BYTES[TESTNET_PUBLIC], 4)==0)
+      return TESTNET_PUBLIC+1;
+
+   if (memcmp(xkey, "tprv", 4)==0)
+      return (F_GET_XKEY_IS_BASE58|(TESTNET_PRIVATE+1));
+
+   if (memcmp(xkey, F_VERSION_BYTES[TESTNET_PRIVATE], 4)==0)
+      return TESTNET_PRIVATE+1;
+
+   return 0;
+}
+
+#define DERIVE_XPRIV_XPUB_DYN_IN_BASE58 (int)4
+#define DERIVE_XPRIV_XPUB_DYN_BUFFER_SZ (size_t)(2*sizeof(BITCOIN_SERIALIZE))
+#define DERIVE_DYN_SZ (size_t)128
 int f_derive_xpriv_or_xpub_dynamic(void **out, uint8_t *depth, uint32_t *fingerprint, void *in_xpriv_or_xpub, uint32_t index, int in_out_type)
 {
    int err, type;
-   void *buffer, *btc_out;
-   f_ecdsa_key_pair *key_pair;
+   void *buffer, *btc_out, *p;
    BITCOIN_SERIALIZE *btc_ser_out;
+   uint8_t *hash;
 
-   if (!(buffer=malloc(DERIVE_XPRIV_XPUB_DYN_BUFFER_SZ)))
+   *out=NULL;
+   if ((type=f_get_xkey_type(in_xpriv_or_xpub))==0)
       return 20150;
 
-   if ((err=f_bitcoin_valid_bip32((BITCOIN_SERIALIZE *)buffer, &type, (void *)in_xpriv_or_xpub, in_out_type&DERIVE_XPRIV_XPUB_DYN_IN_BASE58)))
-      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+   if (!(buffer=malloc(DERIVE_XPRIV_XPUB_DYN_BUFFER_SZ)))
+      return 20151;
 
-   if (!((btc_ser_out=&(((BITCOIN_SERIALIZE *)buffer)[1]))->master_node=(((BITCOIN_SERIALIZE *)buffer)->master_node+1)))
-      err=20151;
-      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
-   }
+   if (type&F_GET_XKEY_IS_BASE58)
+      in_out_type|=DERIVE_XPRIV_XPUB_DYN_IN_BASE58;
 
    if (type&1) {
       if (in_out_type&DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV) {
          err=20152;
          goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
       }
-      memcpy(key_pair->public_key, ((BITCOIN_SERIALIZE *)buffer)->sk_or_pk_data, sizeof(((BITCOIN_SERIALIZE *)0)->sk_or_pk_data));
-   } else {
-      (key_pair=(f_ecdsa_key_pair *)(&((BITCOIN_SERIALIZE *)buffer)[2]))->ctx=NULL;
-      key_pair->gid=MBEDTLS_ECP_DP_SECP256K1;
 
-      if ((err=f_gen_ecdsa_key_pair(key_pair, MBEDTLS_ECP_PF_UNCOMPRESSED, load_master_private_key, (void *)&((BITCOIN_SERIALIZE *)buffer)->sk_or_pk_data[1])))
+      if (!(in_out_type&DERIVE_XPRIV_XPUB_DYN_OUT_XPUB)) {
+         err=20153;
          goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+      }
+
+      p=in_xpriv_or_xpub;
+
+   } else {
+
+      if (in_out_type&DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV)
+         p=in_xpriv_or_xpub;
+      else if (in_out_type&DERIVE_XPRIV_XPUB_DYN_OUT_XPUB) {
+         if ((err=f_xpriv2xpub((void *)(p=(BITCOIN_SERIALIZE *)buffer), sizeof(BITCOIN_SERIALIZE), NULL, in_xpriv_or_xpub,
+            (in_out_type&DERIVE_XPRIV_XPUB_DYN_IN_BASE58)?F_XPRIV_BASE58:0)))
+            goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+         in_out_type&=(~(DERIVE_XPRIV_XPUB_DYN_IN_BASE58));
+      } else {
+         err=20154;
+         goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+      }
+
    }
 
-   if ((err=f_fingerprint(NULL, btc_ser_out->finger_print, key_pair->public_key)))
+   btc_ser_out=&((BITCOIN_SERIALIZE *)buffer)[1];
+
+   if ((err=f_bip32_to_public_key_or_private_key(btc_ser_out->sk_or_pk_data, &type, btc_ser_out->finger_print, btc_ser_out->chain_code, 
+      index, (const void *)p, in_out_type&DERIVE_XPRIV_XPUB_DYN_IN_BASE58))) goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+   memcpy(btc_ser_out->version_bytes, F_VERSION_BYTES[(size_t)(type-1)], sizeof(((BITCOIN_SERIALIZE *)0)->version_bytes));
+
+   *((uint32_t *)btc_ser_out->child_number)=index;
+
+   if ((err=f_reverse((unsigned char *)btc_ser_out->child_number, sizeof(((BITCOIN_SERIALIZE *)0)->child_number))))
       goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
 
-// To be continued. I am tired. See you tomorrow
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)btc_ser_out, sizeof(BITCOIN_SERIALIZE)-4))) 
+      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+   if ((err=f_sha256_digest((void **)&hash, 0, hash, 32)))
+      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+   memcpy(btc_ser_out->chksum, hash, sizeof(((BITCOIN_SERIALIZE *)0)->chksum));
+
+   if (!(*out=malloc(DERIVE_DYN_SZ))) {
+      err=20155;
+      goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+   }
+
+   if (in_out_type&DERIVE_XPRIV_XPUB_DYN_OUT_BASE58) {
+      if ((err=f_encode_b58((char *)*out, DERIVE_DYN_SZ, NULL, (uint8_t *)btc_ser_out, sizeof(BITCOIN_SERIALIZE))))
+         goto f_derive_xpriv_or_xpub_dynamic_EXIT2;
+   } else
+      memcpy(*out, btc_ser_out, sizeof(BITCOIN_SERIALIZE));
+
+   if (depth)
+      *depth=btc_ser_out->master_node;
+
+   if (fingerprint)
+      *fingerprint=btc_ser_out->finger_print;
+
+   goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
+
+f_derive_xpriv_or_xpub_dynamic_EXIT2:
+   memset(*out, 0, DERIVE_DYN_SZ);
+   free(*out);
+   *out=NULL;
+
 f_derive_xpriv_or_xpub_dynamic_EXIT1:
    memset(buffer, 0, DERIVE_XPRIV_XPUB_DYN_BUFFER_SZ);
    free(buffer);
 
    return err;
 }
+

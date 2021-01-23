@@ -1,7 +1,4 @@
-//#include <f_util.h>
 #include <mbedtls/bignum.h>
-//#include <string.h>
-//#include <stdlib.h>
 
 #define F_BITCOIN_WIF_MAINNET (uint8_t)0x80
 #define F_BITCOIN_WIF_TESTNET (uint8_t)0xEF
@@ -41,11 +38,27 @@ int f_wif_to_private_key(uint8_t *, unsigned char *, const char *);
 int f_generate_master_key(BITCOIN_SERIALIZE *, size_t, uint32_t);
 int f_bitcoin_valid_bip32(BITCOIN_SERIALIZE *, int *, void *, int);
 int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
-int f_bip32_to_public_key_or_private_key(uint8_t *, uint8_t *, uint32_t, const void *, int);
+//int f_bip32_to_public_key_or_private_key(uint8_t *, uint8_t *, uint32_t, const void *, int);
+int f_bip32_to_public_key_or_private_key(
+   uint8_t *,
+   int *,
+   uint8_t *,
+   uint8_t *,
+   uint32_t,
+   const void *,
+   int
+);
 int f_public_key_to_address(char *, size_t, size_t *, uint8_t *, uint8_t);
 #define F_XPRIV_BASE58 (int)1
 #define F_XPUB_BASE58 (int)2
 int f_xpriv2xpub(void *, size_t, size_t *, void *, int);
 int load_master_private_key(void *, unsigned char *, size_t);
+int f_fingerprint(uint8_t *, uint8_t *, uint8_t *);
 
+#define DERIVE_XPRIV_XPUB_DYN_OUT_BASE58 (int)8
+#define DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV (int)16
+#define DERIVE_XPRIV_XPUB_DYN_OUT_XPUB (int)32
+
+#define F_GET_XKEY_IS_BASE58 (int)0x00008000
+int f_get_xkey_type(void *);
 
