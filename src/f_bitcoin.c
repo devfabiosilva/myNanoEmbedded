@@ -923,7 +923,7 @@ int f_derive_xpriv_or_xpub_dynamic(void **out, uint8_t *depth, uint32_t *fingerp
       *depth=btc_ser_out->master_node;
 
    if (fingerprint)
-      *fingerprint=btc_ser_out->finger_print;
+      *fingerprint=*((uint32_t *)btc_ser_out->finger_print);
 
    goto f_derive_xpriv_or_xpub_dynamic_EXIT1;
 
@@ -1009,15 +1009,13 @@ int f_derive_xkey_dynamic(void **out, void *mkey, const char *m_depth, int out_t
 
    }
 
-   if ((val_sz+=m_depth)>(size_t)p1) {
+   if ((val_sz+=(size_t)m_depth)>(size_t)p1) {
 
       if ((err=f_parse_index_string_to_uint32_t_util(&index, (const char *)p1, val_sz-(size_t)p1+1)))
          goto f_derive_xkey_EXIT1;
 
-      if ((err=f_derive_xpriv_or_xpub_dynamic(&out1, NULL, NULL, out2, index, out_type)))
+      if ((err=f_derive_xpriv_or_xpub_dynamic(out, NULL, NULL, out2, index, out_type)))
          goto f_derive_xkey_EXIT1;
-
-      *out=out1;
 
    } else
       err=20167;

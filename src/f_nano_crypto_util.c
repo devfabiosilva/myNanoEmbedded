@@ -2787,7 +2787,7 @@ f_set_nano_file_info_EXIT1:
 //#define F_P2POW_JSON_MAX_SZ 4*F_P2POW_JSON_SZ
 #define F_P2POW_JSON_MAX_SZ (size_t)4096
 #ifdef F_ESP32
-int IRAM_ATTR f_nano_p2pow_to_JSON(char *buf, size_t *olen, size_t buf_sz, F_BLOCK_TRANSFER *block)
+int IRAM_ATTR f_nano_p2pow_to_JSON(char *buffer, size_t *olen, size_t buf_sz, F_BLOCK_TRANSFER *block)
 #else
 int f_nano_p2pow_to_JSON(char *buffer, size_t *olen, size_t buffer_sz, F_BLOCK_TRANSFER *block)
 #endif
