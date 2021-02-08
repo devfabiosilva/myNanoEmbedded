@@ -807,7 +807,7 @@ int f_get_xkey_type(void *xkey)
 {
 
    if (memcmp(xkey, "xpub", 4)==0)
-      return MAINNET_PUBLIC+1;
+      return (F_GET_XKEY_IS_BASE58|(MAINNET_PUBLIC+1));
 
    if (memcmp(xkey, F_VERSION_BYTES[MAINNET_PUBLIC], 4)==0)
       return (MAINNET_PUBLIC+1);
