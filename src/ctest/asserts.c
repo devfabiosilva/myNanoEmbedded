@@ -12,10 +12,7 @@ static void print_assert_int(void *, void *);
 static void print_assert_longint(void *, void *);
 static void print_assert_byte(void *, void *);
 static void print_assert_double(void *, void *);
-static void print_assert_equal_string(void *, void *);
-static void print_assert_not_equal_string(void *, void *);
-static void print_assert_equal_string_ignore_case(void *, void *);
-static void print_assert_not_equal_string_ignore_case(void *, void *);
+static void print_assert_string(void *, void *);
 static void print_assert_nullable(void *, void *);
 
 static void abort_tests();
@@ -207,6 +204,10 @@ static C_TEST_VARGS_MSG *check_vargs_sigmsg_exists(C_TEST_VARGS_MSG **, uint32_t
 #define TYPE_TYPE_ASSERT_NOT_EQUAL_LONG_INT 7
 #define TYPE_ASSERT_NOT_EQUAL_DOUBLE 8
 #define TYPE_ASSERT_NOT_EQUAL_BYTE 9
+#define TYPE_ASSERT_EQUAL_STRING 10
+#define TYPE_ASSERT_NOT_EQUAL_STRING 11
+#define TYPE_ASSERT_EQUAL_STRING_IGNORE_CASE 12
+#define TYPE_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE 13
 #define TYPE_ASSERT_NULL 14
 #define TYPE_ASSERT_NOT_NULL 15
 static C_TEST_FN_DESCRIPTION _tst_fn_desc[] = {
@@ -220,10 +221,10 @@ static C_TEST_FN_DESCRIPTION _tst_fn_desc[] = {
    {TYPE_TYPE_ASSERT_NOT_EQUAL_LONG_INT, ASSERT_NOT_EQUAL_LONG_INT, sizeof(C_TEST_TYPE_LONG_INT), print_assert_longint},
    {TYPE_ASSERT_NOT_EQUAL_DOUBLE, ASSERT_NOT_EQUAL_DOUBLE, sizeof(C_TEST_TYPE_DOUBLE), print_assert_double},
    {TYPE_ASSERT_NOT_EQUAL_BYTE, ASSERT_NOT_EQUAL_BYTE, sizeof(C_TEST_TYPE_BYTE), print_assert_byte},
-   {10, ASSERT_EQUAL_STRING, sizeof(C_TEST_TYPE_STRING), print_assert_equal_string},
-   {11, ASSERT_NOT_EQUAL_STRING, sizeof(C_TEST_TYPE_STRING), print_assert_not_equal_string},
-   {12, ASSERT_EQUAL_STRING_IGNORE_CASE, sizeof(C_TEST_TYPE_STRING), print_assert_equal_string_ignore_case},
-   {13, ASSERT_NOT_EQUAL_STRING_IGNORE_CASE, sizeof(C_TEST_TYPE_STRING), print_assert_not_equal_string_ignore_case},
+   {TYPE_ASSERT_EQUAL_STRING, ASSERT_EQUAL_STRING, sizeof(C_TEST_TYPE_STRING), print_assert_string},
+   {TYPE_ASSERT_NOT_EQUAL_STRING, ASSERT_NOT_EQUAL_STRING, sizeof(C_TEST_TYPE_STRING), print_assert_string},
+   {TYPE_ASSERT_EQUAL_STRING_IGNORE_CASE, ASSERT_EQUAL_STRING_IGNORE_CASE, sizeof(C_TEST_TYPE_STRING), print_assert_string},
+   {TYPE_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE, ASSERT_NOT_EQUAL_STRING_IGNORE_CASE, sizeof(C_TEST_TYPE_STRING), print_assert_string},
    {TYPE_ASSERT_NULL, ASSERT_NULL, sizeof(C_TEST_TYPE_NULLABLE), print_assert_nullable},
    {TYPE_ASSERT_NOT_NULL, ASSERT_NOT_NULL, sizeof(C_TEST_TYPE_NULLABLE), print_assert_nullable}
 };
@@ -1115,8 +1116,8 @@ static void print_assert_longint(void *ctx, void *vas)
    char *p;
 
    const char *print_assert_long_int_msg[][2] = {
-      {"\"%s\". Expected %d (0x%016x) == result %d (0x%016x) -> ok", "\"%s\". Expected %d (0x%016x), but found %d (0x%016x) -> fail"},
-      {"\"%s\". Unexpected %d (0x%016x) != result %d (0x%016x) -> ok", "\"%s\". Unexpected %d (%016x) == result %d (0x%016x) -> fail"}
+      {"\"%s\". Expected %d (0x%016llx) == result %d (0x%016llx) -> ok", "\"%s\". Expected %d (0x%016llx), but found %d (0x%016llx) -> fail"},
+      {"\"%s\". Unexpected %d (0x%016llx) != result %d (0x%016llx) -> ok", "\"%s\". Unexpected %d (%016llx) == result %d (0x%016llx) -> fail"}
    };
 
    PRINT_CALLBACK
@@ -1264,33 +1265,62 @@ static void print_assert_byte(void *ctx, void *vas)
    )
 }
 
-static void print_assert_string(void *ctx, void *vas, int is_not_equal, int is_ignore_case)
+static void print_assert_string(void *ctx, void *vas)
 {
    C_TEST_TYPE_STRING *type=(C_TEST_TYPE_STRING *)ctx;
-   int tst;
+   int error, idx, p_sz;
+   char *p;
+
+   const char *print_assert_string_msg[][2] = {
+      {
+          "\"%s\". Expected \"%s\" at pointer (%p) == result \"%s\" at pointer (%p) -> ok",
+          "\"%s\". Expected \"%s\" at pointer (%p) != result \"%s\" at pointer (%p) -> fail"
+      },
+      {
+          "\"%s\". Unexpected \"%s\" at pointer (%p) != result \"%s\" at pointer (%p) -> ok", 
+          "\"%s\". Unexpected \"%s\" at pointer (%p) == result \"%s\" at pointer (%p) -> fail"
+      }
+   };
 
    PRINT_CALLBACK
 
-   tst=(is_ignore_case)?(strcasecmp(type->expected, type->result)):(strcmp(type->expected, type->result));
+   error=((type->header.desc.type==TYPE_ASSERT_EQUAL_STRING_IGNORE_CASE)||(type->header.desc.type==TYPE_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE))?
+         (strcasecmp(type->expected, type->result)):(strcmp(type->expected, type->result));
 
-   if (is_not_equal)
-      (tst)?(tst=0):(tst=-1);
+   idx=0;
+   if ((type->header.desc.type==TYPE_ASSERT_NOT_EQUAL_STRING)||(type->header.desc.type==TYPE_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE)) {
+      idx=1;
+      error=!error;
+   }
 
-   if (tst) {
-      ERROR_MSG(type->header.on_error)
+   SHOW_USER_NOTIFICATION
+
+   if (error) {
+      if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
+         ERROR_MSG_FMT("%.*s", p_sz, p)
+
+      free_vargs(vas);
+
+      ERROR_MSG_FMT(print_assert_string_msg[idx][1],
+         type->header.desc.fn_name,
+         type->expected, type->expected,
+         type->result, type->result
+      )
+
       abort_tests();
    }
 
-   SUCCESS_MSG(type->header.on_success)
+   if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
+      SUCCESS_MSG_FMT("%.*s", p_sz, p)
+
+   free_vargs(vas);
+
+   SUCCESS_MSG_FMT(print_assert_string_msg[idx][0],
+      type->header.desc.fn_name,
+      type->expected, type->expected,
+      type->result, type->result
+   )
 }
-
-static void print_assert_equal_string(void *ctx, void *vas) { print_assert_string(ctx, vas, 0, 0); }
-
-static void print_assert_not_equal_string(void *ctx, void *vas) { print_assert_string(ctx, vas, 1, 0); }
-
-static void print_assert_equal_string_ignore_case(void *ctx, void *vas) { print_assert_string(ctx, vas, 0, 1); }
-
-static void print_assert_not_equal_string_ignore_case(void *ctx, void *vas) { print_assert_string(ctx, vas, 1, 1); }
 
 static void print_assert_nullable(void *ctx, void *vas)
 {
@@ -1659,36 +1689,75 @@ static void assert_string(
    const char *expected,
    const char *result,
    C_TEST_FN_DESCRIPTION *desc,
-   const char *on_error_msg,
-   const char *on_success
+   void *vas
 )
 {
-   void *vas=NULL;
    static C_TEST_TYPE_STRING type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   ASSERT_PRELOAD
+   ASSERT_PRELOAD_TEMP
    TEST_BEGIN
+
 }
 
-void assert_equal_string(const char *expected, const char *result, const char *on_error_msg, const char *on_success)
+void assert_equal_string(const char *expected, const char *result, ...)
 {
-   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING, on_error_msg, on_success);
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_EQUAL_STRING")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING, vas);
 }
 
-void assert_not_equal_string(const char *expected, const char *result, const char *on_error_msg, const char *on_success)
+void assert_not_equal_string(const char *expected, const char *result, ...)
 {
-   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING, on_error_msg, on_success);
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_NOT_EQUAL_STRING")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING, vas);
 }
 
-void assert_equal_string_ignore_case(const char *expected, const char *result, const char *on_error_msg, const char *on_success)
+void assert_equal_string_ignore_case(const char *expected, const char *result, ...)
 {
-   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING_IGNORE_CASE, on_error_msg, on_success);
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_EQUAL_STRING_IGNORE_CASE")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING_IGNORE_CASE, vas);
 }
 
-void assert_not_equal_string_ignore_case(const char *expected, const char *result, const char *on_error_msg, const char *on_success)
+void assert_not_equal_string_ignore_case(const char *expected, const char *result, ...)
 {
-   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING_IGNORE_CASE, on_error_msg, on_success);
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_string(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING_IGNORE_CASE, vas);
 }
 
 static void assert_nullable(

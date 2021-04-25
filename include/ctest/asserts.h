@@ -28,10 +28,10 @@ void assert_not_equal_byte(
    size_t,
    ...
 );
-void assert_equal_string(const char *, const char *, const char *, const char *);
-void assert_not_equal_string(const char *, const char *, const char *, const char *);
-void assert_equal_string_ignore_case(const char *, const char *, const char *, const char *);
-void assert_not_equal_string_ignore_case(const char *, const char *, const char *, const char *);
+void assert_equal_string(const char *, const char *, ...);
+void assert_not_equal_string(const char *, const char *, ...);
+void assert_equal_string_ignore_case(const char *, const char *, ...);
+void assert_not_equal_string_ignore_case(const char *, const char *, ...);
 void assert_null(void *, ...);
 void assert_not_null(void *, ...);
 void on_add_test(header_on_cb);
@@ -71,8 +71,12 @@ void *set_varg(uint32_t, const char *, ...);
 #define C_ASSERT_NOT_EQUAL_DOUBLE(expected, result, ...) assert_not_equal_double(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
 #define C_ASSERT_EQUAL_BYTE(expected, result, ...) assert_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
 #define C_ASSERT_NOT_EQUAL_BYTE(expected, result, ...) assert_not_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NULL(...) assert_null(__VA_ARGS__, VAS_END_SIGNATURE);
-#define C_ASSERT_NOT_NULL(...) assert_not_null(__VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NULL(...) assert_null(__VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_NOT_NULL(...) assert_not_null(__VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_EQUAL_STRING(expected, ...) assert_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_NOT_EQUAL_STRING(expected, ...) assert_not_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_not_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE)
 #ifdef DEBUG_TEST
 // TEMPORARY FOR TESTS
 

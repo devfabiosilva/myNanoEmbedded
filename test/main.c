@@ -1,31 +1,12 @@
 //fri apr 23 21:34:27 -03 2021 sex abr 23 21:34:29 -03 2021 
-#include <stdio.h>
-#include <string.h>
-#include <f_nano_crypto_util.h>
-#include <ctest/asserts.h>
+#include "common_test.h"
+#include "bitcoin_test.h"
+#include "uncompress_ecc_test.h"
 
 //gcc -o test main.c ../src/ctest/asserts.c -I../include -I../include/sodium -I../include/ctest -L../lib -lnanocrypto1 -lsodium -fsanitize=leak,address
-void gen_rand_no_entropy(void *output, size_t output_len)
-{
-   FILE *f;
-   size_t rnd_sz, left;
+//gcc -o test main.c ../src/ctest/asserts.c bitcoin_test.c common_test.c uncompress_ecc_test.c -I../include -I../include/sodium -I../include/ctest -lsodium -lnanocrypto1 -Wall -L../lib
 
-   if (!(f=fopen("/dev/urandom", "r")))
-      return;
-
-   rnd_sz=0;
-   left=output_len;
-
-   while ((rnd_sz+=fread(output+rnd_sz, 1, left, f))<output_len)
-      left-=rnd_sz;
-
-   fclose(f);
-
-   return;
-
-}
-
-int main (int argc, void *argv)
+int main (int argc, char **argv)
 {
    int err;
    char buf[512];
@@ -73,6 +54,13 @@ int main (int argc, void *argv)
          CTEST_ON_SUCCESS("Success. \"f_verify_token\" returned invalid token check for invalid name \"%s\"", buf)
       )
    );
+
+   printf("\nTesting uncompress elliptic curve for Bitcoin ...\n");
+   uncompress_eliptic_curve_test();
+
+   printf("\nInitiating Bitcoin test ...\n");
+
+   bitcoin_address_test();
 
    end_tests();
 
