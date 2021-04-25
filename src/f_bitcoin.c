@@ -647,8 +647,8 @@ f_bip32_to_public_key_or_private_key_EXIT1:
 //https://en.bitcoin.it/wiki/Address
 //https://en.bitcoin.it/wiki/Base58Check_encoding
 //https://en.bitcoin.it/wiki/List_of_address_prefixes
-//#define PK2B58ADDR_BUF_SZ (size_t)(1+33)
-#define PK2B58ADDR_BUF_SZ (size_t)(1+65)
+//#define PK2B58ADDR_BUF_SZ (size_t)(1+65)
+#define PK2B58ADDR_BUF_SZ (size_t)(1+33)
 int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *public_key, uint8_t pk_type)
 {
    int err;
@@ -657,7 +657,9 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
 
    if (!(buf=malloc(PK2B58ADDR_BUF_SZ)))
       return 20100;
-
+/*
+   // BUG Fixed at Sun apr 25 14:04:51 -03 2021 due to wrong reference: https://en.bitcoin.it/wiki/File:PubKeyToAddr.png (wrong implementation)
+   // Correct reference: https://en.bitcoin.it/wiki/Technical_background_of_version_1_Bitcoin_addresses
    if (public_key[0]==0x04) memcpy(&buf[1], public_key, 65);
    else if ((err=f_uncompress_elliptic_curve(&buf[1], PK2B58ADDR_BUF_SZ-1, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
       goto f_public_key_to_address_EXIT1;
@@ -668,6 +670,28 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
       err=20101;
       goto f_public_key_to_address_EXIT2;
    }
+*/
+
+// begin correction BUG Fixed at Sun apr 25 14:04:51 -03 2021
+
+   if (public_key[0]==0x04) {
+      buf[1]=0x02+(public_key[64]&0x01);
+      memcpy(&buf[2], &public_key[1], 32);
+
+   } else if ((public_key[0]==0x03)||(public_key[0]==0x02))
+      memcpy(&buf[1], public_key, 33);
+   else {
+      err=20101;
+      goto f_public_key_to_address_EXIT2;
+   }
+      
+//   buf[0]=pk_type;
+
+   if (f_sha256_digest((void **)&hash, 0, &buf[1], 33)) { 
+      err=20101;
+      goto f_public_key_to_address_EXIT2;
+   }
+// End correction
 
    if (!(ripemd160=f_ripemd160((const uint8_t *)hash, 32))) {
       err=20102;
@@ -675,6 +699,8 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
    }
 
    memcpy(&buf[1], ripemd160, 20);
+
+   buf[0]=pk_type;
 
    if (f_sha256_digest((void **)&hash, 0, buf, 20+1)) { 
       err=20103;
