@@ -12,7 +12,6 @@ int main (int argc, char **argv)
 {
    TITLE_MSG("Initiating myNanoEmbedded library tests ...")
 
-
    INFO_MSG_FMT(INFO, "Initiating non deterministic token generator tests ...")
    token_test();
 

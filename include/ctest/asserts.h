@@ -40,6 +40,8 @@ uint64_t *get_vas_end_signature();
 typedef void (*header_on_cb)(void *);
 typedef void (*cb_fn)(void *);
 
+void *set_varg_callback(uint32_t, cb_fn, ...);
+
 void assert_true(int, ...);
 void assert_false(int, ...);
 void assert_equal_int(int, int, ...);
@@ -89,8 +91,8 @@ void *set_varg(uint32_t, const char *, ...);
 #define C_TEST_VARGS_ERROR (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x032E4992)
 #define C_TEST_VARGS_SUCCESS (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x042E4992)
 
-#define C_TEST_VARGS_ON_SUCCESS_CALBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x002E4992)
-#define C_TEST_VARGS_ON_ERROR_CALBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x002E4992)
+#define C_TEST_VARGS_ON_SUCCESS_CALLBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x052E4992)
+#define C_TEST_VARGS_ON_ERROR_CALLBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x062E4992)
 
 #define CTEST_SETTER(...) vargs_setter(-1, __VA_ARGS__, NULL, VA_END_SIGNATURE)
 
@@ -99,6 +101,9 @@ void *set_varg(uint32_t, const char *, ...);
 #define CTEST_WARN(...) set_varg(C_TEST_VARGS_WARNING, __VA_ARGS__)
 #define CTEST_ON_ERROR(...) set_varg(C_TEST_VARGS_ERROR, __VA_ARGS__)
 #define CTEST_ON_SUCCESS(...) set_varg(C_TEST_VARGS_SUCCESS, __VA_ARGS__)
+#define CTEST_ON_SUCCESS_CB(...) set_varg_callback(C_TEST_VARGS_ON_SUCCESS_CALLBACK, __VA_ARGS__, NULL, VAS_END_SIGNATURE)
+#define CTEST_ON_ERROR_CB(...) set_varg_callback(C_TEST_VARGS_ON_ERROR_CALLBACK, __VA_ARGS__, NULL, VAS_END_SIGNATURE)
+
 #define C_ASSERT_FALSE(...) assert_false(__VA_ARGS__, VAS_END_SIGNATURE);
 #define C_ASSERT_TRUE(...) assert_true(__VA_ARGS__, VAS_END_SIGNATURE);
 #define C_ASSERT_EQUAL_INT(expected, ...) assert_equal_int(expected, __VA_ARGS__, VAS_END_SIGNATURE);

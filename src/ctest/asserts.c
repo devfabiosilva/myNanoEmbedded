@@ -135,8 +135,8 @@ typedef struct c_test_type_nullable_t {
 
 const uint32_t C_TEST_VARGS_MSG_SIGS[] = {
    C_TEST_VARGS_TITLE, C_TEST_VARGS_INFO, C_TEST_VARGS_WARNING,
-   C_TEST_VARGS_ERROR, C_TEST_VARGS_SUCCESS, C_TEST_VARGS_ON_SUCCESS_CALBACK,
-   C_TEST_VARGS_ON_ERROR_CALBACK
+   C_TEST_VARGS_ERROR, C_TEST_VARGS_SUCCESS, C_TEST_VARGS_ON_SUCCESS_CALLBACK,
+   C_TEST_VARGS_ON_ERROR_CALLBACK
 };
 
 #define C_TEST_VARGS_MSG_SIGS_SIZE (sizeof(C_TEST_VARGS_MSG_SIGS)/sizeof(C_TEST_VARGS_MSG_SIGS[0]))
@@ -836,29 +836,36 @@ void *set_varg_callback(uint32_t sig, cb_fn callback, ...)
    C_TEST_VARGS_MSG *varg_tmp;
    va_list args;
 
-   if ((sig&C_TEST_TYPE_VARGS_CALLBACK)==0)
+   if ((sig&C_TEST_TYPE_VARGS_CALLBACK)==0) {
+      ERROR_MSG("ERROR: Invalid argument callback signature")
       return NULL;
+   }
 
-   if (!callback)
+   if (!callback) {
+      ERROR_MSG("ERROR: Missing callback function")
       return NULL;
+   }
 
-   if (!(varg_tmp=malloc(sizeof(C_TEST_VARGS_MSG))))
+   if (!(varg_tmp=malloc(sizeof(C_TEST_VARGS_MSG)))) {
+      ERROR_MSG("FATAL: error callback malloc")
       return NULL;
+   }
 
    memset(varg_tmp, 0, sizeof(C_TEST_VARGS_MSG));
 
-   if ((varg_tmp->sig=sig)==C_TEST_VARGS_ON_SUCCESS_CALBACK)
+   if ((varg_tmp->sig=sig)==C_TEST_VARGS_ON_SUCCESS_CALLBACK)
       varg_tmp->on_success_cb=callback;
    else
       varg_tmp->on_error_cb=callback;
 
    va_start(args, callback);
    if ((varg_tmp->ctx=(void *)va_arg(args, void *)))
-      if ((void *)va_arg(args, void *)!=VA_END_SIGNATURE) {
-         ERROR_MSG("ERROR: Missing END argument");
-         free(varg_tmp);
-         varg_tmp=NULL;
-      }
+      if ((void *)va_arg(args, void *)!=NULL)
+         if ((void *)va_arg(args, void *)!=VAS_END_SIGNATURE) {
+            ERROR_MSG("ERROR: Missing END argument");
+            free(varg_tmp);
+            varg_tmp=NULL;
+         }
 
    va_end(args);
 
@@ -1081,6 +1088,24 @@ static char *parse_vas_msg(int *msg_sz, void *vas, uint32_t sig)
    return p;
 }
 
+static void parse_vas_cb(void *vas, uint32_t sig)
+{
+   C_TEST_VARGS_MSG *res;
+
+   if (!vas)
+      return;
+
+   if ((res=check_vargs_sigmsg_exists(((C_TEST_VARGS_MSG_HEADER *)vas)->vargs_msgs, sig))) {
+      if (sig==C_TEST_VARGS_ON_SUCCESS_CALLBACK)
+         res->on_success_cb(res->ctx);
+      else
+         res->on_error_cb(res->ctx);
+   }
+}
+
+#define CALLBACK_ON_SUCCESS parse_vas_cb(vas, C_TEST_VARGS_ON_SUCCESS_CALLBACK);
+#define CALLBACK_ON_ERROR parse_vas_cb(vas, C_TEST_VARGS_ON_ERROR_CALLBACK);
+
 //
 #define PRINT_CALLBACK \
    if (((C_TEST_HEADER *)_c_test_ptr)->on_test_fn)\
@@ -1127,6 +1152,7 @@ static void print_assert_int(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
 
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
@@ -1148,6 +1174,8 @@ static void print_assert_int(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1193,6 +1221,8 @@ static void print_assert_longint(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
+
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
 
@@ -1206,6 +1236,8 @@ static void print_assert_longint(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1243,6 +1275,8 @@ static void print_assert_double(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
+
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
 
@@ -1255,6 +1289,8 @@ static void print_assert_double(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1298,6 +1334,7 @@ static void print_assert_byte(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
 
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
@@ -1312,6 +1349,8 @@ static void print_assert_byte(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1356,6 +1395,8 @@ static void print_assert_string(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
+
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
 
@@ -1369,6 +1410,8 @@ static void print_assert_string(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1411,6 +1454,7 @@ static void print_assert_nullable(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
+      CALLBACK_ON_ERROR
 
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
@@ -1421,6 +1465,8 @@ static void print_assert_nullable(void *ctx, void *vas)
 
       abort_tests();
    }
+
+   CALLBACK_ON_SUCCESS
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
