@@ -1,12 +1,44 @@
 #include <stdint.h>
 
+#define C_TEST_TRUE (int)(1==1)
+#define C_TEST_FALSE (int)(1!=1)
+
+void _c_test_ignore();
+void _c_test_ignore_end();
+
+#define C_TEST_BEGIN_IGNORE _c_test_ignore();
+#define C_TEST_END_IGNORE _c_test_ignore_end();
+
+#define END_TITLE "\e[0m"
+#define INITIAL_TITLE "\e[1;3m"
+#define ERROR_CODE "\e[31;1m"
+#define SUCCESS_CODE "\e[32;1m"
+#define WARNING_CODE "\e[33;1m"
+#define INFO_CODE "\e[34;1m"
+
+void write_title(const char *, const char *);
+void write_title_fmt(const char *, const char *, ...);
+
+#define TITLE_MSG(msg) write_title(msg, INITIAL_TITLE);
+#define ERROR_MSG(msg) write_title(msg, ERROR_CODE);
+#define SUCCESS_MSG(msg) write_title(msg, SUCCESS_CODE);
+#define WARN_MSG(msg) write_title(msg, WARNING_CODE);
+#define INFO_MSG(msg) write_title(msg, INFO_CODE);
+
+#define TITLE_MSG_FMT(...) write_title_fmt(INITIAL_TITLE, __VA_ARGS__);
+#define ERROR_MSG_FMT(...) write_title_fmt(ERROR_CODE, __VA_ARGS__);
+#define WARN_MSG_FMT(...) write_title_fmt(WARNING_CODE, __VA_ARGS__);
+#define INFO_MSG_FMT(...) write_title_fmt(INFO_CODE, __VA_ARGS__);
+#define SUCCESS_MSG_FMT(...) write_title_fmt(SUCCESS_CODE, __VA_ARGS__);
+
 uint64_t *get_va_end_signature();
 uint64_t *get_vas_end_signature();
+
 #define VA_END_SIGNATURE get_va_end_signature()
 #define VAS_END_SIGNATURE get_vas_end_signature()
 
-typedef void (*free_on_error_fn)(void *);
 typedef void (*header_on_cb)(void *);
+typedef void (*cb_fn)(void *);
 
 void assert_true(int, ...);
 void assert_false(int, ...);
@@ -48,11 +80,17 @@ void end_tests();
 void *vargs_setter(int, ...);
 void *set_varg(uint32_t, const char *, ...);
 
-#define C_TEST_VARGS_TITLE (uint32_t)(0x002E4992)
-#define C_TEST_VARGS_INFO (uint32_t)(0x012E4992)
-#define C_TEST_VARGS_WARNING (uint32_t)(0x022E4992)
-#define C_TEST_VARGS_ERROR (uint32_t)(0x032E4992)
-#define C_TEST_VARGS_SUCCESS (uint32_t)(0x042E4992)
+#define C_TEST_TYPE_VARGS_MSG (uint32_t)(0x10000000)
+#define C_TEST_TYPE_VARGS_CALLBACK (uint32_t)(0x20000000|C_TEST_TYPE_VARGS_MSG)
+
+#define C_TEST_VARGS_TITLE (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x002E4992)
+#define C_TEST_VARGS_INFO (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x012E4992)
+#define C_TEST_VARGS_WARNING (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x022E4992)
+#define C_TEST_VARGS_ERROR (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x032E4992)
+#define C_TEST_VARGS_SUCCESS (uint32_t)(C_TEST_TYPE_VARGS_MSG|0x042E4992)
+
+#define C_TEST_VARGS_ON_SUCCESS_CALBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x002E4992)
+#define C_TEST_VARGS_ON_ERROR_CALBACK (uint32_t)(C_TEST_TYPE_VARGS_CALLBACK|0x002E4992)
 
 #define CTEST_SETTER(...) vargs_setter(-1, __VA_ARGS__, NULL, VA_END_SIGNATURE)
 
@@ -61,22 +99,22 @@ void *set_varg(uint32_t, const char *, ...);
 #define CTEST_WARN(...) set_varg(C_TEST_VARGS_WARNING, __VA_ARGS__)
 #define CTEST_ON_ERROR(...) set_varg(C_TEST_VARGS_ERROR, __VA_ARGS__)
 #define CTEST_ON_SUCCESS(...) set_varg(C_TEST_VARGS_SUCCESS, __VA_ARGS__)
-#define C_ASSERT_FALSE(...) assert_false(__VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_TRUE(...) assert_true(__VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_INT(expected, ...) assert_equal_int(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_INT(expected, ...) assert_not_equal_int(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_LONG_INT(expected, ...) assert_equal_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_LONG_INT(expected, ...) assert_not_equal_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_DOUBLE(expected, result, ...) assert_equal_double(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_DOUBLE(expected, result, ...) assert_not_equal_double(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_BYTE(expected, result, ...) assert_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_BYTE(expected, result, ...) assert_not_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NULL(...) assert_null(__VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_NULL(...) assert_not_null(__VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_STRING(expected, ...) assert_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_STRING(expected, ...) assert_not_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE)
-#define C_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_not_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE)
+#define C_ASSERT_FALSE(...) assert_false(__VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_TRUE(...) assert_true(__VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_INT(expected, ...) assert_equal_int(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_INT(expected, ...) assert_not_equal_int(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_LONG_INT(expected, ...) assert_equal_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_LONG_INT(expected, ...) assert_not_equal_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_DOUBLE(expected, result, ...) assert_equal_double(expected, result, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_DOUBLE(expected, result, ...) assert_not_equal_double(expected, result, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_BYTE(expected, result, ...) assert_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_BYTE(expected, result, ...) assert_not_equal_byte(expected, result, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NULL(...) assert_null(__VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_NULL(...) assert_not_null(__VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_STRING(expected, ...) assert_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_STRING(expected, ...) assert_not_equal_string(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+#define C_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_not_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE);
 #ifdef DEBUG_TEST
 // TEMPORARY FOR TESTS
 

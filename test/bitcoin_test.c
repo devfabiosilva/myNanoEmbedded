@@ -25,7 +25,7 @@ void bitcoin_address_test()
          CTEST_ON_ERROR("f_public_key_to_address error  %d", err),
          CTEST_ON_SUCCESS("Success. \"f_public_key_to_address\" returned address \"%.*s\" with size %u", sz, msgbuf(), sz)
       )
-   );
+   )
 
    C_ASSERT_EQUAL_STRING(address, msgbuf(),
       CTEST_SETTER(
@@ -33,5 +33,5 @@ void bitcoin_address_test()
          CTEST_ON_ERROR("Wrong Bitcoin address string"),
          CTEST_ON_SUCCESS("Success. Bitcoin wallet \"%.*s\" matches with given public key \"%.*s\"", sz, msgbuf(), sizeof(public_key)<<1, p)
       )
-   );
+   )
 }

@@ -3494,7 +3494,7 @@ int f_generate_token(F_TOKEN signature, void *data, size_t data_sz, const char *
    crypto_generichash_state *state;
 
    if (!f_is_random_attached())
-      return 3858;
+      return ERROR_GEN_TOKEN_NO_RAND_NUM_GEN;//3858;
 
    if (!data_sz)
       return 3859;

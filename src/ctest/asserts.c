@@ -8,12 +8,15 @@
 #include <time.h>
 #include <math.h>
 
+static int c_test_not_ignored=C_TEST_TRUE;
+
 static void print_assert_int(void *, void *);
 static void print_assert_longint(void *, void *);
 static void print_assert_byte(void *, void *);
 static void print_assert_double(void *, void *);
 static void print_assert_string(void *, void *);
 static void print_assert_nullable(void *, void *);
+static int free_vargs(void *);
 
 static void abort_tests();
 
@@ -31,15 +34,6 @@ static void debug_hex_dump(unsigned char *data, size_t data_size)
       printf("%02X ", (unsigned char)*(data++));
 }
 */
-#define END_TITLE "\e[0m"
-#define INITIAL_TITLE "\e[1;3m"
-#define ERROR_CODE "\e[31;1m"
-#define SUCCESS_CODE "\e[32;1m"
-#define WARNING_CODE "\e[33;1m"
-#define INFO_CODE "\e[34;1m"
-
-#define C_TEST_TRUE (int)(1==1)
-#define C_TEST_FALSE (int)(1!=1)
 
 _Static_assert(C_TEST_TRUE==1, "Compiler should return 1 for TRUE");
 _Static_assert(C_TEST_FALSE==0, "Compiler should return 0 for FALSE");
@@ -55,7 +49,8 @@ typedef struct c_test_header {
 
    size_t
    tests,
-   next;
+   next,
+   ignored;
 
    uint64_t
    initial_timestamp,
@@ -81,12 +76,6 @@ typedef C_TEST_FN_DESCRIPTION C_TEST_FN_META;
 
 typedef struct c_test_type_header_t {
    C_TEST_FN_DESCRIPTION desc;
-
-   const char
-   *on_error, // TODO Remove
-   *on_success, // TODO Remove
-   *on_warning; // TODO Remove
-
 } C_TEST_TYPE_HEADER;
 
 typedef struct c_test_type_int_t {
@@ -107,10 +96,7 @@ typedef struct c_test_type_long_int_t {
 
 typedef struct c_test_type_double_t {
    C_TEST_TYPE_HEADER header;
-/*
-   int
-   is_not_equal;
-*/
+
    double
    expected,
    result,
@@ -122,13 +108,10 @@ typedef struct c_test_type_byte_t {
 
    void
    *expected,
-   *result,
-   *free_on_error_ctx; // TODO Remove 
+   *result;
 
    size_t size;
 
-   free_on_error_fn
-   free_on_error_cb; // TODO Remove
 } C_TEST_TYPE_BYTE;
 
 typedef struct c_test_type_string_t {
@@ -141,16 +124,10 @@ typedef struct c_test_type_string_t {
 
 typedef struct c_test_type_nullable_t {
    C_TEST_TYPE_HEADER header;
-/*
-   int
-   should_be_null;
-*/
-   void
-   *pointer,
-   *free_on_error_ctx;
 
-   free_on_error_fn
-   free_on_error_cb;
+   void
+   *pointer;
+
 } C_TEST_TYPE_NULLABLE;
 
 #define C_TEST_VARGS_SETTER (uint32_t)(0x043E4992)
@@ -158,15 +135,23 @@ typedef struct c_test_type_nullable_t {
 
 const uint32_t C_TEST_VARGS_MSG_SIGS[] = {
    C_TEST_VARGS_TITLE, C_TEST_VARGS_INFO, C_TEST_VARGS_WARNING,
-   C_TEST_VARGS_ERROR, C_TEST_VARGS_SUCCESS
+   C_TEST_VARGS_ERROR, C_TEST_VARGS_SUCCESS, C_TEST_VARGS_ON_SUCCESS_CALBACK,
+   C_TEST_VARGS_ON_ERROR_CALBACK
 };
 
-#define C_TEST_VARGS_MSG_SIGS_SIZE (sizeof(C_TEST_VARGS_MSG_SIGS)/sizeof(uint32_t))
+#define C_TEST_VARGS_MSG_SIGS_SIZE (sizeof(C_TEST_VARGS_MSG_SIGS)/sizeof(C_TEST_VARGS_MSG_SIGS[0]))
 
 typedef struct c_test_vargs_msg_t {
    uint32_t sig;
    int msg_sz;
    char *msg;
+
+   void
+   *ctx;
+
+   cb_fn
+   on_success_cb,
+   on_error_cb;
 } C_TEST_VARGS_MSG;
 
 typedef struct c_test_vargs_msg_header_t {
@@ -239,10 +224,10 @@ static C_TEST_FN_DESCRIPTION _tst_fn_desc[] = {
 #define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_LONG_INT _tst_fn_desc[TYPE_TYPE_ASSERT_NOT_EQUAL_LONG_INT]
 #define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_DOUBLE _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_DOUBLE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_BYTE _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_BYTE]
-#define C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING _tst_fn_desc[10]
-#define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING _tst_fn_desc[11]
-#define C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING_IGNORE_CASE _tst_fn_desc[12]
-#define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING_IGNORE_CASE _tst_fn_desc[13]
+#define C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING _tst_fn_desc[TYPE_ASSERT_EQUAL_STRING]
+#define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_STRING]
+#define C_TEST_FN_DESCRIPTION_ASSERT_EQ_STRING_IGNORE_CASE _tst_fn_desc[TYPE_ASSERT_EQUAL_STRING_IGNORE_CASE]
+#define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_STRING_IGNORE_CASE _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_NULL _tst_fn_desc[TYPE_ASSERT_NULL]
 #define C_TEST_FN_DESCRIPTION_ASSERT_NOT_NULL _tst_fn_desc[TYPE_ASSERT_NOT_NULL]
 
@@ -258,7 +243,7 @@ typedef union c_test_fn {
 } C_TEST_FN;
 
 #define PRINTF_FINAL_FMT printf("%.*s", err, msg);
-static void write_title(const char *message, const char *template)
+void write_title(const char *message, const char *template)
 {
    int err;
    char *msg;
@@ -278,7 +263,7 @@ static void write_title(const char *message, const char *template)
    free(msg);
 }
 
-static void write_title_fmt(const char *template, const char *fmt, ...)
+void write_title_fmt(const char *template, const char *fmt, ...)
 {
    int err;
    char *msg_fmt, *msg;
@@ -313,17 +298,11 @@ static void write_title_fmt(const char *template, const char *fmt, ...)
    free(msg);
 }
 
-#define TITLE_MSG(msg) write_title(msg, INITIAL_TITLE);
-#define ERROR_MSG(msg) write_title(msg, ERROR_CODE);
-#define SUCCESS_MSG(msg) write_title(msg, SUCCESS_CODE);
-#define WARN_MSG(msg) write_title(msg, WARNING_CODE);
-#define INFO_MSG(msg) write_title(msg, INFO_CODE);
-
-#define TITLE_MSG_FMT(...) write_title_fmt(INITIAL_TITLE, __VA_ARGS__);
-#define ERROR_MSG_FMT(...) write_title_fmt(ERROR_CODE, __VA_ARGS__);
-#define WARN_MSG_FMT(...) write_title_fmt(WARNING_CODE, __VA_ARGS__);
-#define INFO_MSG_FMT(...) write_title_fmt(INFO_CODE, __VA_ARGS__);
-#define SUCCESS_MSG_FMT(...) write_title_fmt(SUCCESS_CODE, __VA_ARGS__);
+inline static void end_test_msg_util(size_t tst)
+{
+   if (tst)
+      WARN_MSG_FMT("WARNING: %d test(s) ignored", tst)
+}
 
 static void end_tests_util(int abort)
 {
@@ -336,12 +315,24 @@ static void end_tests_util(int abort)
          if (((C_TEST_HEADER *)_c_test_ptr)->on_abort_fn)
             ((C_TEST_HEADER *)_c_test_ptr)->on_abort_fn(_c_test_ptr);
 
-         ERROR_MSG_FMT("Aborting TESTS.\nAt %s\nTests: %d finished", ctime(&t), ((C_TEST_HEADER *)_c_test_ptr)->next)
+         end_test_msg_util(((C_TEST_HEADER *)_c_test_ptr)->ignored);
+
+         ERROR_MSG_FMT(
+            "Aborting TESTS.\nAt %s\nTotal: %d\nTest(s): %d finished", ctime(&t), ((C_TEST_HEADER *)_c_test_ptr)->next,
+             ((C_TEST_HEADER *)_c_test_ptr)->next-((C_TEST_HEADER *)_c_test_ptr)->ignored
+         )
+
       } else {
          if (((C_TEST_HEADER *)_c_test_ptr)->on_end_test_fn)
             ((C_TEST_HEADER *)_c_test_ptr)->on_end_test_fn(_c_test_ptr);
 
-         TITLE_MSG_FMT("*** END TESTS ***\nTotal: %d\nAt: %s", ((C_TEST_HEADER *)_c_test_ptr)->tests, ctime(&t))
+         end_test_msg_util(((C_TEST_HEADER *)_c_test_ptr)->ignored);
+
+         TITLE_MSG_FMT(
+            "*** END TESTS ***\nTotal: %d\nTest(s): %d\nAt: %s", ((C_TEST_HEADER *)_c_test_ptr)->tests, 
+            ((C_TEST_HEADER *)_c_test_ptr)->next-((C_TEST_HEADER *)_c_test_ptr)->ignored, ctime(&t)
+         )
+
          TITLE_MSG_FMT("Total time: %llu\n", (uint64_t)t-((C_TEST_HEADER *)_c_test_ptr)->initial_timestamp)
       }
 
@@ -365,6 +356,16 @@ static void abort_tests() {
    exit(1);
 }
 
+void _c_test_ignore()
+{
+   c_test_not_ignored=C_TEST_FALSE;
+}
+
+void _c_test_ignore_end()
+{
+   c_test_not_ignored=C_TEST_TRUE;
+}
+
 static void begin_test(void *vas)
 {
    C_TEST_FN *p, *q;
@@ -384,16 +385,25 @@ static void begin_test(void *vas)
    }
 
    q=&p[((C_TEST_HEADER *)_c_test_ptr)->next++];
-   TITLE_MSG_FMT("Testing %d -> \"%s\" (%p)...", ((C_TEST_HEADER *)_c_test_ptr)->next, q->meta.fn_name, q)
-   q->meta.cb(q, vas);
 
-   TITLE_MSG_FMT("Duration (ms): %llu\n", (uint64_t)time(NULL)-t)
+   if (c_test_not_ignored) {
+      TITLE_MSG_FMT("Testing %d -> \"%s\" (%p)...", ((C_TEST_HEADER *)_c_test_ptr)->next, q->meta.fn_name, q)
+      q->meta.cb(q, vas);
+      TITLE_MSG_FMT("Duration (ms): %llu\n", (uint64_t)time(NULL)-t)
+
+   } else {
+      free_vargs(vas);
+      ((C_TEST_HEADER *)_c_test_ptr)->ignored++;
+      WARN_MSG_FMT("WARNING: Ignoring %d -> \"%s\" (%p)...", ((C_TEST_HEADER *)_c_test_ptr)->next, q->meta.fn_name, q)
+
+   }
 }
 
 #define C_TEST_INITIAL_ADD \
    ((C_TEST_HEADER *)p)->signature=C_TEST_HEADER_SIGNATURE;\
    ((C_TEST_HEADER *)p)->tests=0U;\
    ((C_TEST_HEADER *)p)->next=0U;\
+   ((C_TEST_HEADER *)p)->ignored=0U;\
    ((C_TEST_HEADER *)p)->initial_timestamp=0UL;\
    ((C_TEST_HEADER *)p)->final_timestamp=0UL;
 
@@ -738,11 +748,18 @@ static int free_vargs(void *vargs)
          continue;
       }
 
-      if ((*p)->msg_sz>=0) {
-         if ((*p)->msg)
-            free((*p)->msg);
-      } else
-         ERROR_MSG_FMT("ERROR %d: free_vargs(). Error dealloc message. Signature = %04x at address = (%p)", (err=(*p)->msg_sz), (*p)->sig, (*p))
+      if ((*p)->sig&C_TEST_TYPE_VARGS_MSG) {
+         if ((*p)->msg_sz>=0) {
+            if ((*p)->msg)
+               free((*p)->msg);
+         } else
+            ERROR_MSG_FMT("ERROR %d: free_vargs(). Error dealloc message. Signature = %04x at address = (%p)", (err=(*p)->msg_sz), (*p)->sig, (*p))
+
+      } else {
+         (*p)->ctx=NULL;
+         (*p)->on_success_cb=NULL;
+         (*p)->on_error_cb=NULL;
+      }
 
       free(*(p++));
    }
@@ -770,16 +787,23 @@ static int close_varg(C_TEST_VARGS_MSG *varg)
 
    err=0;
 
-   if (varg->msg_sz>=0) {
-      if (varg->msg)
-         free(varg->msg);
+   if (varg->sig&C_TEST_TYPE_VARGS_MSG) {
+      if (varg->msg_sz>=0) {
+         if (varg->msg)
+            free(varg->msg);
 
+      } else
+         WARN_MSG_FMT(
+            "WARNING %d: close_varg(). Message may be a wrong format at address (%p). Closing vargs...",
+             err=varg->msg_sz,
+             (void *)varg
+         )
+   } else if (varg->sig&C_TEST_TYPE_VARGS_CALLBACK) {
+      varg->ctx=NULL;
+      varg->on_success_cb=NULL;
+      varg->on_error_cb=NULL;
    } else
-      WARN_MSG_FMT(
-         "WARNING %d: close_varg(). Message may be a wrong format at address (%p). Closing vargs...",
-          err=varg->msg_sz, 
-          (void *)varg
-      )
+      WARN_MSG("WARNING: close_varg(). Unknown argument type. Ignoring and close ...");
 
    free(varg);
 
@@ -791,12 +815,51 @@ void *set_varg(uint32_t sig, const char *message, ...)
    C_TEST_VARGS_MSG *varg_tmp;
    va_list args;
 
+   if ((sig&C_TEST_TYPE_VARGS_MSG)==0)
+      return NULL;
+
    if (!(varg_tmp=malloc(sizeof(C_TEST_VARGS_MSG))))
       return NULL;
+
+   memset(varg_tmp, 0, sizeof(C_TEST_VARGS_MSG));
 
    varg_tmp->sig=sig;
    va_start(args, message);
    varg_tmp->msg_sz=vasprintf(&varg_tmp->msg, message, args);
+   va_end(args);
+
+   return (void *)varg_tmp;
+}
+
+void *set_varg_callback(uint32_t sig, cb_fn callback, ...)
+{
+   C_TEST_VARGS_MSG *varg_tmp;
+   va_list args;
+
+   if ((sig&C_TEST_TYPE_VARGS_CALLBACK)==0)
+      return NULL;
+
+   if (!callback)
+      return NULL;
+
+   if (!(varg_tmp=malloc(sizeof(C_TEST_VARGS_MSG))))
+      return NULL;
+
+   memset(varg_tmp, 0, sizeof(C_TEST_VARGS_MSG));
+
+   if ((varg_tmp->sig=sig)==C_TEST_VARGS_ON_SUCCESS_CALBACK)
+      varg_tmp->on_success_cb=callback;
+   else
+      varg_tmp->on_error_cb=callback;
+
+   va_start(args, callback);
+   if ((varg_tmp->ctx=(void *)va_arg(args, void *)))
+      if ((void *)va_arg(args, void *)!=VA_END_SIGNATURE) {
+         ERROR_MSG("ERROR: Missing END argument");
+         free(varg_tmp);
+         varg_tmp=NULL;
+      }
+
    va_end(args);
 
    return (void *)varg_tmp;
@@ -1064,7 +1127,6 @@ static void print_assert_int(void *ctx, void *vas)
    SHOW_USER_NOTIFICATION
 
    if (error) {
-      //ERROR_MSG(type->header.on_error)
 
       if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
          ERROR_MSG_FMT("%.*s", p_sz, p)
@@ -1086,8 +1148,6 @@ static void print_assert_int(void *ctx, void *vas)
 
       abort_tests();
    }
-
-   //SUCCESS_MSG(type->header.on_success)
 
    if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
       SUCCESS_MSG_FMT("%.*s", p_sz, p)
@@ -1412,20 +1472,12 @@ add_test_EXIT1:
 }
 
 #define ASSERT_PRELOAD \
-   type.header.on_error=on_error_msg;\
-   type.header.on_success=on_success;\
-   type.expected=expected;\
-   type.result=result;
-
-//TODO Temporary for adjustment
-#define ASSERT_PRELOAD_TEMP \
    type.expected=expected;\
    type.result=result;
 
 #define TEST_BEGIN \
    add_test((void *)&type, vas); \
    begin_test(vas);
-
 
 static void assert_equal_bool(
    int expected,
@@ -1436,7 +1488,7 @@ static void assert_equal_bool(
    static C_TEST_TYPE_BOOL type;
 
    (expected==C_TEST_TRUE)?(type.header.desc=C_TEST_FN_DESCRIPTION_ASSERT_TRUE):(type.header.desc=C_TEST_FN_DESCRIPTION_ASSERT_FALSE);
-   ASSERT_PRELOAD_TEMP // TODO Replace TO ASSERT_PRELOAD
+   ASSERT_PRELOAD
    TEST_BEGIN
 }
 
@@ -1508,14 +1560,12 @@ void assert_true(int value, ...)
    assert_equal_bool(C_TEST_TRUE, value, vas);
 }
 
-//static void assert_int(int expected, int result, C_TEST_FN_DESCRIPTION *desc, const char *on_error_msg, const char *on_success)
 static void assert_int(int expected, int result, C_TEST_FN_DESCRIPTION *desc, void *vas)
 {
    static C_TEST_TYPE_INT type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   ASSERT_PRELOAD_TEMP
-//   ASSERT_PRELOAD
+   ASSERT_PRELOAD
    TEST_BEGIN
 }
 
@@ -1552,8 +1602,7 @@ static void assert_longint(long long int expected, long long int result, C_TEST_
    static C_TEST_TYPE_LONG_INT type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   //ASSERT_PRELOAD
-   ASSERT_PRELOAD_TEMP
+   ASSERT_PRELOAD
    TEST_BEGIN
 }
 
@@ -1592,7 +1641,7 @@ static void assert_double(double expected, double result, double delta, C_TEST_F
    static C_TEST_TYPE_DOUBLE type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   ASSERT_PRELOAD_TEMP
+   ASSERT_PRELOAD
    type.delta=delta;
    TEST_BEGIN
 }
@@ -1638,10 +1687,8 @@ static void assert_byte(
    static C_TEST_TYPE_BYTE type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   ASSERT_PRELOAD_TEMP
+   ASSERT_PRELOAD
    type.size=size;
-   type.free_on_error_cb=NULL; //TODO Remove
-   type.free_on_error_ctx=NULL; // TODO remove
    TEST_BEGIN
 }
 
@@ -1695,7 +1742,7 @@ static void assert_string(
    static C_TEST_TYPE_STRING type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-   ASSERT_PRELOAD_TEMP
+   ASSERT_PRELOAD
    TEST_BEGIN
 
 }
@@ -1769,12 +1816,7 @@ static void assert_nullable(
    static C_TEST_TYPE_NULLABLE type;
 
    memcpy(&type.header.desc, desc, sizeof(type.header.desc));
-//   type.should_be_null=(desc==&C_TEST_FN_DESCRIPTION_ASSERT_NULL);
-   type.header.on_error=NULL;//on_error_msg; TODO Remove
-   type.header.on_success=NULL;//on_success; TODO remove
    type.pointer=result;
-   type.free_on_error_cb=NULL;//free_on_error_cb; TODO remove
-   type.free_on_error_ctx=NULL;//free_on_error_ctx; TODO remove
    TEST_BEGIN
 }
 

@@ -34,14 +34,14 @@ void uncompress_eliptic_curve_test()
          CTEST_INFO("Testing \"f_gen_ecdsa_key_pair\" generating compressed public key from private key = \"%s\" ...",
             fhex2strv2(msgbuf(), prv_key, sizeof(prv_key), 1))
       )
-   );
+   )
 
    C_ASSERT_TRUE(key_pair_compressed.public_key_sz>0,
       CTEST_SETTER(
          CTEST_ON_SUCCESS("Compressed key size %u and value \"%s\"",
             key_pair_compressed.public_key_sz, fhex2strv2(msgbuf(), key_pair_compressed.public_key, key_pair_compressed.public_key_sz, 1))
       )
-   );
+   )
 
    err=f_gen_ecdsa_key_pair(&key_pair_uncompressed, MBEDTLS_ECP_PF_UNCOMPRESSED, load_master_prv_key, (void *)prv_key);
 
@@ -50,14 +50,14 @@ void uncompress_eliptic_curve_test()
          CTEST_INFO("Testing \"f_gen_ecdsa_key_pair\" generating uncompressed public key from private key = \"%s\" ...",
             fhex2strv2(msgbuf(), prv_key, sizeof(prv_key), 1))
       )
-   );
+   )
 
    C_ASSERT_TRUE(key_pair_uncompressed.public_key_sz>0,
       CTEST_SETTER(
          CTEST_ON_SUCCESS("Uncompressed key size %u and value \"%s\"",
             key_pair_uncompressed.public_key_sz, fhex2strv2(msgbuf(), key_pair_uncompressed.public_key, key_pair_uncompressed.public_key_sz, 1))
       )
-   );
+   )
 
    err=f_uncompress_elliptic_curve((uint8_t *)p, (BUF_MSG_SZ>>1), &sz,
       key_pair_compressed.gid, key_pair_compressed.public_key, key_pair_compressed.public_key_sz);
@@ -66,7 +66,7 @@ void uncompress_eliptic_curve_test()
       CTEST_SETTER(
          CTEST_INFO("Testing \"f_uncompress_elliptic_curve\" for uncompressing public key = \"%s\" ...", msgbuf())
       )
-   );
+   )
 
    C_ASSERT_EQUAL_BYTE(
       key_pair_uncompressed.public_key,
@@ -77,7 +77,6 @@ void uncompress_eliptic_curve_test()
             key_pair_uncompressed.public_key_sz, msgbuf(), fhex2strv2(q, p, key_pair_uncompressed.public_key_sz, 1)
          )
       )
-   );
-
+   )
 }
 

@@ -5,6 +5,7 @@
 	EMAIL: fabioegel@gmail.com or fabioegel@protonmail.com
 */
 
+#include <errors.h>
 #include <stdint.h>
 #include <f_util.h>
 #include <f_bitcoin.h>
