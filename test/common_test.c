@@ -1,4 +1,4 @@
-#include "common_test.h"
+#include <common_test.h>
 
 static char msgbuffer[BUF_MSG_SZ];
 char *msgbuf()

@@ -59,6 +59,10 @@ main: part
 	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
 #	$(CC) -shared -o $(LIBDIR)/lib$(LIBANAME).so $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
 
+test: main
+	$(MAKE) -C $(PWD)/test
+	@echo "Test finished successfully"
+
 examples: $(COBJS) $(SOBJS) $(CEXOBJS)
 	@echo "Making examples ..."
 	cd $(CURDIR)/src/libsodium-1.0.17 -v;\

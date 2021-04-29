@@ -1,4 +1,4 @@
-#include "common_test.h"
+#include <common_test.h>
 
 static int load_master_prv_key(void *handle, unsigned char *data, size_t data_sz)
 {
@@ -62,7 +62,7 @@ void uncompress_eliptic_curve_test()
    err=f_uncompress_elliptic_curve((uint8_t *)p, (BUF_MSG_SZ>>1), &sz,
       key_pair_compressed.gid, key_pair_compressed.public_key, key_pair_compressed.public_key_sz);
 
-   C_ASSERT_EQUAL_INT(0, err,
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
       CTEST_SETTER(
          CTEST_INFO("Testing \"f_uncompress_elliptic_curve\" for uncompressing public key = \"%s\" ...", msgbuf())
       )

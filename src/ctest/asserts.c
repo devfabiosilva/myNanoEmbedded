@@ -280,7 +280,6 @@ void write_title_fmt(const char *template, const char *fmt, ...)
 
    if (err<0) {
       printf("Message format error at \"write_title_fmt\"");
-      free(msg_fmt);
       abort_tests();
    }
 

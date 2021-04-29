@@ -1,11 +1,10 @@
-#include "common_test.h"
+#include <common_test.h>
 
 void bitcoin_address_test()
 {
    int err;
    size_t sz;
    char *p;
-   uint8_t *hash;
 
    static uint8_t public_key[]={
       0x03,
@@ -19,7 +18,7 @@ void bitcoin_address_test()
    clear_msgbuf();
    err=f_public_key_to_address(msgbuf(), BUF_MSG_SZ>>1, &sz, public_key, F_BITCOIN_P2PKH);
 
-   C_ASSERT_EQUAL_INT(0, err,
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
       CTEST_SETTER(
          CTEST_INFO("Testing \"f_public_key_to_address\" to generate address from public key \"%s\" ...", fhex2strv2(p, public_key, sizeof(public_key), 1)),
          CTEST_ON_ERROR("f_public_key_to_address error  %d", err),
