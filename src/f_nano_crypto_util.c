@@ -258,7 +258,7 @@ int nano_base_32_2_hex(uint8_t *res, char *str_wallet)
       return 24;
 
    if (memcmp(fp+33, buf, 5))
-      return 23;
+      return ERROR_INVALID_NANO_ADDRESS_VERIFY_CHKSUM;
 
    return 0;
 }

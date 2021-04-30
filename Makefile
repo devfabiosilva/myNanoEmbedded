@@ -89,5 +89,8 @@ clean:
 	rm -v $(SOBJS)
 	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 distclean
 	rm -rfv $(CURDIR)/src/libsodium-1.0.17/build
-
+ifneq ("$(wildcard $(CURDIR)/test/test)","")
+	@echo "Removing $(CTEST_DIR)/test/test ..."
+	rm $(CURDIR)/test/test
+endif
 
