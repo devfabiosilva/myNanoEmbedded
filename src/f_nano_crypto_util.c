@@ -3636,7 +3636,7 @@ int f_verify_token(F_TOKEN signature, void *data, size_t data_sz, const char *pa
 }
 */
 #ifndef F_ESP32
-
+/*
 enum f_nano_account_or_pk_string_to_pk_util_err_t {
    NANO_ACCOUNT_TO_PK_OK = 0,
    NANO_ACCOUNT_TO_PK_OVFL = 8100,
@@ -3646,7 +3646,7 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
    NANO_ACCOUNT_BASE32_CONVERT_ERROR,
    NANO_ACCOUNT_TO_PK_WRONG_ACCOUNT_LEN
 };
-
+*/
 int nano_account_or_pk_string_to_pk_util(uint8_t *buffer, int *is_xrb_prefix, const unsigned char *str, size_t str_len)
 {
    int err;

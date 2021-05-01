@@ -2,10 +2,12 @@
 
 #define NANO_PREFIX_ERROR_MSG "\"is_nano_prefix\" should return TRUE (%d) for prefix \"%s\" for this wallet: \"%s\""
 #define NANO_PREFIX_SUCCESS_MSG "\"is_nano_prefix\" returned TRUE (%d) for prefix \"%s\" for this wallet: \"%s\""
-#define GENESIS_PREVIOUS (uint8_t []){\
+#define GENESIS_PREVIOUS (uint8_t [])\
+                         {\
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\
                          }
+
 void nano_address_test()
 {
    int err, i;
@@ -87,8 +89,10 @@ void nano_seed_test()
       uint8_t nano_seed_test[32];
    } nano_seed = {
       "C7E07195BFAA93A0F7B8A106957C64D4626B10A20B010C5DEA0F68CD9844D034",
-      {0xC7, 0xE0, 0x71, 0x95, 0xBF, 0xAA, 0x93, 0xA0, 0xF7, 0xB8, 0xA1, 0x06, 0x95, 0x7C, 0x64, 0xD4,
-      0x62, 0x6B, 0x10, 0xA2, 0x0B, 0x01, 0x0C, 0x5D, 0xEA, 0x0F, 0x68, 0xCD, 0x98, 0x44, 0xD0, 0x34}
+      {
+         0xC7, 0xE0, 0x71, 0x95, 0xBF, 0xAA, 0x93, 0xA0, 0xF7, 0xB8, 0xA1, 0x06, 0x95, 0x7C, 0x64, 0xD4,
+         0x62, 0x6B, 0x10, 0xA2, 0x0B, 0x01, 0x0C, 0x5D, 0xEA, 0x0F, 0x68, 0xCD, 0x98, 0x44, 0xD0, 0x34
+      }
    };
 
    struct seed_test_t {
@@ -273,8 +277,11 @@ void nano_p2pow_test()
 
 static void close_block(void *ctx)
 {
-   printf("\nFreeing Nano block at address (%p)...\n", ctx);
-   free(ctx);
+   printf("\nError occurs\n");
+   if (ctx) {
+      printf("\nFreeing Nano block at address (%p)...\n", ctx);
+      free(ctx);
+   }
 }
 
 void nano_block_test()
@@ -330,6 +337,114 @@ void nano_block_test()
          (void *)representative, 0,
          (void *)balance,
          (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         NANO_ERR_INSUFICIENT_FUNDS,
+         "This would expect an error. Because this account does not have suficient funds to send",
+         "Error success, expected error NANO_ERR_INSUFICIENT_FUNDS (%d)",
+         "Error fail. Was expected NANO_ERR_INSUFICIENT_FUNDS (%d), but found (%d)",
+         (void *)account, 0, 
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"100",
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_ACCOUNT_BASE32_CONVERT_ERROR,
+         "This would expect an error. Because this account is an invalid address",
+         "Error success, expected error NANO_ACCOUNT_BASE32_CONVERT_ERROR (%d)",
+         "Error fail. Was expected NANO_ACCOUNT_BASE32_CONVERT_ERROR (%d), but found (%d)",
+         (void *)"nano_15hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc", 0, 
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"1526.187366",
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Parsing address with 32 bytes (raw data)",
+         "Error success, expected error ERROR_SUCCESS (%d)",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d)",
+         (void *)(uint8_t [])
+                  {
+                     0xF1, 0xF7, 0xBF, 0x36, 0x7A, 0xC3, 0xA6, 0x7A, 0xE4, 0xEE, 0x86, 0x43, 0x9B, 0x1D, 0x32, 0xC0,
+                     0xF3, 0xF4, 0xD5, 0x8E, 0xD6, 0x5A, 0x9D, 0x29, 0x98, 0xB8, 0x70, 0x18, 0xFE, 0x87, 0x70, 0xAB
+                  }, 32, 
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"1526.187366",
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Parsing hex string account",
+         "Error success, expected error ERROR_SUCCESS (%d) for hex string account",
+         "Error fail. Was expected ERROR_SUCCESS (%d) for hex string account, but found (%d)",
+         (void *) "F1F7BF367AC3A67AE4EE86439B1D32C0F3F4D58ED65A9D2998B87018FE8770AB", 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"1526.187366",
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_ACCOUNT_WRONG_HEX_STRING,
+         "This would expect an error. Invalid HEX string account",
+         "Error success, expected error NANO_ACCOUNT_WRONG_HEX_STRING (%d) for invalid hex string account",
+         "Error fail. Was expected NANO_ACCOUNT_WRONG_HEX_STRING (%d) for invalid hex string account, but found (%d)",
+         (void *) "K1F7BF367AC3A67AE4EE86439B1D32C0F3F4D58ED65A9D2998B87018FE8770AB", 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"1526.187366",
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_CREATE_BLK_DYN_COMPARE,
+         "This would expect an error. Because this account has negative value to send",
+         "Error success, expected error NANO_CREATE_BLK_DYN_COMPARE (%d)",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_COMPARE (%d), but found (%d)",
+         (void *)account, 0, 
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"60000.012",
+         (void *)"-10.18", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         NANO_CREATE_BLK_DYN_COMPARE,
+         "This would expect an error. Because this account has invalid big number format",
+         "Error success, expected error NANO_CREATE_BLK_DYN_COMPARE (%d) invalid -> ok",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_COMPARE (%d), but found (%d) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"60200.012",
+         (void *)"-10acsa18", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Parsing a valid raw string balance",
+         "Error success, expected error ERROR_SUCCESS (%d) for valid raw string balance",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) for valid raw string balance -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"1234560000000000000000000000001",
+         (void *)"1929.28710017", F_BALANCE_RAW_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
          (void *)link, 0,
          F_VALUE_TO_RECEIVE
       },
@@ -429,7 +544,8 @@ void nano_block_test()
          CTEST_SETTER(
             CTEST_WARN(BLOCK_INFO[i].message_warning),
             CTEST_ON_SUCCESS(BLOCK_INFO[i].message_on_success, BLOCK_INFO[i].expected_error),
-            CTEST_ON_ERROR(BLOCK_INFO[i].message_on_error, BLOCK_INFO[i].expected_error, err)
+            CTEST_ON_ERROR(BLOCK_INFO[i].message_on_error, BLOCK_INFO[i].expected_error, err),
+            CTEST_ON_ERROR_CB(close_block, block)
          )
       )
 
@@ -451,8 +567,10 @@ void nano_block_test()
             )
          )
 
-      if (!block)
+      if (block) {
+         printf("\nClosing block of index %d (%p)...\n", i, block);
          free(block);
+      }
 
       i++;
    }
