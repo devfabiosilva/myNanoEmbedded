@@ -1278,6 +1278,9 @@ f_nano_err f_nano_parse_real_str_to_raw128_t(uint8_t *res, const char *real_str_
       err=NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T;
 
 f_nano_parse_real_str_to_raw128_t_EXIT1:
+   mbedtls_mpi_free(B);
+   mbedtls_mpi_free(A);
+   mbedtls_mpi_free(X);
    memset(buf, 0, NANO_PARSE_REAL_TO_STRING_BUF_SZ);
    free(buf);
 

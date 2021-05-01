@@ -2,6 +2,10 @@
 
 #define NANO_PREFIX_ERROR_MSG "\"is_nano_prefix\" should return TRUE (%d) for prefix \"%s\" for this wallet: \"%s\""
 #define NANO_PREFIX_SUCCESS_MSG "\"is_nano_prefix\" returned TRUE (%d) for prefix \"%s\" for this wallet: \"%s\""
+#define GENESIS_PREVIOUS (uint8_t []){\
+                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,\
+                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\
+                         }
 void nano_address_test()
 {
    int err, i;
@@ -267,11 +271,17 @@ void nano_p2pow_test()
 
 }
 
+static void close_block(void *ctx)
+{
+   printf("\nFreeing Nano block at address (%p)...\n", ctx);
+   free(ctx);
+}
+
 void nano_block_test()
 {
-   int err;
+   int err, i;
    F_BLOCK_TRANSFER *block;
-   const char
+   static const char
       *account="nano_1uj9f5hazjrzrgbp46ainirjmmhsuqn3ohsz63uusem18runsqzrdj6yydxh",
       *previous="46ca895be3a18fb50c1c6b5a3bd2e97fb637b35a22924c2f3dea3cf09e9e2e74",
       *representative="xrb_3jx159p55nwebxyew4988akaps7iqpa51z77xa5zyfo5cnhi5hj49qkimjt6",
@@ -280,6 +290,95 @@ void nano_block_test()
       *value_to_receive="17388.18266381",
       *address_to_send="xrb_16hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc",
       *link="cad2eabfd8aea39e7c9ec2f041d502150ccbe7202673c3fb1fe60ec029d323ce";
+
+   struct block_info_t {
+      int expected_error;
+      const char
+         *message_warning,
+         *message_on_success,
+         *message_on_error;
+      const void
+         *account;
+      size_t
+         account_len;
+      const void
+         *previous;
+      size_t
+         previous_len;
+      const void
+         *representative;
+      size_t
+         representative_len;
+      void
+         *balance,
+         *value_to_send_or_receive;
+      uint32_t
+         values_type;
+      void
+         *link;
+      size_t
+         link_len;
+      int direction;
+   } BLOCK_INFO[] = {
+      {
+         NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE,
+         "This would expect an error. Because it does not make sense create a genesis block to send Nano with balance. Trying with NULL",
+         "Error success, expected error NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE (%d)",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE (%d), but found (%d)",
+         (void *)account, 0, 
+         (void *)NULL, 0,
+         (void *)representative, 0,
+         (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+#define GENESIS_BLOCK_SUCCESS_MSG "Error success, expected error NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d)"
+#define GENESIS_BLOCK_ERROR_MSG "Error fail. Was expected NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d), but found (%d)"
+      {
+         NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
+         "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying strings with 0's",
+         GENESIS_BLOCK_SUCCESS_MSG,
+         GENESIS_BLOCK_ERROR_MSG,
+         (void *)account, 0, 
+         (void *)"0000000000000000000000000000000000000000000000000000000000000000", 0,
+         (void *)representative, 0,
+         (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
+         "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying raw with 0's",
+         GENESIS_BLOCK_SUCCESS_MSG,
+         GENESIS_BLOCK_ERROR_MSG,
+         (void *)account, 0, 
+         (void *)GENESIS_PREVIOUS, sizeof(GENESIS_PREVIOUS),
+         (void *)representative, 0,
+         (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
+         "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying with NULL",
+         GENESIS_BLOCK_SUCCESS_MSG,
+         GENESIS_BLOCK_ERROR_MSG,
+         (void *)account, 0, 
+         (void *)NULL, 0,
+         (void *)representative, 0,
+         (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      }
+#undef GENESIS_BLOCK_ERROR_MSG
+#undef GENESIS_BLOCK_SUCCESS_MSG
+   };
+
+#define BLOCK_INFO_SZ sizeof(BLOCK_INFO)/sizeof(BLOCK_INFO[0])
 
    err=nano_create_block_dynamic(
       NULL,
@@ -307,5 +406,57 @@ void nano_block_test()
          CTEST_ON_SUCCESS("NANO_CREATE_BLK_DYN_BLOCK_NULL (%d) expected success", NANO_CREATE_BLK_DYN_BLOCK_NULL)
       )
    )
+
+   for (i=0;i<BLOCK_INFO_SZ;) {
+      INFO_MSG_FMT("---- Entering block index %d of %d ----", i, BLOCK_INFO_SZ-1)
+      err=nano_create_block_dynamic(
+         &block,
+         BLOCK_INFO[i].account,
+         BLOCK_INFO[i].account_len,
+         BLOCK_INFO[i].previous,
+         BLOCK_INFO[i].previous_len,
+         BLOCK_INFO[i].representative,
+         BLOCK_INFO[i].representative_len,
+         BLOCK_INFO[i].balance,
+         BLOCK_INFO[i].value_to_send_or_receive,
+         BLOCK_INFO[i].values_type,
+         BLOCK_INFO[i].link,
+         BLOCK_INFO[i].link_len,
+         BLOCK_INFO[i].direction
+      );
+
+      C_ASSERT_EQUAL_INT(BLOCK_INFO[i].expected_error, err,
+         CTEST_SETTER(
+            CTEST_WARN(BLOCK_INFO[i].message_warning),
+            CTEST_ON_SUCCESS(BLOCK_INFO[i].message_on_success, BLOCK_INFO[i].expected_error),
+            CTEST_ON_ERROR(BLOCK_INFO[i].message_on_error, BLOCK_INFO[i].expected_error, err)
+         )
+      )
+
+      if (err!=ERROR_SUCCESS)
+         C_ASSERT_NULL(block,
+            CTEST_SETTER(
+               CTEST_INFO("Checking if block==NULL if err(%d)!=ERROR_SUCCESS(%d)", err, ERROR_SUCCESS),
+               CTEST_ON_ERROR("Block should be NULL if err!=ERROR_SUCCESS"),
+               CTEST_ON_SUCCESS("Success. block==NULL"),
+               CTEST_ON_ERROR_CB(close_block, block)
+            )
+         )
+      else
+         C_ASSERT_NOT_NULL(block,
+            CTEST_SETTER(
+               CTEST_INFO("Checking if block!=NULL if err(%d)==ERROR_SUCCESS(%d)", err, ERROR_SUCCESS),
+               CTEST_ON_ERROR("Block should NOT be NULL if err==ERROR_SUCCESS"),
+               CTEST_ON_SUCCESS("Success. block(%p)!=NULL", block)
+            )
+         )
+
+      if (!block)
+         free(block);
+
+      i++;
+   }
+
+#undef BLOCK_INFO_SZ
 
 }

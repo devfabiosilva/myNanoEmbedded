@@ -18,6 +18,8 @@ LIBANAME=nanocrypto1
 CURDIR=$(PWD)
 LIBDIR=$(CURDIR)/lib
 ARCH?=F_IA64
+LIBSODIUM_LIB=libsodium-1.0.18
+#libsodium-1.0.17
 
 include ./project.mk
 
@@ -49,11 +51,11 @@ part:$(COBJS) $(SOBJS)
 
 main: part
 	@echo "Almost finishing ..."
-	cd $(CURDIR)/src/libsodium-1.0.17 -v;\
-	./configure --disable-pie --prefix=$(CURDIR)/src/libsodium-1.0.17/build
-	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17
-	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 install
-	mv $(CURDIR)/src/libsodium-1.0.17/build/lib/libsodium.a $(CURDIR)/lib
+	cd $(CURDIR)/src/$(LIBSODIUM_LIB) -v;\
+	./configure --disable-pie --prefix=$(CURDIR)/src/$(LIBSODIUM_LIB)/build
+	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB)
+	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB) install
+	mv $(CURDIR)/src/$(LIBSODIUM_LIB)/build/lib/libsodium.a $(CURDIR)/lib
 	cd $(CURDIR) -v
 	@echo "Creating static library..."
 	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
@@ -65,11 +67,11 @@ test: main
 
 examples: $(COBJS) $(SOBJS) $(CEXOBJS)
 	@echo "Making examples ..."
-	cd $(CURDIR)/src/libsodium-1.0.17 -v;\
-	./configure --prefix=$(CURDIR)/src/libsodium-1.0.17/build
-	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17
-	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 install
-	mv $(CURDIR)/src/libsodium-1.0.17/build/lib/libsodium.a $(CURDIR)/lib
+	cd $(CURDIR)/src/$(LIBSODIUM_LIB) -v;\
+	./configure --prefix=$(CURDIR)/src/$(LIBSODIUM_LIB)/build
+	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB)
+	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB) install
+	mv $(CURDIR)/src/$(LIBSODIUM_LIB)/build/lib/libsodium.a $(CURDIR)/lib
 	cd $(CURDIR) -v
 	@echo "Creating static library..."
 	$(AR) $(LIBDIR)/lib$(LIBANAME).a $(wildcard $(RAWDATDIR)/*.o) $(COBJS) $(SOBJS)
@@ -87,8 +89,8 @@ clean:
 	@echo "Removing program objs ..."
 	rm -v $(COBJS)
 	rm -v $(SOBJS)
-	$(MAKE) -C $(CURDIR)/src/libsodium-1.0.17 distclean
-	rm -rfv $(CURDIR)/src/libsodium-1.0.17/build
+	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB) distclean
+	rm -rfv $(CURDIR)/src/$(LIBSODIUM_LIB)/build
 ifneq ("$(wildcard $(CURDIR)/test/test)","")
 	@echo "Removing $(CTEST_DIR)/test/test ..."
 	rm $(CURDIR)/test/test

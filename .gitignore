@@ -6,5 +6,8 @@ tests
 *.so
 *.lo
 misc
-
+mbedtls.backup
+sodium.backup
+libsodium-1.0.17.backup
+sodium.h.backup
 
