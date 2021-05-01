@@ -3703,6 +3703,11 @@ int nano_create_block_dynamic(
    F_BLOCK_TRANSFER *blk_tmp;
    uint8_t *p;
 
+   if (!block)
+      return NANO_CREATE_BLK_DYN_BLOCK_NULL;
+
+   *block=NULL;
+
    if (direction&(~(F_VALUE_TO_SEND|F_VALUE_TO_RECEIVE)))
       return NANO_CREATE_BLK_DYN_INVALID_DIRECTION_OPTION;
 
@@ -3712,11 +3717,6 @@ int nano_create_block_dynamic(
    if (balance_and_val_to_send_or_rec_types&(~(F_BALANCE_RAW_128|F_BALANCE_REAL_STRING|F_BALANCE_RAW_STRING|
       F_VALUE_SEND_RECEIVE_RAW_128|F_VALUE_SEND_RECEIVE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING)))
       return NANO_CREATE_BLK_DYN_FORBIDDEN_AMOUNT_TYPE;
-
-   if (!block)
-      return NANO_CREATE_BLK_DYN_BLOCK_NULL;
-
-   *block=NULL;
 
    if (!account)
       return NANO_CREATE_BLK_DYN_ACCOUNT_NULL;
@@ -3756,7 +3756,7 @@ int nano_create_block_dynamic(
       blk_tmp->prefixes=SENDER_XRB;
 
    if (previous==account) {
-
+nano_create_block_dynamic_RET1:
       if (direction&F_VALUE_TO_SEND) {
          err=NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK;
          goto nano_create_block_dynamic_EXIT3;
@@ -3776,9 +3776,10 @@ int nano_create_block_dynamic(
 
       p=blk_tmp->account;
 
-   } else if (previous_len==32)
+   } else if (previous_len==32) {
       p=(uint8_t *)previous;
-   else if (previous_len) {
+      goto nano_create_block_dynamic_RET2;
+   } else if (previous_len) {
       err=NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_SZ;
       goto nano_create_block_dynamic_EXIT3;
    } else if (strnlen((const char *)previous, 65)==64) {
@@ -3786,6 +3787,11 @@ int nano_create_block_dynamic(
          err=NANO_CREATE_BLK_DYN_PARSE_STR_HEX_ERR;
          goto nano_create_block_dynamic_EXIT3;
       }
+
+nano_create_block_dynamic_RET2:
+      if (is_null_hash(p))
+         goto nano_create_block_dynamic_RET1;
+
    } else {
       err=NANO_CREATE_BLK_DYN_WRONG_PREVIOUS_STR_SZ;
       goto nano_create_block_dynamic_EXIT3;

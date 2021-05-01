@@ -22,6 +22,7 @@ int main (int argc, char **argv)
    INFO_MSG_FMT(INFO, "Initiating Nano cryptocurrency tests ...")
    nano_address_test();
    nano_seed_test();
+   nano_block_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 
