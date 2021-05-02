@@ -8,6 +8,16 @@
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00\
                          }
 
+#define NANO_BIG_INT_MAX_SUPPLY (uint8_t [])\
+                         {\
+                            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF\
+                         }
+
+#define NANO_BIG_INT_MIN_SUPPLY (uint8_t [])\
+                         {\
+                            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01,\
+                         } // 1 Raw
+
 void nano_address_test()
 {
    int err, i;
@@ -327,15 +337,43 @@ void nano_block_test()
          link_len;
       int direction;
    } BLOCK_INFO[] = {
+#define GENESIS_BLOCK_SUCCESS_MSG "Error success, expected error NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d)"
+#define GENESIS_BLOCK_ERROR_MSG "Error fail. Was expected NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d), but found (%d)"
       {
          NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE,
-         "This would expect an error. Because it does not make sense create a genesis block to send Nano with balance. Trying with NULL",
+         "This would expect an error. Because it does not make sense create a genesis block to receive Nano with balance. Trying with NULL",
          "Error success, expected error NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE (%d)",
          "Error fail. Was expected NANO_CREATE_BLK_DYN_GENESIS_WITH_NON_EMPTY_BALANCE (%d), but found (%d)",
          (void *)account, 0, 
          (void *)NULL, 0,
          (void *)representative, 0,
          (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
+         "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying with NULL",
+         GENESIS_BLOCK_SUCCESS_MSG,
+         GENESIS_BLOCK_ERROR_MSG,
+         (void *)account, 0, 
+         (void *)NULL, 0,
+         (void *)representative, 0,
+         (void *)balance,
+         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Creating a GENESIS block to receive amount",
+         "Error success, ERROR_SUCCESS (%d). Created GENESIS BLOCK",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d)",
+         (void *)account, 0, 
+         (void *)NULL, 0,
+         (void *)representative, 0,
+         (void *)"0",
          (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
          (void *)link, 0,
          F_VALUE_TO_RECEIVE
@@ -411,7 +449,7 @@ void nano_block_test()
       },
       {
          NANO_CREATE_BLK_DYN_COMPARE,
-         "This would expect an error. Because this account has negative value to send",
+         "This would expect an error. Because this account has negative value to receive",
          "Error success, expected error NANO_CREATE_BLK_DYN_COMPARE (%d)",
          "Error fail. Was expected NANO_CREATE_BLK_DYN_COMPARE (%d), but found (%d)",
          (void *)account, 0, 
@@ -448,8 +486,149 @@ void nano_block_test()
          (void *)link, 0,
          F_VALUE_TO_RECEIVE
       },
-#define GENESIS_BLOCK_SUCCESS_MSG "Error success, expected error NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d)"
-#define GENESIS_BLOCK_ERROR_MSG "Error fail. Was expected NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK (%d), but found (%d)"
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Testing a max Nano Raw value range in length (Max supply)",
+         "Error success, expected error ERROR_SUCCESS (%d) for valid raw string balance (Max supply)",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) for valid raw string balance (Max supply) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366920938463463374607431768211455",
+         (void *)"1929.28710017", F_BALANCE_RAW_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success. Testing a max Nano Raw value range in length (min value)",
+         "Error success, expected error ERROR_SUCCESS (%d) for valid raw string balance (min value)",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) for valid raw string balance (min value) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"000000000000000000000000000000000000001",
+         (void *)"1929.28710017", F_BALANCE_RAW_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         INVALID_RAW_BALANCE,
+         "This would expect an error INVALID_RAW_BALANCE. Testing inflow raw value",
+         "Error success, expected error INVALID_RAW_BALANCE (%d) for valid raw string balance (min value)",
+         "Error fail. Was expected INVALID_RAW_BALANCE (%d), but found (%d) for valid raw string balance (min value) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"0000000000000000000000000000000000000001",
+         (void *)"1929.28710017", F_BALANCE_RAW_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T,
+         "This would expect an error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T. Testing overflow MAX SUPPLY + 1 raw",
+         "Error success, expected error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T (%d) for overflow up to MAX SUPPLY",
+         "Error fail. Was expected NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T (%d), but found (%d) for overflow up to MAX SUPPLY -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366920938463463374607431768211455",
+         (void *)"000000000000000000000000000000000000001", F_BALANCE_RAW_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect success ERROR_SUCCESS. Testing MAX SUPPLY (real value) in wallet address to send 1 raw",
+         "Error success, expected error ERROR_SUCCESS (%d) for MAX SUPPLY (real value)",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) for MAX SUPPLY (real value) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366.920938463463374607431768211455",
+         (void *)"000000000000000000000000000000000000001", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T,
+         "This would expect an error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T. Testing MAX SUPPLY (real value) in wallet address + 1 raw (OVERFLOW)",
+         "Error success, expected error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T (%d) for MAX SUPPLY (real value) + 1 raw (overflow)",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) for MAX SUPPLY (real value) + 1 raw (overflow) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366.920938463463374607431768211455",
+         (void *)"000000000000000000000000000000000000001", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         NANO_CREATE_BLK_DYN_COMPARE,
+         "This would expect an error NANO_CREATE_BLK_DYN_COMPARE. Testing MAX SUPPLY (real value) in wallet address - 0.1 raw (INFLOW)",
+         "Error success, expected error NANO_CREATE_BLK_DYN_COMPARE (%d) for MAX SUPPLY (real value) - 0.1 raw (inflow)",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_COMPARE (%d), but found (%d) for MAX SUPPLY (real value) - 0.1 raw (inflow) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366.920938463463374607431768211455",
+         (void *)"0000000000000000000000000000000000000001", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC,
+         "This would expect an error NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC. Try to send 0 value (non sense)",
+         "Error success, expected error NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC (%d). Try to send 0 value (non sense)",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC (%d), but found (%d) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366.920938463463374607431768211455",
+         (void *)"0", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC,
+         "This would expect an error NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC. Try to receive 0 value (non sense)",
+         "Error success, expected error NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC (%d). Try to receive 0 value (non sense)",
+         "Error fail. Was expected NANO_CREATE_BLK_DYN_EMPTY_VAL_TO_SEND_OR_REC (%d), but found (%d) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)"340282366.920938463463374607431768211455",
+         (void *)"0", F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_RAW_STRING,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
+      {
+         ERROR_SUCCESS,
+         "This would expect a success ERROR_SUCCESS. Try to send 1 raw in binary",
+         "Error success, expected error ERROR_SUCCESS (%d). Try to send 1 raw in binary",
+         "Error fail. Was expected ERROR_SUCCESS (%d), but found (%d) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)NANO_BIG_INT_MAX_SUPPLY,
+         (void *)NANO_BIG_INT_MIN_SUPPLY, F_BALANCE_RAW_128|F_VALUE_SEND_RECEIVE_RAW_128,
+         (void *)link, 0,
+         F_VALUE_TO_SEND
+      },
+      {
+         NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T,
+         "This would expect an error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T. Try to receive 1 raw in binary in MAX SUPLY (overflow)",
+         "Error success, expected error NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T (%d). Try to receive 1 raw in binary (overflow)",
+         "Error fail. Was expected NANO_ERR_CANT_PARSE_TO_TEMP_UINT128_T (%d), but found (%d) -> fail",
+         (void *)account, 0,
+         (void *)previous, 0,
+         (void *)representative, 0,
+         (void *)NANO_BIG_INT_MAX_SUPPLY,
+         (void *)NANO_BIG_INT_MIN_SUPPLY, F_BALANCE_RAW_128|F_VALUE_SEND_RECEIVE_RAW_128,
+         (void *)link, 0,
+         F_VALUE_TO_RECEIVE
+      },
       {
          NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
          "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying strings with 0's",
@@ -470,19 +649,6 @@ void nano_block_test()
          GENESIS_BLOCK_ERROR_MSG,
          (void *)account, 0, 
          (void *)GENESIS_PREVIOUS, sizeof(GENESIS_PREVIOUS),
-         (void *)representative, 0,
-         (void *)balance,
-         (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
-         (void *)link, 0,
-         F_VALUE_TO_SEND
-      },
-      {
-         NANO_CREATE_BLK_DYN_CANT_SEND_IN_GENESIS_BLOCK,
-         "This would expect an error. Because it does not make sense create a genesis block to send Nano with 0.0 balance. Trying with NULL",
-         GENESIS_BLOCK_SUCCESS_MSG,
-         GENESIS_BLOCK_ERROR_MSG,
-         (void *)account, 0, 
-         (void *)NULL, 0,
          (void *)representative, 0,
          (void *)balance,
          (void *)value_to_send, F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,

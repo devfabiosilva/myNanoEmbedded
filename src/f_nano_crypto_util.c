@@ -2524,7 +2524,7 @@ int valid_raw_balance(const char *balance)
    if (f_is_integer((char *)balance, F_MAX_STR_RAW_BALANCE_MAX))
       return 0;
 
-   return 8893;
+   return INVALID_RAW_BALANCE;
 
 }
 /*
