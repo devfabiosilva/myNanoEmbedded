@@ -51,6 +51,10 @@ part:$(COBJS) $(SOBJS)
 
 main: part
 	@echo "Almost finishing ..."
+	if [ ! -d $(CURDIR)/lib ]; then \
+		@echo "lib directory does not exist. Creating ...";\
+		mkdir $(CURDIR)/lib;\
+	fi
 	cd $(CURDIR)/src/$(LIBSODIUM_LIB) -v;\
 	./configure --disable-pie --prefix=$(CURDIR)/src/$(LIBSODIUM_LIB)/build
 	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB)
