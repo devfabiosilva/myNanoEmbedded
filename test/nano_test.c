@@ -294,19 +294,29 @@ static void close_block(void *ctx)
    }
 }
 
+static void close_json(void *ctx)
+{
+   printf("\nJSON Error\n");
+   if (ctx) {
+      printf("\nFreeing JSON at address (%p)...\n", ctx);
+      cJSON_Delete((cJSON *)ctx);
+   }
+}
+
+static const char
+   *account="nano_1uj9f5hazjrzrgbp46ainirjmmhsuqn3ohsz63uusem18runsqzrdj6yydxh",
+   *previous="46ca895be3a18fb50c1c6b5a3bd2e97fb637b35a22924c2f3dea3cf09e9e2e74",
+   *representative="xrb_3jx159p55nwebxyew4988akaps7iqpa51z77xa5zyfo5cnhi5hj49qkimjt6",
+   *balance="273.1000120000283700018",
+   *value_to_send="177.17",
+   *value_to_receive="17388.18266381",
+   *address_to_send="xrb_16hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc",
+   *link="cad2eabfd8aea39e7c9ec2f041d502150ccbe7202673c3fb1fe60ec029d323ce";
+
 void nano_block_test()
 {
    int err, i;
    F_BLOCK_TRANSFER *block;
-   static const char
-      *account="nano_1uj9f5hazjrzrgbp46ainirjmmhsuqn3ohsz63uusem18runsqzrdj6yydxh",
-      *previous="46ca895be3a18fb50c1c6b5a3bd2e97fb637b35a22924c2f3dea3cf09e9e2e74",
-      *representative="xrb_3jx159p55nwebxyew4988akaps7iqpa51z77xa5zyfo5cnhi5hj49qkimjt6",
-      *balance="273.1000120000283700018",
-      *value_to_send="177.17",
-      *value_to_receive="17388.18266381",
-      *address_to_send="xrb_16hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc",
-      *link="cad2eabfd8aea39e7c9ec2f041d502150ccbe7202673c3fb1fe60ec029d323ce";
 
    struct block_info_t {
       int expected_error;
@@ -742,5 +752,107 @@ void nano_block_test()
    }
 
 #undef BLOCK_INFO_SZ
+
+}
+
+void nano_json_string()
+{
+   int err;
+   size_t sz;
+   char *p;
+   F_BLOCK_TRANSFER *block;
+   cJSON *json;
+   cJSON *tmp;
+
+   clear_msgbuf();
+   err=nano_create_block_dynamic(
+      &block,
+      account,
+      0,
+      previous,
+      0,
+      representative,
+      0,
+      balance,
+      value_to_receive,
+      F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+      link,
+      0,
+      F_VALUE_TO_RECEIVE
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("ERROR_SUCCESS (%d) expected success", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_block, block)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(block,
+      CTEST_SETTER(
+         CTEST_INFO("Checking if block!=NULL if err(%d)==ERROR_SUCCESS(%d)", err, ERROR_SUCCESS),
+         CTEST_ON_ERROR("Block should be not NULL if err==ERROR_SUCCESS"),
+         CTEST_ON_SUCCESS("Success. block!=NULL"),
+         CTEST_ON_ERROR_CB(close_block, block)
+      )
+   )
+
+   err=f_nano_block_to_json(msgbuf(), &sz, BUF_MSG_SZ, block);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_block_to_json\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("ERROR_SUCCESS (%d) expected success for \"f_nano_block_to_json\"", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_block, block)
+      )
+   )
+
+   C_ASSERT_TRUE(sz>0,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected sz > 0"),
+         CTEST_ON_SUCCESS("Size of generated JSON block = %d\n%.*s", sz, sz, msgbuf()),
+         CTEST_ON_ERROR_CB(close_block, block)
+      )
+   )
+
+   WARN_MSG_FMT("Freeing Nano Block (%p)", block);
+   free(block);
+
+   msgbuf()[sz]=0;
+// Begin JSON parse ...
+   if (!(json=cJSON_Parse(msgbuf()))) {
+      ERROR_MSG_FMT("Error when JSON parsing \"%s\" ... Exiting ...", ((p=(char *)cJSON_GetErrorPtr())?p:"Unknown JSON error"))
+      exit(1);
+   }
+
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "action");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"action\" value"),
+         CTEST_ON_SUCCESS("String found in \"action\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"action\""),
+         CTEST_ON_SUCCESS("String found in \"action\""),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_EQUAL_STRING("process", tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"process\" in \"action\" but found \"%s\"", tmp->valuestring),
+         CTEST_ON_SUCCESS("String found in \"action\": \"%s\" -> ok", tmp->valuestring),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+// TODO
+
+   cJSON_Delete(json);
 
 }
