@@ -761,8 +761,7 @@ void nano_json_string()
    size_t sz;
    char *p;
    F_BLOCK_TRANSFER *block;
-   cJSON *json;
-   cJSON *tmp;
+   cJSON *json, *tmp, *tmp2;
 
    clear_msgbuf();
    err=nano_create_block_dynamic(
@@ -774,11 +773,11 @@ void nano_json_string()
       representative,
       0,
       balance,
-      value_to_receive,
+      value_to_send,
       F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
-      link,
+      address_to_send,
       0,
-      F_VALUE_TO_RECEIVE
+      F_VALUE_TO_SEND
    );
 
    C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
@@ -844,15 +843,230 @@ void nano_json_string()
       )
    )
 
-   C_ASSERT_EQUAL_STRING("process", tmp->valuestring,
+   strcpy(msgbuf(), tmp->valuestring);
+   C_ASSERT_EQUAL_STRING("process", msgbuf(),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected \"process\" in \"action\" but found \"%s\"", tmp->valuestring),
-         CTEST_ON_SUCCESS("String found in \"action\": \"%s\" -> ok", tmp->valuestring),
+         CTEST_ON_ERROR("Was expected \"process\" in \"action\" but found \"%s\"", msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"action\": \"%s\" -> ok", msgbuf()),
          CTEST_ON_ERROR_CB(close_json, json)
       )
    )
-// TODO
 
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "json_block");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"json_block\" value"),
+         CTEST_ON_SUCCESS("String found in \"json_block\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"json_block\""),
+         CTEST_ON_SUCCESS("String found in \"json_block\""),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp->valuestring);
+   C_ASSERT_EQUAL_STRING("true", msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"true\" in \"json_block\" but found \"%s\"", msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"json_block\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "block");
+
+   C_ASSERT_TRUE(cJSON_IsObject(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected object in \"block\" value"),
+         CTEST_ON_SUCCESS("Object found in \"block\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "type");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"type\" value"),
+         CTEST_ON_SUCCESS("String found in \"type\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING("state", msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"state\" in \"type\" but found \"%s\"", msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"type\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"account\" value"),
+         CTEST_ON_SUCCESS("String found in \"account\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(account, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"account\" but found \"%s\"", account, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"account\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "previous");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"previous\" value"),
+         CTEST_ON_SUCCESS("String found in \"previous\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(previous, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"previous\" but found \"%s\"", previous, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"previous\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "representative");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"representative\" value"),
+         CTEST_ON_SUCCESS("String found in \"representative\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(representative, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"representative\" but found \"%s\"", previous, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"representative\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "balance");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"balance\" value"),
+         CTEST_ON_SUCCESS("String found in \"balance\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+#define RAW_BALANCE "95930012000028370001800000000000"
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(RAW_BALANCE, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"balance\" but found \"%s\"", RAW_BALANCE, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"balance\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+#undef RAW_BALANCE
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"link\" value"),
+         CTEST_ON_SUCCESS("String found in \"link\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+
+#define LINK_AS_ACCOUNT_PUBLIC_KEY "11F94BD00D43B8EFA38C348035E3808156E261941B224D6273809B88D84D54B5"
+   C_ASSERT_EQUAL_STRING(LINK_AS_ACCOUNT_PUBLIC_KEY, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"link\" but found \"%s\"", LINK_AS_ACCOUNT_PUBLIC_KEY, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"link\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+#undef LINK_AS_ACCOUNT_PUBLIC_KEY
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link_as_account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"link_as_account\" value"),
+         CTEST_ON_SUCCESS("String found in \"link_as_account\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   strcpy(msgbuf(), tmp2->valuestring);
+
+   C_ASSERT_EQUAL_STRING(address_to_send, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"link_as_account\" but found \"%s\"", address_to_send, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"link_as_account\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "signature");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"signature\" value"),
+         CTEST_ON_SUCCESS("String found in \"signature\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+#define SIGNATURE "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(SIGNATURE, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"signature\" but found \"%s\"", SIGNATURE, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"signature\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+#undef SIGNATURE
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "work");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"work\" value"),
+         CTEST_ON_SUCCESS("String found in \"work\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+#define WORK "0000000000000000"
+   strcpy(msgbuf(), tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(WORK, msgbuf(),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"work\" but found \"%s\"", WORK, msgbuf()),
+         CTEST_ON_SUCCESS("String found in \"work\": \"%s\" -> ok", msgbuf()),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
    cJSON_Delete(json);
 
 }

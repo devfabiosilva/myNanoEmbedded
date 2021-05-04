@@ -3832,7 +3832,7 @@ nano_create_block_dynamic_RET2:
    memcpy(blk_tmp->link, buffer, 32);
 
    if (is_xrb_prefix)
-      blk_tmp->prefixes|=SENDER_XRB;
+      blk_tmp->prefixes|=DEST_XRB;
 
    goto nano_create_block_dynamic_FINAL;
 
