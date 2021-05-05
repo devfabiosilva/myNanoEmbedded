@@ -19,3 +19,6 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
 //valid_raw_balance
 #define INVALID_RAW_BALANCE 8893
 
+//f_nano_seed_to_bip39
+#define CANT_OPEN_DICTIONARY_FILE 2580
+

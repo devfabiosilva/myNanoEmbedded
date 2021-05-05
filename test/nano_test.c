@@ -755,7 +755,7 @@ void nano_block_test()
 
 }
 
-void nano_json_string()
+void nano_json_string_test()
 {
    int err;
    size_t sz;
@@ -1069,4 +1069,55 @@ void nano_json_string()
    )
    cJSON_Delete(json);
 
+}
+
+void bip39_test()
+{
+   int err;
+   uint8_t *seed;
+   size_t bip39_sz;
+   const char text[]="Bip39 dictionary test. Buy Nano and Bitcoin.\x0a";
+
+   // Generated Nano seed = 8a21f9559b06c4748daaae694b025a3bc5d2af260a60f9cad792e02be8c8119b
+   // (In Linux console -> echo "Bip39 dictionary test. Buy Nano and Bitcoin." | sha256sum
+
+   err=f_sha256_digest((void **)&seed, 1, (uint8_t *)text, sizeof(text)-1);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("Seed generated success fully \"%s\" hashing the text \"%s\" of length = %lu", (char *)seed, text, sizeof(text)-1)
+      )
+   )
+
+#define DICTIONARY_FILE_WRONG "../this_directory_does_not_exist/file.dic"
+   err=f_nano_seed_to_bip39((char *)msgbuf(), BUF_MSG_SZ, &bip39_sz, seed-=32, DICTIONARY_FILE_WRONG);
+   C_ASSERT_EQUAL_INT(CANT_OPEN_DICTIONARY_FILE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected CANT_OPEN_DICTIONARY_FILE(%d) but found (%d)", CANT_OPEN_DICTIONARY_FILE, err),
+         CTEST_ON_SUCCESS(
+            "This should expect an error. Can't open file CANT_OPEN_DICTIONARY_FILE (%d) \""DICTIONARY_FILE_WRONG"\". Success",
+            CANT_OPEN_DICTIONARY_FILE
+         )
+      )
+   )
+#undef DICTIONARY_FILE_WRONG
+
+#define DICTIONARY_FILE "../examples/dictionary.dic"
+   err=f_nano_seed_to_bip39((char *)msgbuf(), BUF_MSG_SZ, &bip39_sz, seed, DICTIONARY_FILE);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected ERROR_SUCCESS(%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("File \""DICTIONARY_FILE"\" opened successfully")
+      )
+   )
+#undef DICTIONARY_FILE
+
+   C_ASSERT_TRUE(bip39_sz>0,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected generated Bip39 not empty"),
+         CTEST_ON_SUCCESS("Generated Bip39 = \n\"%.*s\"\n of length %u from Nano Seed = \"%s\" success.", bip39_sz, msgbuf(), bip39_sz, (char *)seed+32)
+      )
+   )
+// TODO Finish All Bip 39 tests
 }

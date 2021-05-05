@@ -4,5 +4,6 @@ void nano_bip39_test();
 void nano_encrypted_stream_test();
 void nano_p2pow_test();
 void nano_block_test();
-void nano_json_string();
+void nano_json_string_test();
+void bip39_test();
 
