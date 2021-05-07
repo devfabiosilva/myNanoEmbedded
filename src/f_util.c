@@ -845,7 +845,6 @@ int f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key
       goto f_ecdsa_public_key_valid_EXIT1;
 
    err=0;
-
    if (mbedtls_ecp_check_pubkey(&ecdsa_ctx->grp, P))
       err=503;
 

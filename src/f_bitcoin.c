@@ -684,7 +684,7 @@ int f_public_key_to_address(char *dest, size_t dest_sz, size_t *olen, uint8_t *p
       err=20101;
       goto f_public_key_to_address_EXIT2;
    }
-      
+
 //   buf[0]=pk_type;
 
    if (f_sha256_digest((void **)&hash, 0, &buf[1], 33)) { 
@@ -1051,5 +1051,28 @@ f_derive_xkey_EXIT1:
       free(out2);
 
    return err;
+}
+// 0 is valid
+// otherwise error
+int f_check_if_invalid_btc_public_key(uint8_t *public_key)
+{
+   int err;
+   uint8_t *buf;
+   char ch;
+#define BTC_BUF_PK_SZ 65
+   if (!(buf=malloc(BTC_BUF_PK_SZ)))
+      return 20200;
+
+   if ((ch=public_key[0])==0x04)
+      memcpy(buf, public_key, BTC_BUF_PK_SZ);
+   else if ((err=f_uncompress_elliptic_curve(buf, BTC_BUF_PK_SZ, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
+      goto f_check_if_invalid_btc_public_key_EXIT1;
+
+   err=f_ecdsa_public_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)buf, BTC_BUF_PK_SZ);
+
+f_check_if_invalid_btc_public_key_EXIT1:
+   free(memset(buf, 0, BTC_BUF_PK_SZ));
+   return err;
+#undef BTC_BUF_PK_SZ
 }
 

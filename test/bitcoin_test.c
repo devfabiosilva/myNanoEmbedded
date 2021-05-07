@@ -16,11 +16,22 @@ void bitcoin_address_test()
 
    p=msgbuf()+(BUF_MSG_SZ>>1);
    clear_msgbuf();
+
+   err=f_check_if_invalid_btc_public_key(public_key);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Testing \"f_check_if_invalid_btc_public_key\" if public key \"%s\" is invalid ...", fhex2strv2(p, public_key, sizeof(public_key), 1)),
+         CTEST_ON_ERROR("f_check_if_invalid_btc_public_key error  %d", err),
+         CTEST_ON_SUCCESS("Success. \"f_check_if_invalid_btc_public_key\" returned success")
+      )
+   )
+
    err=f_public_key_to_address(msgbuf(), BUF_MSG_SZ>>1, &sz, public_key, F_BITCOIN_P2PKH);
 
    C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
       CTEST_SETTER(
-         CTEST_INFO("Testing \"f_public_key_to_address\" to generate address from public key \"%s\" ...", fhex2strv2(p, public_key, sizeof(public_key), 1)),
+         CTEST_INFO("Testing \"f_public_key_to_address\" to generate address from public key \"%s\" ...", p),
          CTEST_ON_ERROR("f_public_key_to_address error  %d", err),
          CTEST_ON_SUCCESS("Success. \"f_public_key_to_address\" returned address \"%.*s\" with size %u", sz, msgbuf(), sz)
       )

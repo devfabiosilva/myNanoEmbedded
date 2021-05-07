@@ -63,5 +63,6 @@ int f_fingerprint(uint8_t *, uint8_t *, uint8_t *);
 int f_get_xkey_type(void *);
 int f_derive_xpriv_or_xpub_dynamic(void **, uint8_t *, uint32_t *, void *, uint32_t, int);
 int f_derive_xkey_dynamic(void **, void *, const char *, int);
+int f_check_if_invalid_btc_public_key(uint8_t *);
 
 
