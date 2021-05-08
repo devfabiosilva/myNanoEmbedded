@@ -1228,13 +1228,6 @@ int f_encode_to_base64(char *encoded, size_t encoded_sz, size_t *encoded_len, vo
    return err;
 }
 
-static void f_base64url_encode_util(void **encoded, size_t *encoded_len)
-{
-
-
-
-}
-
 #ifdef F_ESP32
 int IRAM_ATTR f_base64url_encode_dynamic(void **encoded, size_t *encoded_len, void *data, size_t data_sz)
 #else
