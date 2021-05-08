@@ -24,7 +24,7 @@ int main (int argc, char **argv)
    nano_seed_test();
    nano_block_test();
    nano_json_string_test();
-   bip39_test();
+   nano_encrypted_stream_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

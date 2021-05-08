@@ -18,6 +18,7 @@
 #include "mbedtls/md.h"
 #include "mbedtls/pkcs5.h"
 #include "mbedtls/ripemd160.h"
+#include "mbedtls/base64.h"
 
 #include "f_util.h"
 
@@ -548,21 +549,21 @@ int f_sha256_digest(void **res, int ret_hex_string, uint8_t *msg, size_t msg_siz
 
    *res = NULL;
 
-   if (!(sha256 = malloc(sizeof(mbedtls_sha256_context))))
+   if (!(sha256=malloc(sizeof(mbedtls_sha256_context))))
       return 5862;
 
    mbedtls_sha256_init(sha256);
 
-   if ((err = mbedtls_sha256_starts_ret(sha256, 0)))
+   if ((err=mbedtls_sha256_starts_ret(sha256, 0)))
       goto f_sha256_digest_EXIT;
 
-   if ((err = mbedtls_sha256_update_ret(sha256, msg, msg_size)))
+   if ((err=mbedtls_sha256_update_ret(sha256, msg, msg_size)))
       goto f_sha256_digest_EXIT;
 
    if ((err = mbedtls_sha256_finish_ret(sha256, result256sum)))
       goto f_sha256_digest_EXIT;
 
-   *res = (void *)(ret_hex_string)?(void *)fhex2strv2((char *)(result256sum + 32), result256sum, 32, 0):(void *)result256sum;
+   *res=(ret_hex_string)?(void *)fhex2strv2((char *)(result256sum + 32), result256sum, 32, 0):(void *)result256sum;
 
 f_sha256_digest_EXIT:
    mbedtls_sha256_free(sha256);
@@ -1081,6 +1082,217 @@ int f_str_to_hex(uint8_t *hex_stream, char *str)
    return 0;
 
 }
+
+// if dest_len = NULL => dest is null string terminated
+#ifdef F_ESP32
+int IRAM_ATTR f_url_encode(char *dest, size_t dest_sz, size_t *dest_len, uint8_t *source, size_t source_len)
+#else
+int f_url_encode(char *dest, size_t dest_sz, size_t *dest_len, uint8_t *source, size_t source_len)
+#endif
+{
+   int err;
+   uint8_t c;
+   size_t sz;
+
+   if (!source_len)
+      return F_URL_ENCODE_EMPTY;
+
+   if (dest_len)
+      *dest_len=0;
+
+   sz=0;
+
+   while (source_len--) {
+      c=*(source++);
+      sz++;
+
+      if ((c>='0')&&(c<='9'))
+         goto f_url_encode_STEP1;
+
+      if ((c>='a')&&(c<='z'))
+         goto f_url_encode_STEP1;
+
+      if ((c>='A')&&(c<='Z'))
+         goto f_url_encode_STEP1;
+
+     if (((sz+=3)+1)>dest_sz)
+         return F_URL_ENCODE_DEST_SMALL;
+
+     sprintf(dest, "%%%02x", c);
+
+     dest+=3;
+     continue;
+
+f_url_encode_STEP1:
+      if (sz>dest_sz)
+         return F_URL_ENCODE_DEST_SMALL;
+      *(dest++)=(char)c;
+   }
+
+   err=F_URL_ENCODE_OK;
+
+   if (dest_len)
+      *dest_len=sz;
+   else if ((++sz)>dest_sz)
+      err=F_URL_ENCODE_DEST_SMALL;
+   else
+      *dest=0;
+
+   return err;
+}
+#ifdef F_ESP32
+int IRAM_ATTR f_encode_to_base64_dynamic(char **encoded, size_t *encoded_len, void *data, size_t data_sz)
+#else
+int f_encode_to_base64_dynamic(char **encoded, size_t *encoded_len, void *data, size_t data_sz)
+#endif
+{
+   int err;
+   size_t sz;
+
+   *encoded=NULL;
+
+   if (encoded_len)
+      *encoded_len=0;
+
+   if ((err=mbedtls_base64_encode(NULL, 0, &sz, (const unsigned char *)data, data_sz))!=MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL)
+      return err;
+
+   if (!(*encoded=malloc((encoded_len)?(sz):(++sz))))
+      return F_ENCODE_TO_BASE64_MALLOC;
+
+   if ((err=mbedtls_base64_encode((unsigned char *)*encoded, sz, &sz, (const unsigned char *)data, data_sz))) {
+      memset(*encoded, 0, sz);
+      free(*encoded);
+      *encoded=NULL;
+      return err;
+   }
+
+   (encoded_len)?(*encoded_len = sz):(*((char *)(*encoded)+sz)=0);
+
+   return err;
+}
+
+// if base64_sz = 0 => base64 is null terminated string
+#ifdef F_ESP32
+int IRAM_ATTR f_base64_decode_dynamic(void **data, size_t *data_len, const char *base64, size_t base64_sz)
+#else
+int f_base64_decode_dynamic(void **data, size_t *data_len, const char *base64, size_t base64_sz)
+#endif
+{
+   int err;
+   size_t sz;
+
+   *data=NULL;
+   *data_len=0;
+
+   if (!base64_sz)
+      base64_sz=strlen(base64);
+
+   if ((err=mbedtls_base64_decode(NULL, 0, &sz, (const unsigned char *)base64, base64_sz)) != MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL)
+      return err;
+
+   if (!(*data=malloc(sz)))
+      return F_BASE64_DECODE_MALLOC;
+
+   if ((err=mbedtls_base64_decode(*data, sz, data_len, (const unsigned char *)base64, base64_sz))) {
+      memset(*data, 0, sz);
+      free(*data);
+      *data=NULL;
+      *data_len=0;
+   }
+
+   return err;
+}
+#ifdef F_ESP32
+int IRAM_ATTR f_encode_to_base64(char *encoded, size_t encoded_sz, size_t *encoded_len, void *data, size_t data_sz)
+#else
+int f_encode_to_base64(char *encoded, size_t encoded_sz, size_t *encoded_len, void *data, size_t data_sz)
+#endif
+{
+   int err;
+   size_t sz;
+
+   if (encoded_len)
+      *encoded_len=0;
+
+   if ((err=mbedtls_base64_encode((unsigned char *)encoded, encoded_sz, &sz, (const unsigned char *)data, data_sz)))
+      return err;
+
+   if (encoded_len)
+      *encoded_len=sz;
+   else if (encoded_sz>sz)
+      *(encoded+sz)=0;
+   else
+      err=F_ENCODE_BASE64_DEST_SMALL;
+
+   return err;
+}
+
+static void f_base64url_encode_util(void **encoded, size_t *encoded_len)
+{
+
+
+
+}
+
+#ifdef F_ESP32
+int IRAM_ATTR f_base64url_encode_dynamic(void **encoded, size_t *encoded_len, void *data, size_t data_sz)
+#else
+int f_base64url_encode_dynamic(void **encoded, size_t *encoded_len, void *data, size_t data_sz)
+#endif
+{
+   int err;
+   size_t size_tmp;
+   char *p;
+
+   if ((err=f_encode_to_base64_dynamic((char **)encoded, encoded_len, data, data_sz)))
+      return err;
+
+   (encoded_len)?(size_tmp=*encoded_len):(size_tmp=strlen((const char *)*encoded));
+   while (size_tmp--)
+      if (*(p=((char *)(*encoded)+size_tmp))=='+')
+         *p='-';
+      else if (*p=='/')
+         *p='_';
+      else if (*p=='=') {
+         *p=0;
+         if (encoded_len)
+            *encoded_len-=1;
+      }
+
+   return err;
+
+}
+
+#ifdef F_ESP32
+int IRAM_ATTR f_base64url_encode(char *encoded, size_t encoded_sz, size_t *encoded_len, void *data, size_t data_sz)
+#else
+int f_base64url_encode(char *encoded, size_t encoded_sz, size_t *encoded_len, void *data, size_t data_sz)
+#endif
+{
+   int err;
+   size_t size_tmp;
+   char *p;
+
+   if ((err=f_encode_to_base64(encoded, encoded_sz, encoded_len, data, data_sz)))
+      return err;
+
+   (encoded_len)?(size_tmp=*encoded_len):(size_tmp=strlen((const char *)encoded));
+   while (size_tmp--)
+      if (*(p=((encoded)+size_tmp))=='+')
+         *p='-';
+      else if (*p=='/')
+         *p='_';
+      else if (*p=='=') {
+         *p=0;
+         if (encoded_len)
+            *encoded_len-=1;
+      }
+
+   return err;
+
+}
+
 // success if zero, fail if nonzero
 //inline int f_is_integer(char *value, size_t value_sz) { return f_is_integer_util(value, value_sz, 10); }
 #define F_CONV_TO_DOUBLE_PREC (size_t)15

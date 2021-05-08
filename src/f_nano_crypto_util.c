@@ -2047,6 +2047,11 @@ f_write_seed_err f_write_seed(void *source_data, int source, uint8_t *seed, char
    uint8_t *hash;
    FILE *f;
 
+#ifndef F_ESP32
+   if (!f_is_random_attached())
+      return ERROR_GEN_TOKEN_NO_RAND_NUM_GEN;
+#endif
+
    if (!passwd)
       return WRITE_ERR_NULL_PASSWORD;
 

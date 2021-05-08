@@ -265,19 +265,177 @@ void nano_seed_test()
       i++;
    }
 #undef NANO_TST_LST_SZ
-
 #undef MSG_SZ
-
-}
-
-void nano_bip39_test()
-{
 
 }
 
 void nano_encrypted_stream_test()
 {
+   int err;
+   size_t len;
+   uint8_t seed[]={
+      0xe6, 0x6d, 0x26, 0xd7, 0x48, 0x59, 0x6d, 0xab, 0x42, 0x2e, 0xf3, 0xde, 0x6c, 0x8e, 0x6b, 0x92,
+      0x95, 0x57, 0x06, 0xdd, 0x77, 0x2b, 0x2b, 0xac, 0x38, 0x0f, 0xc7, 0x9a, 0x85, 0xc8, 0x60, 0x33
+   };
+   const char *password="This is a password to encrypt the seed above 1234@#37¨717276Khs8**17";
+#define CRYPT_OFFSET (size_t)(BUF_MSG_SZ-sizeof(F_NANO_CRYPTOWALLET))
+#define ENCODE_OFFSET (size_t)(CRYPT_OFFSET/3)
 
+   uint8_t *seed_encrypted=&msgbuf()[CRYPT_OFFSET];
+   char *encrypted_base64=msgbuf(),
+        *encrypted_url_base64=encrypted_base64+ENCODE_OFFSET,
+        *encrypted_url_encoded=encrypted_url_base64+ENCODE_OFFSET;
+
+   clear_msgbuf();
+   err=f_write_seed(seed_encrypted, WRITE_SEED_TO_STREAM, seed, (char *)password);
+   C_ASSERT_EQUAL_INT(ERROR_GEN_TOKEN_NO_RAND_NUM_GEN, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "Testing \"f_write_seed\" function. This should expect an ERROR_GEN_TOKEN_NO_RAND_NUM_GEN (%d) when random number generator is not defined",
+             ERROR_GEN_TOKEN_NO_RAND_NUM_GEN
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_GEN_TOKEN_NO_RAND_NUM_GEN -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_GEN_TOKEN_NO_RAND_NUM_GEN (%d) but found (%d)", ERROR_SUCCESS, err
+         )
+      )
+   )
+
+   f_random_attach(gen_rand_no_entropy);
+   err=f_write_seed(seed_encrypted, WRITE_SEED_TO_STREAM, seed, (char *)password);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing \"f_write_seed\" function. This should expect an ERROR_SUCCESS (%d)",
+             ERROR_SUCCESS
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err
+         )
+      )
+   )
+   f_random_detach();
+
+   WARN_MSG_FMT(
+      "Encrypted SEED of size %lu bytes at (%p) = \n\"%s\"\n",
+      sizeof(F_NANO_CRYPTOWALLET),
+      seed_encrypted,
+      fhex2strv2(msgbuf(), seed_encrypted, sizeof(F_NANO_CRYPTOWALLET), 0)
+   )
+
+   err=f_encode_to_base64(encrypted_base64, ENCODE_OFFSET, &len, seed_encrypted, sizeof(F_NANO_CRYPTOWALLET));
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing \"f_encode_to_base64\" function. This should expect an ERROR_SUCCESS (%d)",
+             ERROR_SUCCESS
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS for \"f_encode_to_base64\" -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_encode_to_base64\"", ERROR_SUCCESS, err
+         )
+      )
+   )
+
+   WARN_MSG_FMT(
+      "Encrypted SEED encoded Base64 of size %lu bytes at (%p) with ratio %0.4f = \n\"%.*s\"\n",
+      len,
+      encrypted_base64,
+      len,
+      encrypted_base64,
+      ((double)len/sizeof(F_NANO_CRYPTOWALLET))
+   )
+
+   C_ASSERT_TRUE(ENCODE_OFFSET>len,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Expecting ENCODE_OFFSET (%lu) > len (%lu) for encrypted_base64", ENCODE_OFFSET, len
+         )
+      )
+   )
+
+   encrypted_base64[len]=0;
+
+   err=f_base64url_encode(encrypted_url_base64, ENCODE_OFFSET, &len, seed_encrypted, sizeof(F_NANO_CRYPTOWALLET));
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing \"f_base64url_encode\" function. This should expect an ERROR_SUCCESS (%d)",
+             ERROR_SUCCESS
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS for \"f_base64url_encode\" -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_base64url_encode\"", ERROR_SUCCESS, err
+         )
+      )
+   )
+
+   WARN_MSG_FMT(
+      "Encrypted SEED encoded URL Base64 of size %lu bytes at (%p) with ratio %0.4f = \n\"%.*s\"\n",
+      len,
+      encrypted_url_base64,
+      len,
+      encrypted_url_base64,
+      ((double)len/sizeof(F_NANO_CRYPTOWALLET))
+   )
+
+   C_ASSERT_TRUE(ENCODE_OFFSET>len,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Expecting ENCODE_OFFSET (%lu) > len (%lu) for encrypted_url_base64", ENCODE_OFFSET, len
+         )
+      )
+   )
+
+   encrypted_url_base64[len]=0;
+
+   err=f_url_encode(encrypted_url_encoded, ENCODE_OFFSET, &len, seed_encrypted, sizeof(F_NANO_CRYPTOWALLET));
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing \"f_url_encode\" function. This should expect an ERROR_SUCCESS (%d)",
+             ERROR_SUCCESS
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS for \"f_url_encode\" -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_url_encode\"", ERROR_SUCCESS, err
+         )
+      )
+   )
+
+   WARN_MSG_FMT(
+      "Encrypted SEED URL encoded of size %lu bytes at (%p) with ratio %0.4f = \n\"%.*s\"\n",
+      len,
+      encrypted_url_encoded,
+      len,
+      encrypted_url_encoded,
+      ((double)len/sizeof(F_NANO_CRYPTOWALLET))
+   )
+
+   C_ASSERT_TRUE(ENCODE_OFFSET>len,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Expecting ENCODE_OFFSET (%lu) > len (%lu) for encrypted_url_encoded", ENCODE_OFFSET, len
+         )
+      )
+   )
+
+   encrypted_url_encoded[len]=0;
+//TODO to be continued
+
+#undef ENCODE_OFFSET
+#undef CRYPT_OFFSET
 }
 
 void nano_p2pow_test()
@@ -671,6 +829,7 @@ void nano_block_test()
 
 #define BLOCK_INFO_SZ sizeof(BLOCK_INFO)/sizeof(BLOCK_INFO[0])
 
+   clear_msgbuf();
    err=nano_create_block_dynamic(
       NULL,
       account,
@@ -1119,9 +1278,6 @@ void bip39_test()
          CTEST_ON_SUCCESS("Generated Bip39 = \n\"%.*s\"\n of length %u from Nano Seed = \"%s\" success.", bip39_sz, msgbuf(), bip39_sz, (char *)seed+32)
       )
    )
-
-//21A9899EEA710BD22E28BCE034DED166C1F42E7A7C0A58F95C938E3331D5FC9A
-//const char *temp="canvas era guilt stay awful trouble reward bleak then plunge reform snow butter blame try life flight slab ceiling broccoli credit turtle venue fire";
 
    msgbuf()[bip39_sz]=0;
 

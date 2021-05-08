@@ -1065,12 +1065,9 @@ int f_check_if_invalid_btc_public_key(uint8_t *public_key)
 
    if ((ch=public_key[0])==0x04)
       memcpy(buf, public_key, BTC_BUF_PK_SZ);
-   else if ((err=f_uncompress_elliptic_curve(buf, BTC_BUF_PK_SZ, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
-      goto f_check_if_invalid_btc_public_key_EXIT1;
+   else if (!(err=f_uncompress_elliptic_curve(buf, BTC_BUF_PK_SZ, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
+      err=f_ecdsa_public_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)buf, BTC_BUF_PK_SZ);
 
-   err=f_ecdsa_public_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)buf, BTC_BUF_PK_SZ);
-
-f_check_if_invalid_btc_public_key_EXIT1:
    free(memset(buf, 0, BTC_BUF_PK_SZ));
    return err;
 #undef BTC_BUF_PK_SZ

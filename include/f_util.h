@@ -250,6 +250,22 @@ typedef struct f_ecdsa_key_pair_t {
     unsigned char private_key[MBEDTLS_ECDSA_MAX_LEN];
 } f_ecdsa_key_pair;
 
+/**
+ * @typedef f_encode_decode_error_t
+ * @brief URL/Base64 encode/decoode error enumerator
+ */
+enum f_encode_decode_error_t {
+   F_URL_ENCODE_OK = 0,
+//f_encode_to_base64
+   F_ENCODE_BASE64_DEST_SMALL=11300,
+//f_encode_to_base64_dynamic
+   F_ENCODE_TO_BASE64_MALLOC,
+//f_base64_decode_dynamic
+   F_BASE64_DECODE_MALLOC,
+   F_URL_ENCODE_EMPTY,
+   F_URL_ENCODE_DEST_SMALL
+};
+
 char *fhex2strv2(char *, const void *, size_t, int);
 //uint8_t *f_sha256_digest(uint8_t *, size_t);
 int f_sha256_digest(void **, int, uint8_t *, size_t);
@@ -528,7 +544,12 @@ int f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *, int, fn_det, void *);
 int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
 uint8_t *f_ripemd160(const uint8_t *, size_t);
-
+int f_url_encode(char *, size_t, size_t *, uint8_t *, size_t);
+int f_encode_to_base64_dynamic(char **, size_t *, void *, size_t );
+int f_base64_decode_dynamic(void **, size_t *, const char *, size_t);
+int f_base64url_encode_dynamic(void **, size_t *, void *, size_t);
+int f_encode_to_base64(char *, size_t, size_t *, void *, size_t);
+int f_base64url_encode(char *, size_t, size_t *, void *, size_t);
 #ifdef __cplusplus
 }
 #endif

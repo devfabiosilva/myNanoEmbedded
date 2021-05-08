@@ -4,8 +4,8 @@ void token_test()
 {
    int err;
    char buf[512];
-   const char *password="This is a strong word for PASSWORD";
-   const char *name="Nikola Tesla", *name_invalid="nikola tesla";
+   const char password[]="This is a strong word for PASSWORD";
+   const char name[]="Nikola Tesla", name_invalid[]="nikola tesla";
    F_TOKEN token;
 
    C_ASSERT_EQUAL_INT(
