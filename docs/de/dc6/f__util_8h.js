@@ -20,6 +20,10 @@ var f__util_8h =
     [ "fn_det", "de/dc6/f__util_8h.html#a1c43041058622111b44cb67adf975c09", null ],
     [ "rnd_fn", "de/dc6/f__util_8h.html#a608b9d764fef769f10c438b9975a329f", null ],
     [ "crc32_init", "de/dc6/f__util_8h.html#af6ba128bbdc65e4ea350a6a831ea74ae", null ],
+    [ "f_base64_decode_dynamic", "de/dc6/f__util_8h.html#a85d7578dd62fe4fa01ca67764a2b66a8", null ],
+    [ "f_base64url_decode", "de/dc6/f__util_8h.html#a094cb4bb63129a7d3b26e6b48ceddaef", null ],
+    [ "f_base64url_encode", "de/dc6/f__util_8h.html#a6bdcf677c0197a0062a89642a602beaa", null ],
+    [ "f_base64url_encode_dynamic", "de/dc6/f__util_8h.html#abd2d4cbd87acc46c53e62110d8d137c3", null ],
     [ "f_convert_to_double", "de/dc6/f__util_8h.html#a305474021bbf07e4810d5989e7ee172b", null ],
     [ "f_convert_to_long_int", "de/dc6/f__util_8h.html#a7cb881b6c306f3f8b478e11b2fb454ba", null ],
     [ "f_convert_to_long_int0", "de/dc6/f__util_8h.html#a4dc2676e079fce71547254ccfae5d7e2", null ],
@@ -31,6 +35,8 @@ var f__util_8h =
     [ "f_convert_to_unsigned_int_std", "de/dc6/f__util_8h.html#af35daf6120c76c1f9d00b29703149fe1", null ],
     [ "f_ecdsa_public_key_valid", "de/dc6/f__util_8h.html#a573e5333519b5ee2dec43ada57001a78", null ],
     [ "f_ecdsa_secret_key_valid", "de/dc6/f__util_8h.html#af666f3c81e520b518e3a063ba46a2efb", null ],
+    [ "f_encode_to_base64", "de/dc6/f__util_8h.html#affc271411252bb8fd90e3e882e2b2418", null ],
+    [ "f_encode_to_base64_dynamic", "de/dc6/f__util_8h.html#a00d05f0cac7084f0485fd17afc174002", null ],
     [ "f_gen_ecdsa_key_pair", "de/dc6/f__util_8h.html#ae107245f3b2e2616177706f992d16aa2", null ],
     [ "f_get_char_no_block", "de/dc6/f__util_8h.html#a3e84376a91447deb825b262547a6cc90", null ],
     [ "f_get_entropy_name", "de/dc6/f__util_8h.html#a9d5091409b5a2ce40ffdbda5742c7079", null ],
@@ -46,6 +52,8 @@ var f__util_8h =
     [ "f_sel_to_entropy_level", "de/dc6/f__util_8h.html#a5fff90f1cb24f0978f9c828a7eef428e", null ],
     [ "f_str_to_hex", "de/dc6/f__util_8h.html#ac1bb50469f73d98b1e8a7b8e1aa7debd", null ],
     [ "f_uncompress_elliptic_curve", "de/dc6/f__util_8h.html#ad1510e0790496ed2db058b588d638db1", null ],
+    [ "f_url_base64_to_base64_dynamic", "de/dc6/f__util_8h.html#ac9d2be064f1b2cd78ecb1e8b55464983", null ],
+    [ "f_url_encode", "de/dc6/f__util_8h.html#add447612bba7b95409fc85c3d23f5e6e", null ],
     [ "f_verify_system_entropy", "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e", null ],
     [ "get_console_passwd", "de/dc6/f__util_8h.html#a9473b62cadda2ce3936bb58bc791bc4d", null ]
 ];

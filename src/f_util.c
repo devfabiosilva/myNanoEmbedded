@@ -1188,7 +1188,7 @@ int f_base64_decode_dynamic(void **data, size_t *data_len, const char *base64, s
    if (!base64_sz)
       base64_sz=strlen(base64);
 
-   if ((err=mbedtls_base64_decode(NULL, 0, &sz, (const unsigned char *)base64, base64_sz)) != MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL)
+   if ((err=mbedtls_base64_decode(NULL, 0, &sz, (const unsigned char *)base64, base64_sz))!=MBEDTLS_ERR_BASE64_BUFFER_TOO_SMALL)
       return err;
 
    if (!(*data=malloc(sz)))
@@ -1286,6 +1286,61 @@ int f_base64url_encode(char *encoded, size_t encoded_sz, size_t *encoded_len, vo
 
 }
 
+int f_url_base64_to_base64_dynamic(char **out, size_t *out_sz, const char *in, size_t in_sz)
+{
+   char *p, *q;
+
+   *out=NULL;
+   *out_sz=0;
+   if (!in_sz)
+      if (!(in_sz=strlen(in)))
+         return F_BASE64_URL_TO_BASE64_EMPTY_BASE64;
+
+   if (!(*out=malloc(*out_sz=(in_sz&3)?((in_sz&(~3))+4):in_sz))) {
+      *out_sz=0;
+      return F_BASE64_URL_TO_BASE64_MALLOC;
+   }
+
+   p=*out;
+   q=(char *)in;
+   while (q<in+in_sz) {
+      if ((*q)=='-')
+         *p='+';
+      else if (*q=='_')
+         *p='/';
+      else
+         *p=*q;
+
+      p++;
+      q++;
+   }
+
+   while (p<(*out+*out_sz))
+      *(p++)='=';
+
+   return 0;
+}
+
+//if data_sz == 0 then data is NULL terminated string
+#ifdef F_ESP32
+int IRAM_ATTR f_base64url_decode(void *decoded, size_t decoded_size, size_t *encoded_len, const char *data, size_t data_sz)
+#else
+int f_base64url_decode(void *decoded, size_t decoded_size, size_t *encoded_len, const char *data, size_t data_sz)
+#endif
+{
+   int err;
+   char *buf;
+   size_t buf_sz;
+
+   if ((err=f_url_base64_to_base64_dynamic(&buf, &buf_sz, data, data_sz)))
+      return err;
+
+   err=mbedtls_base64_decode((unsigned char *)decoded, decoded_size, encoded_len, (const unsigned char *)buf, buf_sz);
+
+   free(memset(buf, 0, buf_sz));
+   return err;
+
+}
 // success if zero, fail if nonzero
 //inline int f_is_integer(char *value, size_t value_sz) { return f_is_integer_util(value, value_sz, 10); }
 #define F_CONV_TO_DOUBLE_PREC (size_t)15

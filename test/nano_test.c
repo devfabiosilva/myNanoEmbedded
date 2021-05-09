@@ -278,13 +278,19 @@ void nano_encrypted_stream_test()
       0x95, 0x57, 0x06, 0xdd, 0x77, 0x2b, 0x2b, 0xac, 0x38, 0x0f, 0xc7, 0x9a, 0x85, 0xc8, 0x60, 0x33
    };
    const char *password="This is a password to encrypt the seed above 1234@#37¨717276Khs8**17";
-#define CRYPT_OFFSET (size_t)(BUF_MSG_SZ-sizeof(F_NANO_CRYPTOWALLET))
+#define CRYPT_OFFSET (size_t)(BUF_MSG_SZ-4*sizeof(F_NANO_CRYPTOWALLET))
 #define ENCODE_OFFSET (size_t)(CRYPT_OFFSET/3)
 
-   uint8_t *seed_encrypted=&msgbuf()[CRYPT_OFFSET];
-   char *encrypted_base64=msgbuf(),
-        *encrypted_url_base64=encrypted_base64+ENCODE_OFFSET,
-        *encrypted_url_encoded=encrypted_url_base64+ENCODE_OFFSET;
+   uint8_t
+       *seed_encrypted=&msgbuf()[CRYPT_OFFSET],
+       *seed_encrypted_from_base64=&seed_encrypted[sizeof(F_NANO_CRYPTOWALLET)],
+       *seed_encrypted_from_url_base64=&seed_encrypted_from_base64[sizeof(F_NANO_CRYPTOWALLET)],
+       *seed_encrypted_from_url_encoded=&seed_encrypted_from_url_base64[sizeof(F_NANO_CRYPTOWALLET)];
+
+   char
+      *encrypted_base64=msgbuf(),
+      *encrypted_url_base64=encrypted_base64+ENCODE_OFFSET,
+      *encrypted_url_encoded=encrypted_url_base64+ENCODE_OFFSET;
 
    clear_msgbuf();
    err=f_write_seed(seed_encrypted, WRITE_SEED_TO_STREAM, seed, (char *)password);
@@ -432,8 +438,92 @@ void nano_encrypted_stream_test()
    )
 
    encrypted_url_encoded[len]=0;
-//TODO to be continued
 
+   printf("\nNow testing decoding Base64 and cleaning encryted stream \"seed_encrypted_from_base64\" at (%p) ...\n", seed_encrypted_from_base64);
+
+#define CLEAN_ENCRYPTED_STREAM(val) memset(val, 0, sizeof(F_NANO_CRYPTOWALLET));
+   CLEAN_ENCRYPTED_STREAM(seed_encrypted_from_base64)
+
+   err=mbedtls_base64_decode(
+      (unsigned char *)seed_encrypted_from_base64, sizeof(F_NANO_CRYPTOWALLET), &len,
+      (const unsigned char *)encrypted_base64, strlen(encrypted_base64)
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS for \"mbedtls_base64_decode\" -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d) for \"mbedtls_base64_decode\"", ERROR_SUCCESS, err
+         )
+      )
+   )
+//TODO Refactor C_TEST for unsigned long long int in next version
+   C_ASSERT_EQUAL_LONG_INT((signed long long int)sizeof(F_NANO_CRYPTOWALLET), (signed long long int)len,
+      CTEST_SETTER(
+         CTEST_ON_SUCCESS(
+            "Success. len == sizeof(F_NANO_CRYPTOWALLET) == %lu", sizeof(F_NANO_CRYPTOWALLET)
+         ),
+         CTEST_ON_ERROR(
+            "Was expected sizeof(F_NANO_CRYPTOWALLET) (%lu) but found (%lu) for Base 64 size", sizeof(F_NANO_CRYPTOWALLET), err, len
+         )
+      )
+   )
+
+   C_ASSERT_EQUAL_BYTE(seed_encrypted, seed_encrypted_from_base64, sizeof(F_NANO_CRYPTOWALLET),
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing decode Base64 for encrypted stream. Comparing decooded value at (%p) with value stored at (%p) of size %lu",
+            seed_encrypted_from_base64,
+            seed_encrypted,
+            sizeof(F_NANO_CRYPTOWALLET)
+         )
+      )
+   )
+
+   printf("\nNow testing decoding Base64 and cleaning encryted stream \"seed_encrypted_from_url_base64\" at (%p) ...\n", seed_encrypted_from_url_base64);
+
+   CLEAN_ENCRYPTED_STREAM(seed_encrypted_from_url_base64)
+
+//f_base64url_decode(void *decoded, size_t decoded_size, size_t *encoded_len, const char *data, size_t data_sz)
+   err=f_base64url_decode(seed_encrypted_from_url_base64, sizeof(F_NANO_CRYPTOWALLET), &len, encrypted_url_base64, 0);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS for \"f_base64url_decode\" -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_base64url_decode\"", ERROR_SUCCESS, err
+         )
+      )
+   )
+
+//TODO Refactor C_TEST for unsigned long long int in next version
+   C_ASSERT_EQUAL_LONG_INT((signed long long int)sizeof(F_NANO_CRYPTOWALLET), (signed long long int)len,
+      CTEST_SETTER(
+         CTEST_ON_SUCCESS(
+            "Success. len == sizeof(F_NANO_CRYPTOWALLET) == %lu for f_base64url_decode", sizeof(F_NANO_CRYPTOWALLET)
+         ),
+         CTEST_ON_ERROR(
+            "Was expected sizeof(F_NANO_CRYPTOWALLET) (%lu) but found (%lu) for Url Base 64 size", sizeof(F_NANO_CRYPTOWALLET), err, len
+         )
+      )
+   )
+
+   C_ASSERT_EQUAL_BYTE(seed_encrypted, seed_encrypted_from_url_base64, sizeof(F_NANO_CRYPTOWALLET),
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing decode Url Base64 for encrypted stream. Comparing decooded value at (%p) with value stored at (%p) of size %lu",
+            seed_encrypted_from_url_base64,
+            seed_encrypted,
+            sizeof(F_NANO_CRYPTOWALLET)
+         )
+      )
+   )
+
+#undef CLEAN_ENCRYPTED_STREAM
 #undef ENCODE_OFFSET
 #undef CRYPT_OFFSET
 }

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['entropy_5fbegin',['ENTROPY_BEGIN',['../de/dc6/f__util_8h.html#ab32805b689cb494d0a65f81d4ef2198c',1,'f_util.h']]],
-  ['entropy_5fend',['ENTROPY_END',['../de/dc6/f__util_8h.html#af10b137544d5f946352998c58b626a5f',1,'f_util.h']]],
-  ['error_5fgen_5ftoken_5fno_5frand_5fnum_5fgen',['ERROR_GEN_TOKEN_NO_RAND_NUM_GEN',['../de/d45/errors_8h.html#a593145287f41db5bdbd8f36829d1dcf5',1,'errors.h']]],
-  ['error_5fsuccess',['ERROR_SUCCESS',['../de/d45/errors_8h.html#aea0ae801b7d25c979655a7eb20d034af',1,'errors.h']]]
+  ['derive_5fxpriv_5fxpub_5fdyn_5fout_5fbase58',['DERIVE_XPRIV_XPUB_DYN_OUT_BASE58',['../d0/da6/f__bitcoin_8h.html#a3a71e8f0b1818a242e51a65da0d2c52a',1,'f_bitcoin.h']]],
+  ['derive_5fxpriv_5fxpub_5fdyn_5fout_5fxpriv',['DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV',['../d0/da6/f__bitcoin_8h.html#ade241fb5eb4e1e4f12a46b3d88ff6235',1,'f_bitcoin.h']]],
+  ['derive_5fxpriv_5fxpub_5fdyn_5fout_5fxpub',['DERIVE_XPRIV_XPUB_DYN_OUT_XPUB',['../d0/da6/f__bitcoin_8h.html#a29c13a3dc7f4c1c4bd676c90dcd9c615',1,'f_bitcoin.h']]],
+  ['dest_5fxrb',['DEST_XRB',['../df/d1d/f__nano__crypto__util_8h.html#abba1a184ac7044d1b9f19e442e47bd41',1,'f_nano_crypto_util.h']]]
 ];

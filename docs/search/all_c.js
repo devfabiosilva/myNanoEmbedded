@@ -1,5 +1,12 @@
 var searchData=
 [
+  ['nano_5faccount_5fbase32_5fconvert_5ferror',['NANO_ACCOUNT_BASE32_CONVERT_ERROR',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92ab8ac9ec480d80c741c0e3c68eb5a827e',1,'errors.h']]],
+  ['nano_5faccount_5fto_5fpk_5fnull_5fstring',['NANO_ACCOUNT_TO_PK_NULL_STRING',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92aa1a81c3aa58f31f92af7fdeb82fc882b',1,'errors.h']]],
+  ['nano_5faccount_5fto_5fpk_5fok',['NANO_ACCOUNT_TO_PK_OK',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92a4ff876f13809a8233da0337d45334931',1,'errors.h']]],
+  ['nano_5faccount_5fto_5fpk_5fovfl',['NANO_ACCOUNT_TO_PK_OVFL',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92ae7e7809e9dd9ea53304efb6c1ee9005c',1,'errors.h']]],
+  ['nano_5faccount_5fto_5fpk_5fwrong_5faccount_5flen',['NANO_ACCOUNT_TO_PK_WRONG_ACCOUNT_LEN',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92a5be482676b95b3c5fff4e9879251a893',1,'errors.h']]],
+  ['nano_5faccount_5fwrong_5fhex_5fstring',['NANO_ACCOUNT_WRONG_HEX_STRING',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92a429ab87c7a40fd2b082b0f9611c45884',1,'errors.h']]],
+  ['nano_5faccount_5fwrong_5fpk_5fstr_5fsz',['NANO_ACCOUNT_WRONG_PK_STR_SZ',['../de/d45/errors_8h.html#aad29ef10d01cb6216bbdfcd60b57ed92a2351dc19b1ee546e42f091ef047b2547',1,'errors.h']]],
   ['nano_5fbase_5f32_5f2_5fhex',['nano_base_32_2_hex',['../df/d1d/f__nano__crypto__util_8h.html#ab7705b19465d7a834c0fd5da2e356ede',1,'f_nano_crypto_util.h']]],
   ['nano_5fcreate_5fblk_5fdyn_5faccount_5fnull',['NANO_CREATE_BLK_DYN_ACCOUNT_NULL',['../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99a63e39528eec3a04c984d36a6d796ca76',1,'f_nano_crypto_util.h']]],
   ['nano_5fcreate_5fblk_5fdyn_5fbalance_5fnull',['NANO_CREATE_BLK_DYN_BALANCE_NULL',['../df/d1d/f__nano__crypto__util_8h.html#af2c70881adfbe2bcfcc6b05cbe4a1c99ab6166572316d3d7bdc2d7c4604b4f970',1,'f_nano_crypto_util.h']]],

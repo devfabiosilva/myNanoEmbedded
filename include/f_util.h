@@ -256,18 +256,18 @@ typedef struct f_ecdsa_key_pair_t {
  */
 enum f_encode_decode_error_t {
    F_URL_ENCODE_OK = 0,
-//f_encode_to_base64
    F_ENCODE_BASE64_DEST_SMALL=11300,
-//f_encode_to_base64_dynamic
    F_ENCODE_TO_BASE64_MALLOC,
-//f_base64_decode_dynamic
    F_BASE64_DECODE_MALLOC,
    F_URL_ENCODE_EMPTY,
-   F_URL_ENCODE_DEST_SMALL
+   F_URL_ENCODE_DEST_SMALL,
+   F_BASE64_URL_DECODE_MALLOC,
+   F_BASE64_URL_DECODE_MEMORY_SMALL,
+   F_BASE64_URL_TO_BASE64_EMPTY_BASE64,
+   F_BASE64_URL_TO_BASE64_MALLOC
 };
 
 char *fhex2strv2(char *, const void *, size_t, int);
-//uint8_t *f_sha256_digest(uint8_t *, size_t);
 int f_sha256_digest(void **, int, uint8_t *, size_t);
 f_pbkdf2_err f_pbkdf2_hmac(unsigned char *, size_t, unsigned char *, size_t, uint8_t *);
 f_aes_err f_aes256cipher(uint8_t *, uint8_t *, void *, size_t, void *, int);
@@ -550,6 +550,8 @@ int f_base64_decode_dynamic(void **, size_t *, const char *, size_t);
 int f_base64url_encode_dynamic(void **, size_t *, void *, size_t);
 int f_encode_to_base64(char *, size_t, size_t *, void *, size_t);
 int f_base64url_encode(char *, size_t, size_t *, void *, size_t);
+int f_base64url_decode(void *, size_t, size_t *, const char *, size_t);
+int f_url_base64_to_base64_dynamic(char **, size_t *, const char *, size_t);
 #ifdef __cplusplus
 }
 #endif

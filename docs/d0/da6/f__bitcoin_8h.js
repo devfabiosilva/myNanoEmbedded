@@ -22,6 +22,7 @@ var f__bitcoin_8h =
     [ "__attribute__", "d0/da6/f__bitcoin_8h.html#af6eaced1d8282dfd043c865c0f40fec8", null ],
     [ "f_bip32_to_public_key_or_private_key", "d0/da6/f__bitcoin_8h.html#ab12653e013741b7da7aafd4024df5acd", null ],
     [ "f_bitcoin_valid_bip32", "d0/da6/f__bitcoin_8h.html#a9495fa620fb5e82582ed02a9f0e022e2", null ],
+    [ "f_check_if_invalid_btc_public_key", "d0/da6/f__bitcoin_8h.html#a14f8432c19eb4ef038997c067d77cf68", null ],
     [ "f_decode_b58_util", "d0/da6/f__bitcoin_8h.html#a9625e8502d8be05fd1dace64e3a82ed4", null ],
     [ "f_derive_xkey_dynamic", "d0/da6/f__bitcoin_8h.html#a734b0bb08f9779d23a0dbb3b38fa7d8d", null ],
     [ "f_derive_xpriv_or_xpub_dynamic", "d0/da6/f__bitcoin_8h.html#aaa8fe6492354d0859e597f623748a934", null ],
