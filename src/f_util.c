@@ -1140,6 +1140,64 @@ f_url_encode_STEP1:
 
    return err;
 }
+
+// if dest_len = NULL => dest is null string terminated
+#ifdef F_ESP32
+int IRAM_ATTR f_url_decode(void *dest, size_t dest_sz, size_t *dest_len, const char *source, size_t source_len)
+#else
+int f_url_decode(void *dest, size_t dest_sz, size_t *dest_len, const char *source, size_t source_len)
+#endif
+{
+   int err;
+   char ch_tmp, ch, *p;
+   size_t dest_len_tmp, size_tmp;
+   uint8_t *d;
+
+   if (!source_len)
+      if (!(source_len=strlen(source)))
+         return F_URL_ENCODE_EMPTY_STRING;
+
+   p=(char *)source;
+   d=(uint8_t *)dest;
+   dest_len_tmp=0;
+   while (source_len--) {
+
+      if ((ch_tmp=*(p++))=='%') {
+         err=1;
+f_url_decode_RET:
+         if (source_len==0)
+            return F_URL_ENCODE_WAITING_NEXT_NIBBLE;
+
+         source_len--;
+         ch_tmp=*(p++);
+
+         if ((ch_tmp>='0')&&(ch_tmp<='9'))
+            ch_tmp=(ch_tmp-'0');
+         else if ((ch_tmp>='A')&&(ch_tmp<='F'))
+            ch_tmp=(ch_tmp-'A'+10);
+         else if ((ch_tmp>='a')&&(ch_tmp<='f')) {
+            ch_tmp=(ch_tmp-'a'+10);
+         } else
+            return F_URL_INVALID_HEX_STRING;
+
+         if (err) {
+            err=0;
+            ch=(ch_tmp<<4);
+            goto f_url_decode_RET;
+         }
+         ch_tmp|=ch;
+      }
+
+      if (dest_sz==dest_len_tmp)
+         return F_URL_NO_SPACE_IN_MEMORY_BUFFER;
+
+      d[dest_len_tmp++]=(uint8_t)ch_tmp;
+   }
+
+   *dest_len=dest_len_tmp;
+   return 0;
+}
+
 #ifdef F_ESP32
 int IRAM_ATTR f_encode_to_base64_dynamic(char **encoded, size_t *encoded_len, void *data, size_t data_sz)
 #else

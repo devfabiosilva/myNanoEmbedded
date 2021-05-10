@@ -264,7 +264,11 @@ enum f_encode_decode_error_t {
    F_BASE64_URL_DECODE_MALLOC,
    F_BASE64_URL_DECODE_MEMORY_SMALL,
    F_BASE64_URL_TO_BASE64_EMPTY_BASE64,
-   F_BASE64_URL_TO_BASE64_MALLOC
+   F_BASE64_URL_TO_BASE64_MALLOC,
+   F_URL_ENCODE_EMPTY_STRING,
+   F_URL_ENCODE_WAITING_NEXT_NIBBLE,
+   F_URL_INVALID_HEX_STRING,
+   F_URL_NO_SPACE_IN_MEMORY_BUFFER
 };
 
 char *fhex2strv2(char *, const void *, size_t, int);
@@ -552,6 +556,7 @@ int f_encode_to_base64(char *, size_t, size_t *, void *, size_t);
 int f_base64url_encode(char *, size_t, size_t *, void *, size_t);
 int f_base64url_decode(void *, size_t, size_t *, const char *, size_t);
 int f_url_base64_to_base64_dynamic(char **, size_t *, const char *, size_t);
+int f_url_decode(void *, size_t, size_t *, const char *, size_t);
 #ifdef __cplusplus
 }
 #endif
