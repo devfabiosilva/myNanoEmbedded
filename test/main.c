@@ -1,5 +1,6 @@
 //fri apr 23 21:34:27 -03 2021 sex abr 23 21:34:29 -03 2021 
 #include <common_test.h>
+#include <utilities_test.h>
 #include <token_test.h>
 #include <bitcoin_test.h>
 #include <uncompress_ecc_test.h>
@@ -25,6 +26,9 @@ int main (int argc, char **argv)
    nano_block_test();
    nano_json_string_test();
    nano_encrypted_stream_test();
+
+   INFO_MSG_FMT(INFO, "Initiating utilities tests ...")
+   url_decode_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

@@ -1186,8 +1186,21 @@ f_url_decode_RET:
             goto f_url_decode_RET;
          }
          ch_tmp|=ch;
+      } else {
+
+         if ((ch_tmp>='a')&&(ch_tmp<='z'))
+            goto f_url_decode_STEP;
+
+         if ((ch_tmp>='A')&&(ch_tmp<='Z'))
+            goto f_url_decode_STEP;
+
+         if ((ch_tmp>='0')&&(ch_tmp<='9'))
+            goto f_url_decode_STEP;
+
+         return F_URL_ENCODE_INVALID_STRING;
       }
 
+f_url_decode_STEP:
       if (dest_sz==dest_len_tmp)
          return F_URL_NO_SPACE_IN_MEMORY_BUFFER;
 

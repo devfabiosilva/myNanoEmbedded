@@ -268,7 +268,8 @@ enum f_encode_decode_error_t {
    F_URL_ENCODE_EMPTY_STRING,
    F_URL_ENCODE_WAITING_NEXT_NIBBLE,
    F_URL_INVALID_HEX_STRING,
-   F_URL_NO_SPACE_IN_MEMORY_BUFFER
+   F_URL_NO_SPACE_IN_MEMORY_BUFFER,
+   F_URL_ENCODE_INVALID_STRING
 };
 
 char *fhex2strv2(char *, const void *, size_t, int);
