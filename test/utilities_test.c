@@ -4,6 +4,7 @@ void url_decode_test()
 {
    int err;
    size_t dest_sz;
+
    clear_msgbuf();
 
    err=f_url_decode(msgbuf(), BUF_MSG_SZ, &dest_sz, "%", 0);
@@ -92,5 +93,143 @@ void url_decode_test()
 #undef BITCOIN_IS_COOL_URL_ENCODED
 #undef BITCOIN_IS_COOL
 #undef BITCOIN
+}
+
+void password_strength_test()
+{
+   int err;
+   char *password;
+   size_t n, min, max;
+
+   clear_msgbuf();
+
+   TITLE_MSG("Entering password tests ...")
+#define PASSWORD_MSG "Testing PASSWORD = \"%s\" with n = %u, min = %u and max = %u. %s"
+#define PASSWORD_SUCCESS "Password success"
+   err=f_pass_must_have_at_least(password="password", n=8, min=3, max=7, F_PASS_MUST_HAVE_AT_LEAST_NONE);
+   C_ASSERT_EQUAL_INT(F_PASS_IS_OUT_OVF, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "Password overflow should be expected"),
+         CTEST_ON_ERROR("Was expected error F_PASS_IS_OUT_OVF (%d). But found %d", F_PASS_IS_OUT_OVF, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n=9, min, max, F_PASS_MUST_HAVE_AT_LEAST_NONE);
+   C_ASSERT_EQUAL_INT(F_PASS_IS_TOO_LONG, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "Password is too long"),
+         CTEST_ON_ERROR("Was expected error F_PASS_IS_TOO_LONG (%d). But found %d", F_PASS_IS_TOO_LONG, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n=15, min=9, max=10, F_PASS_MUST_HAVE_AT_LEAST_NONE);
+   C_ASSERT_EQUAL_INT(F_PASS_IS_TOO_SHORT, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "Password is too short"),
+         CTEST_ON_ERROR("Was expected error F_PASS_IS_TOO_SHORT (%d). But found %d", F_PASS_IS_TOO_SHORT, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n, min=8, max, F_PASS_MUST_HAVE_AT_LEAST_NONE);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "Password with no criteria"),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE);
+   C_ASSERT_EQUAL_INT(F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE"),
+         CTEST_ON_ERROR("Was expected error F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE (%d). But found %d", F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password="PASSWORD", n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE);
+   C_ASSERT_EQUAL_INT(F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE"),
+         CTEST_ON_ERROR("Was expected error F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE (%d). But found %d", F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password="PASSWORD-abc", n, min, max=14, F_PASS_MUST_HAVE_AT_LEAST_ONE_LOWER_CASE);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "ERROR_SUCCESS"),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER);
+   C_ASSERT_EQUAL_INT(F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER"),
+         CTEST_ON_ERROR("Was expected error F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER (%d). But found %d", F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password="password1", n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "ERROR_SUCCESS"),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password, n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL);
+   C_ASSERT_EQUAL_INT(F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL"),
+         CTEST_ON_ERROR("Was expected error F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL (%d). But found %d", F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password="test@abc", n, min, max, F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "ERROR_SUCCESS"),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+#define PARANOIC \
+   (F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL|F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER|F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE)
+#define PARANOIC_STR \
+   "F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL, F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER, F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE"
+
+   err=f_pass_must_have_at_least(password="test", n, min=4, max, PARANOIC);
+   C_ASSERT_EQUAL_INT(PARANOIC, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, PARANOIC_STR),
+         CTEST_ON_ERROR("Was expected error (%d). But found %d", PARANOIC, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+
+   err=f_pass_must_have_at_least(password="Test@1", n, min, max, PARANOIC);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(PASSWORD_MSG, password, n, min, max, "ERROR_SUCCESS"),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(PASSWORD_SUCCESS)
+      )
+   )
+#undef PARANOIC_STR
+#undef PARANOIC
+#undef PASSWORD_SUCCESS
+#undef PASSWORD_MSG
 }
 

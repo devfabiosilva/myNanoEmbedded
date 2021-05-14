@@ -29,6 +29,7 @@ int main (int argc, char **argv)
 
    INFO_MSG_FMT(INFO, "Initiating utilities tests ...")
    url_decode_test();
+   password_strength_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 
