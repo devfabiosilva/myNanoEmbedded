@@ -1431,5 +1431,121 @@ void bip39_test()
    )
 #undef SEED_FROM_BIP39_STR
 #undef SEED_FROM_BIP39
+
+}
+
+void parse_seed_to_json()
+{
+   int err;
+   size_t sz;
+   char *p, *compare;
+   cJSON *json, *tmp;
+   uint8_t raw_seed[]={
+      0x0b, 0x62, 0xfb, 0xa5, 0x14, 0x15, 0xd8, 0x96, 0x17, 0x4b, 0xca, 0x4c, 0x05, 0x67, 0xc2, 0x65,
+      0x63, 0x33, 0xc2, 0xd9, 0x8d, 0x71, 0x45, 0xbb, 0xfc, 0x80, 0x07, 0x46, 0x9c, 0x4e, 0x3f, 0x74
+   };
+
+   clear_msgbuf();
+   compare=&msgbuf()[BUF_MSG_SZ>>1];
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, raw_seed, PARSE_JSON_READ_SEED_GENERIC, NULL);
+   C_ASSERT_EQUAL_INT(CANT_OPEN_DICTIONARY_FILE, err,
+      CTEST_SETTER(
+         CTEST_WARN("Expecting error because we did not set dictionary file"),
+         CTEST_ON_ERROR("Was expected CANT_OPEN_DICTIONARY_FILE(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)", CANT_OPEN_DICTIONARY_FILE, err)
+      )
+   )
+
+   f_set_dictionary_path(DICTIONARY_FILE);
+   C_ASSERT_TRUE(f_get_dictionary_path()==DICTIONARY_FILE,
+      CTEST_SETTER(
+         CTEST_INFO("Checking if f_get_dictionary_path() returns the same pointer in DICTIONARY_FILE (%p)", DICTIONARY_FILE)
+      )
+   )
+
 #undef DICTIONARY_FILE
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, raw_seed, PARSE_JSON_READ_SEED_GENERIC, NULL);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN("Expecting SUCCESS"),
+         CTEST_ON_ERROR("Was expected ERROR_SUCCESS(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)", ERROR_SUCCESS, err)
+      )
+   )
+
+   C_ASSERT_TRUE(sz>0,
+      CTEST_SETTER(
+         CTEST_INFO("Checking if sz = %lu is greater than zero ...", sz)
+      )
+   )
+
+   INFO_MSG_FMT("JSON with private key and Bip39 format\n\n%.*s\n", sz, msgbuf())
+
+   msgbuf()[sz]=0;
+
+   if (!(json=cJSON_Parse(msgbuf()))) {
+      ERROR_MSG_FMT("parse_seed_to_json(): Error when JSON parsing \"%s\" ... Exiting ...", ((p=(char *)cJSON_GetErrorPtr())?p:"Unknown JSON error"))
+      exit(1);
+   }
+
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "seed");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"seed\" value"),
+         CTEST_ON_SUCCESS("String found in \"seed\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"seed\""),
+         CTEST_ON_SUCCESS("String found in \"seed\""),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   INFO_MSG_FMT("Extracted SEED from JSON = %s", tmp->valuestring)
+
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(fhex2strv2(compare, raw_seed, sizeof(raw_seed), 0), tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_SUCCESS("String found in \"raw_seed\": \"%s\" -> ok", tmp->valuestring),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "bip39");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"bip39\" value"),
+         CTEST_ON_SUCCESS("String found in \"bip39\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"bip39\""),
+         CTEST_ON_SUCCESS("String found in \"bip39\""),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   err=f_bip39_to_nano_seed((uint8_t *)msgbuf(), tmp->valuestring, f_get_dictionary_path());
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("parse_seed_to_json(): Was expected ERROR_SUCCESS(%d) in \"f_bip39_to_nano_seed\" but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_EQUAL_BYTE(raw_seed, msgbuf(), sizeof(raw_seed),
+      CTEST_SETTER(
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+//TODO Add read encrypted file and encrypted stream tests
+   cJSON_Delete(json);
+
 }

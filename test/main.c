@@ -20,16 +20,17 @@ int main (int argc, char **argv)
    INFO_MSG_FMT(INFO, "Initiating Bitcoin Base58 tests for address ...")
    bitcoin_address_test();
 
+   INFO_MSG_FMT(INFO, "Initiating utilities tests ...")
+   url_decode_test();
+   password_strength_test();
+
    INFO_MSG_FMT(INFO, "Initiating Nano cryptocurrency tests ...")
    nano_address_test();
    nano_seed_test();
    nano_block_test();
    nano_json_string_test();
    nano_encrypted_stream_test();
-
-   INFO_MSG_FMT(INFO, "Initiating utilities tests ...")
-   url_decode_test();
-   password_strength_test();
+   parse_seed_to_json();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

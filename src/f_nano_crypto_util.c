@@ -1599,7 +1599,7 @@ int f_nano_seed_to_bip39(char *buf, size_t buf_sz, size_t *out_buf_len, NANO_SEE
    f=fopen(dictionary_file, "r");
 
    if (!f) {
-      err=2580;
+      err=CANT_OPEN_DICTIONARY_FILE;
       goto f_nano_seed_to_bip39_EXIT1;
    }
 
