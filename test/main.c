@@ -30,7 +30,7 @@ int main (int argc, char **argv)
    nano_block_test();
    nano_json_string_test();
    nano_encrypted_stream_test();
-   parse_seed_to_json();
+   parse_seed_to_json_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

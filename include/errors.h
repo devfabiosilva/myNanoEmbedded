@@ -22,3 +22,7 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
 //f_nano_seed_to_bip39
 #define CANT_OPEN_DICTIONARY_FILE 2580
 
+#define MISSING_PASSWORD 7153
+#define EMPTY_PASSWORD 7169
+#define WRONG_PASSWORD 7167
+

@@ -1434,12 +1434,14 @@ void bip39_test()
 
 }
 
-void parse_seed_to_json()
+void parse_seed_to_json_test()
 {
    int err;
    size_t sz;
    char *p, *compare;
    cJSON *json, *tmp;
+   const char *password_file="aW?#183HxKm>@hn-:QV/";
+   const char *filename="resource/example.nse";
    uint8_t raw_seed[]={
       0x0b, 0x62, 0xfb, 0xa5, 0x14, 0x15, 0xd8, 0x96, 0x17, 0x4b, 0xca, 0x4c, 0x05, 0x67, 0xc2, 0x65,
       0x63, 0x33, 0xc2, 0xd9, 0x8d, 0x71, 0x45, 0xbb, 0xfc, 0x80, 0x07, 0x46, 0x9c, 0x4e, 0x3f, 0x74
@@ -1545,7 +1547,58 @@ void parse_seed_to_json()
          CTEST_ON_ERROR_CB(close_json, json)
       )
    )
-//TODO Add read encrypted file and encrypted stream tests
    cJSON_Delete(json);
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, (void *)filename, READ_SEED_FROM_FILE, NULL);
+   C_ASSERT_EQUAL_INT(MISSING_PASSWORD, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Opening file on parse_seed_to_json(): Was expected MISSING_PASSWORD(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            MISSING_PASSWORD, err
+         ),
+         CTEST_ON_SUCCESS("Expected MISSING_PASSWORD (%d) OK", MISSING_PASSWORD)
+      )
+   )
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, (void *)filename, READ_SEED_FROM_FILE, "");
+   C_ASSERT_EQUAL_INT(EMPTY_PASSWORD, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Opening file on parse_seed_to_json(): Was expected EMPTY_PASSWORD(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            EMPTY_PASSWORD, err
+         ),
+         CTEST_ON_SUCCESS("Expected EMPTY_PASSWORD (%d) OK", EMPTY_PASSWORD)
+      )
+   )
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, (void *)filename, READ_SEED_FROM_FILE, "wrong password");
+   C_ASSERT_EQUAL_INT(WRONG_PASSWORD, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Opening file on parse_seed_to_json(): Was expected WRONG_PASSWORD(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            WRONG_PASSWORD, err
+         ),
+         CTEST_ON_SUCCESS("Expected WRONG_PASSWORD (%d) OK", WRONG_PASSWORD)
+      )
+   )
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ, &sz, (void *)filename, READ_SEED_FROM_FILE, password_file);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Opening file on parse_seed_to_json(): Was expected ERROR_SUCCESS(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("Expected ERROR_SUCCESS (%d) OK", ERROR_SUCCESS)
+      )
+   )
+
+   C_ASSERT_TRUE(sz>0,
+      CTEST_SETTER(
+         CTEST_INFO("Seed from file: Checking if sz = %lu is greater than zero ...", sz)
+      )
+   )
+
+   INFO_MSG_FMT("Success. JSON string of size %lu: \n\n%.*s\n\n", sz, sz, msgbuf())
 
 }

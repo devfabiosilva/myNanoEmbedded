@@ -1910,13 +1910,13 @@ int f_read_seed(uint8_t *seed, const char *passwd, void *source_data, int force_
    size_t tmp;
 
    if (!passwd)
-      return 7153;
+      return MISSING_PASSWORD;
 
    if (!source_data)
       return 7154;
 
    if ((tmp=strlen(passwd))==0)
-      return 7169;
+      return EMPTY_PASSWORD;
 
    buffer=malloc(READ_NANO_BUFFER_SZ);
 
@@ -2015,7 +2015,7 @@ f_read_seed_EXIT3_1:
          goto f_read_seed_EXIT3_3;
       }
 
-      err=7167;
+      err=WRONG_PASSWORD;
       goto f_read_seed_EXIT3_2;
    }
 
