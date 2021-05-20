@@ -1442,6 +1442,7 @@ void parse_seed_to_json_test()
    cJSON *json, *tmp;
    const char *password_file="aW?#183HxKm>@hn-:QV/";
    const char *filename="resource/example.nse";
+   uint8_t *encrypted_stream;
    uint8_t raw_seed[]={
       0x0b, 0x62, 0xfb, 0xa5, 0x14, 0x15, 0xd8, 0x96, 0x17, 0x4b, 0xca, 0x4c, 0x05, 0x67, 0xc2, 0x65,
       0x63, 0x33, 0xc2, 0xd9, 0x8d, 0x71, 0x45, 0xbb, 0xfc, 0x80, 0x07, 0x46, 0x9c, 0x4e, 0x3f, 0x74
@@ -1600,5 +1601,101 @@ void parse_seed_to_json_test()
    )
 
    INFO_MSG_FMT("Success. JSON string of size %lu: \n\n%.*s\n\n", sz, sz, msgbuf())
+
+_Static_assert((BUF_MSG_SZ>>2)>=sizeof(F_NANO_CRYPTOWALLET), "Error. F_NANO_CRYPTOWALLET size is greather than BUF_MSG_SZ/4. Resize it.");
+   clear_msgbuf();
+   encrypted_stream=(uint8_t *)&compare[BUF_MSG_SZ>>2];
+
+   f_random_attach(gen_rand_no_entropy);
+   err=f_write_seed(encrypted_stream, WRITE_SEED_TO_STREAM, raw_seed, (char *)password_file);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Testing \"f_write_seed\" function. This should expect an ERROR_SUCCESS (%d)",
+             ERROR_SUCCESS
+         ),
+         CTEST_ON_SUCCESS(
+            "Success. ERROR_SUCCESS -> Ok"
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err
+         )
+      )
+   )
+   f_random_detach();
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ>>1, &sz, (void *)encrypted_stream, READ_SEED_FROM_STREAM, "wrong password for encrypted stream");
+   C_ASSERT_EQUAL_INT(WRONG_PASSWORD, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Reading encrypted stream on parse_seed_to_json(): Was expected WRONG_PASSWORD(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            WRONG_PASSWORD, err
+         ),
+         CTEST_ON_SUCCESS("Expected WRONG_PASSWORD (%d) on reading stream OK", WRONG_PASSWORD)
+      )
+   )
+
+   err=f_parse_nano_seed_and_bip39_to_JSON(msgbuf(), BUF_MSG_SZ>>1, &sz, (void *)encrypted_stream, READ_SEED_FROM_STREAM, password_file);
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "Reading encrypted stream on parse_seed_to_json(): Was expected ERROR_SUCCESS(%d) in \"f_parse_nano_seed_and_bip39_to_JSON\" but found (%d)",
+            WRONG_PASSWORD, err
+         ),
+         CTEST_ON_SUCCESS("Expected ERROR_SUCCESS (%d) on reading stream OK", ERROR_SUCCESS)
+      )
+   )
+
+   C_ASSERT_TRUE(sz>0,
+      CTEST_SETTER(
+         CTEST_INFO("Seed from file: Checking if sz = %lu is greater than zero ...", sz)
+      )
+   )
+
+   if (!(json=cJSON_Parse(msgbuf()))) {
+      ERROR_MSG_FMT(
+          "Read from stream: parse_seed_to_json(): Error when JSON parsing \"%s\" ... Exiting ...", ((p=(char *)cJSON_GetErrorPtr())?p:"Unknown JSON error")
+      )
+      exit(1);
+   }
+
+   tmp=cJSON_GetObjectItemCaseSensitive(json, "seed");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Read from stream: Was expected string in \"seed\" value"),
+         CTEST_ON_SUCCESS("Read from stream: String found in \"seed\" value"),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Read from stream: Was expected not NULL string in \"seed\""),
+         CTEST_ON_SUCCESS("Read from stream: String found in \"seed\""),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   fhex2strv2(compare, raw_seed, 32, 0);
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(compare, tmp->valuestring,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking seed from JSON \"%s\" is equal to seed from seed \"%s\"",
+            tmp->valuestring, compare
+         ),
+         CTEST_ON_SUCCESS(
+            "Seed are equal -> OK"
+         ),
+         CTEST_ON_ERROR(
+            "Seed are not equal -> ERROR"
+         ),
+         CTEST_ON_ERROR_CB(close_json, json)
+      )
+   )
+
+   cJSON_Delete(json);
+
+   INFO_MSG("Finishing reading encrypted stream from memory")
 
 }
