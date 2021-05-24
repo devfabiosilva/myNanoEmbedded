@@ -14,5 +14,6 @@ var searchData=
   ['write_5ferr_5fnull_5fpassword',['WRITE_ERR_NULL_PASSWORD',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caac2dada8ed5a8905bbe03d1b83969e66e',1,'f_nano_crypto_util.h']]],
   ['write_5ferr_5fok',['WRITE_ERR_OK',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caaa4496d32ea8e8e26ba16a4b00593dea7',1,'f_nano_crypto_util.h']]],
   ['write_5ferr_5funknown_5foption',['WRITE_ERR_UNKNOWN_OPTION',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caa36bd807d69f9dcf7c67b45ff6dfa298c',1,'f_nano_crypto_util.h']]],
-  ['write_5ferr_5fwriting_5ffile',['WRITE_ERR_WRITING_FILE',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caa24d1a60fcb491d78b049e123f63e2fda',1,'f_nano_crypto_util.h']]]
+  ['write_5ferr_5fwriting_5ffile',['WRITE_ERR_WRITING_FILE',['../df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72caa24d1a60fcb491d78b049e123f63e2fda',1,'f_nano_crypto_util.h']]],
+  ['wrong_5fpassword',['WRONG_PASSWORD',['../de/d45/errors_8h.html#a86e7bb76af3de84c03f8ba82c3f99c50',1,'errors.h']]]
 ];

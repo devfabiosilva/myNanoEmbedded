@@ -53,6 +53,7 @@ var f__util_8h =
     [ "f_str_to_hex", "de/dc6/f__util_8h.html#ac1bb50469f73d98b1e8a7b8e1aa7debd", null ],
     [ "f_uncompress_elliptic_curve", "de/dc6/f__util_8h.html#ad1510e0790496ed2db058b588d638db1", null ],
     [ "f_url_base64_to_base64_dynamic", "de/dc6/f__util_8h.html#ac9d2be064f1b2cd78ecb1e8b55464983", null ],
+    [ "f_url_decode", "de/dc6/f__util_8h.html#a1784b6499968f3d4635f829a7cae43b3", null ],
     [ "f_url_encode", "de/dc6/f__util_8h.html#add447612bba7b95409fc85c3d23f5e6e", null ],
     [ "f_verify_system_entropy", "de/dc6/f__util_8h.html#a8fca5adcfc2df10af5a2d74e1933e31e", null ],
     [ "get_console_passwd", "de/dc6/f__util_8h.html#a9473b62cadda2ce3936bb58bc791bc4d", null ]

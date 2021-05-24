@@ -77,6 +77,7 @@ var searchData=
   ['f_5fstr_5fto_5fhex',['f_str_to_hex',['../de/dc6/f__util_8h.html#ac1bb50469f73d98b1e8a7b8e1aa7debd',1,'f_util.h']]],
   ['f_5funcompress_5felliptic_5fcurve',['f_uncompress_elliptic_curve',['../d0/da6/f__bitcoin_8h.html#ad1510e0790496ed2db058b588d638db1',1,'f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t):&#160;f_bitcoin.h'],['../de/dc6/f__util_8h.html#ad1510e0790496ed2db058b588d638db1',1,'f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t):&#160;f_util.h']]],
   ['f_5furl_5fbase64_5fto_5fbase64_5fdynamic',['f_url_base64_to_base64_dynamic',['../de/dc6/f__util_8h.html#ac9d2be064f1b2cd78ecb1e8b55464983',1,'f_util.h']]],
+  ['f_5furl_5fdecode',['f_url_decode',['../de/dc6/f__util_8h.html#a1784b6499968f3d4635f829a7cae43b3',1,'f_util.h']]],
   ['f_5furl_5fencode',['f_url_encode',['../de/dc6/f__util_8h.html#add447612bba7b95409fc85c3d23f5e6e',1,'f_util.h']]],
   ['f_5fverify_5fsigned_5fblock',['f_verify_signed_block',['../df/d1d/f__nano__crypto__util_8h.html#a0c547ea562ddc27d4c48e351e46dcd17',1,'f_nano_crypto_util.h']]],
   ['f_5fverify_5fsigned_5fdata',['f_verify_signed_data',['../df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345',1,'f_nano_crypto_util.h']]],
