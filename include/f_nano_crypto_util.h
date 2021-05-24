@@ -1453,6 +1453,9 @@ int f_is_valid_nano_seed_encrypted(void *, size_t, int);
 #define F_VALUE_SEND_RECEIVE_RAW_STRING F_NANO_B_RAW_STRING
 #define F_VALUE_TO_SEND (int)(1<<0)
 #define F_VALUE_TO_RECEIVE (int)(1<<1)
+#define F_FEE_VALUE_RAW_128 F_NANO_B_RAW_128
+#define F_FEE_VALUE_REAL_STRING F_NANO_B_REAL_STRING
+#define F_FEE_VALUE_RAW_STRING F_NANO_B_RAW_STRING
 
 int nano_create_block_dynamic(
    F_BLOCK_TRANSFER **,

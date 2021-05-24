@@ -570,8 +570,116 @@ void nano_encrypted_stream_test()
 #undef CRYPT_OFFSET
 }
 
+static const char
+   *account="nano_1uj9f5hazjrzrgbp46ainirjmmhsuqn3ohsz63uusem18runsqzrdj6yydxh",
+   *previous="46ca895be3a18fb50c1c6b5a3bd2e97fb637b35a22924c2f3dea3cf09e9e2e74",
+   *representative="xrb_3jx159p55nwebxyew4988akaps7iqpa51z77xa5zyfo5cnhi5hj49qkimjt6",
+   *balance="273.1000120000283700018",
+   *value_to_send="177.17",
+   *value_to_receive="17388.18266381",
+   *address_to_send="xrb_16hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc",
+   *link="cad2eabfd8aea39e7c9ec2f041d502150ccbe7202673c3fb1fe60ec029d323ce";
+
+struct p2pow_addr_t {
+   F_BLOCK_TRANSFER *block[2];
+};
+
+static void close_p2pow_block(void *blk)
+{
+   struct p2pow_addr_t *b=(struct p2pow_addr_t *)blk;
+
+   printf("\nERROR Ocurred: Freeing block at address %p ...\n", b->block[0]);
+   free(b->block[0]);
+
+   if (b->block[1]) {
+      printf("\nERROR Ocurred: Freeing p2pow block at address %p ...\n", b->block[1]);
+      free(b->block[1]);
+   }
+}
+
 void nano_p2pow_test()
 {
+   int err;
+   struct p2pow_addr_t b;
+   size_t sz;
+   char *json_str;
+
+   clear_msgbuf();
+   b.block[1]=NULL;
+   err=nano_create_block_dynamic(
+      &b.block[0],
+      account, 0,
+      previous, 0,
+      representative, 0,
+      balance,
+      value_to_send,
+      F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+      link, 0,
+      F_VALUE_TO_SEND
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"nano_create_block_dynamic\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"nano_create_block_dynamic\"", ERROR_SUCCESS)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(b.block[0],
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: Block should be not NULL if err==ERROR_SUCCESS"),
+         CTEST_ON_SUCCESS("nano_p2pow_test: Success. block (%p) !=NULL", b.block[0])
+      )
+   )
+
+   err=nano_create_p2pow_block_dynamic(
+      &b.block[1],
+      b.block[0],
+      "nano_3whqqwu9oix8hdkgx3k5megm7i9mymcrxoktmnnsjg5i55zagw7dxqb1i3xs", 0,
+      "1", F_FEE_VALUE_REAL_STRING,
+      NULL, 0
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"nano_create_p2pow_block_dynamic\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"nano_create_p2pow_block_dynamic\"", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(b.block[1],
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: Block should be not NULL if err==ERROR_SUCCESS in nano_create_p2pow_block_dynamic"),
+         CTEST_ON_SUCCESS("nano_p2pow_test: Success. p2pow (%p)!=NULL in nano_create_p2pow_block_dynamic", b.block[1]),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   err=f_nano_p2pow_to_JSON(json_str=msgbuf(), &sz, BUF_MSG_SZ>>2, b.block[1]);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_TRUE(sz>0,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("nano_p2pow_test: JSON string size should be greater than 0"),
+         CTEST_ON_SUCCESS("nano_p2pow_test: JSON string size %lu > 0 -> OK", sz),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   INFO_MSG_FMT("\nJSON format P2PoW -> \n\n%.*s\n", sz, json_str);
+
+   json_str[sz]=0;
+// TODO Parse to JSON object to compare values
+   free(b.block[1]);
+   free(b.block[0]);
 
 }
 
@@ -592,16 +700,6 @@ static void close_json(void *ctx)
       cJSON_Delete((cJSON *)ctx);
    }
 }
-
-static const char
-   *account="nano_1uj9f5hazjrzrgbp46ainirjmmhsuqn3ohsz63uusem18runsqzrdj6yydxh",
-   *previous="46ca895be3a18fb50c1c6b5a3bd2e97fb637b35a22924c2f3dea3cf09e9e2e74",
-   *representative="xrb_3jx159p55nwebxyew4988akaps7iqpa51z77xa5zyfo5cnhi5hj49qkimjt6",
-   *balance="273.1000120000283700018",
-   *value_to_send="177.17",
-   *value_to_receive="17388.18266381",
-   *address_to_send="xrb_16hsbha1tixrxyjrrf618qjr31cpwbisa8s4boj9916uj5e6to7oxkizghgc",
-   *link="cad2eabfd8aea39e7c9ec2f041d502150ccbe7202673c3fb1fe60ec029d323ce";
 
 void nano_block_test()
 {
