@@ -582,6 +582,7 @@ static const char
 
 struct p2pow_addr_t {
    F_BLOCK_TRANSFER *block[2];
+   cJSON *json;
 };
 
 static void close_p2pow_block(void *blk)
@@ -595,6 +596,11 @@ static void close_p2pow_block(void *blk)
       printf("\nERROR Ocurred: Freeing p2pow block at address %p ...\n", b->block[1]);
       free(b->block[1]);
    }
+
+   if (b->json) {
+      printf("\nERROR Ocurred: Freeing JSON object at address %p ...\n", b->json);
+      cJSON_Delete(b->json);
+   }
 }
 
 void nano_p2pow_test()
@@ -602,10 +608,12 @@ void nano_p2pow_test()
    int err;
    struct p2pow_addr_t b;
    size_t sz;
-   char *json_str;
+   char *json_str, *p;
+   cJSON *tmp, *tmp2;
 
    clear_msgbuf();
    b.block[1]=NULL;
+   b.json=NULL;
    err=nano_create_block_dynamic(
       &b.block[0],
       account, 0,
@@ -677,7 +685,128 @@ void nano_p2pow_test()
    INFO_MSG_FMT("\nJSON format P2PoW -> \n\n%.*s\n", sz, json_str);
 
    json_str[sz]=0;
-// TODO Parse to JSON object to compare values
+
+   if (!(b.json=cJSON_Parse(json_str))) {
+      ERROR_MSG_FMT("nano_p2pow_test: Error when JSON parsing \"%s\" ... Exiting ...", ((p=(char *)cJSON_GetErrorPtr())?p:"Unknown JSON error"))
+      close_p2pow_block(&b);
+      exit(1);
+   }
+
+   tmp=cJSON_GetObjectItemCaseSensitive(b.json, "user_block");
+
+   C_ASSERT_TRUE(cJSON_IsObject(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"user_block\" object"),
+         CTEST_ON_SUCCESS("Object found in \"user_block\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "block_type");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"block_type\" value"),
+         CTEST_ON_SUCCESS("String found in \"block_type\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"block_type\""),
+         CTEST_ON_SUCCESS("String found in \"block_type\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_EQUAL_STRING("state", tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"state\" in \"block_type\" but found \"%s\"", tmp2->valuestring),
+         CTEST_ON_SUCCESS("String found in \"block_type\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"account\" value"),
+         CTEST_ON_SUCCESS("String found in \"account\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"account\""),
+         CTEST_ON_SUCCESS("String found in \"account\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_EQUAL_STRING(account, tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"account\" but found \"%s\"", account, tmp2->valuestring),
+         CTEST_ON_SUCCESS("String found in \"account\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "previous");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"previous\" value"),
+         CTEST_ON_SUCCESS("String found in \"previous\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"previous\""),
+         CTEST_ON_SUCCESS("String found in \"previous\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(previous, tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"previous\" but found \"%s\"", previous, tmp2->valuestring),
+         CTEST_ON_SUCCESS("String found in \"previous\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "representative");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected string in \"representative\" value"),
+         CTEST_ON_SUCCESS("String found in \"representative\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected not NULL string in \"representative\""),
+         CTEST_ON_SUCCESS("String found in \"representative\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_EQUAL_STRING(representative, tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("Was expected \"%s\" in \"representative\" but found \"%s\"", representative, tmp2->valuestring),
+         CTEST_ON_SUCCESS("String found in \"representative\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+//TODO to be continued ...
+   cJSON_Delete(b.json);
    free(b.block[1]);
    free(b.block[0]);
 
