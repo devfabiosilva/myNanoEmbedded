@@ -527,7 +527,6 @@ void nano_encrypted_stream_test()
 
    CLEAN_ENCRYPTED_STREAM(seed_encrypted_from_url_encoded)
 
-//int f_url_decode(void *dest, size_t dest_sz, size_t *dest_len, const char *source, size_t source_len)
    len=0;
    err=f_url_decode(seed_encrypted_from_url_encoded, sizeof(F_NANO_CRYPTOWALLET), &len, (const char *)encrypted_url_encoded, 0);
 
@@ -640,10 +639,11 @@ void nano_p2pow_test()
       )
    )
 
+#define WORKER_ADDRESS "nano_3whqqwu9oix8hdkgx3k5megm7i9mymcrxoktmnnsjg5i55zagw7dxqb1i3xs"
    err=nano_create_p2pow_block_dynamic(
       &b.block[1],
       b.block[0],
-      "nano_3whqqwu9oix8hdkgx3k5megm7i9mymcrxoktmnnsjg5i55zagw7dxqb1i3xs", 0,
+      WORKER_ADDRESS, 0,
       "1", F_FEE_VALUE_REAL_STRING,
       NULL, 0
    );
@@ -692,12 +692,13 @@ void nano_p2pow_test()
       exit(1);
    }
 
+   p=&msgbuf()[BUF_MSG_SZ>>2];
    tmp=cJSON_GetObjectItemCaseSensitive(b.json, "user_block");
 
    C_ASSERT_TRUE(cJSON_IsObject(tmp),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected string in \"user_block\" object"),
-         CTEST_ON_SUCCESS("Object found in \"user_block\""),
+         CTEST_ON_ERROR("user_block: Was expected string in \"user_block\" object"),
+         CTEST_ON_SUCCESS("user_block: Object found in \"user_block\""),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
@@ -706,24 +707,25 @@ void nano_p2pow_test()
 
    C_ASSERT_TRUE(cJSON_IsString(tmp2),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected string in \"block_type\" value"),
-         CTEST_ON_SUCCESS("String found in \"block_type\" value"),
+         CTEST_ON_ERROR("user_block: Was expected string in \"block_type\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"block_type\" value"),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
    C_ASSERT_NOT_NULL(tmp2->valuestring,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected not NULL string in \"block_type\""),
-         CTEST_ON_SUCCESS("String found in \"block_type\""),
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"block_type\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"block_type\""),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
-   C_ASSERT_EQUAL_STRING("state", tmp2->valuestring,
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING("state", p,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected \"state\" in \"block_type\" but found \"%s\"", tmp2->valuestring),
-         CTEST_ON_SUCCESS("String found in \"block_type\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR("user_block: Was expected \"state\" in \"block_type\" but found \"%s\"", p),
+         CTEST_ON_SUCCESS("user_block: String found in \"block_type\": \"%s\" -> ok", p),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
@@ -732,24 +734,25 @@ void nano_p2pow_test()
 
    C_ASSERT_TRUE(cJSON_IsString(tmp2),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected string in \"account\" value"),
-         CTEST_ON_SUCCESS("String found in \"account\" value"),
+         CTEST_ON_ERROR("user_block: Was expected string in \"account\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"account\" value"),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
    C_ASSERT_NOT_NULL(tmp2->valuestring,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected not NULL string in \"account\""),
-         CTEST_ON_SUCCESS("String found in \"account\""),
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"account\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"account\""),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
-   C_ASSERT_EQUAL_STRING(account, tmp2->valuestring,
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(account, p,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected \"%s\" in \"account\" but found \"%s\"", account, tmp2->valuestring),
-         CTEST_ON_SUCCESS("String found in \"account\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"account\" but found \"%s\"", account, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"account\": \"%s\" -> ok", p),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
@@ -758,24 +761,25 @@ void nano_p2pow_test()
 
    C_ASSERT_TRUE(cJSON_IsString(tmp2),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected string in \"previous\" value"),
-         CTEST_ON_SUCCESS("String found in \"previous\" value"),
+         CTEST_ON_ERROR("user_block: Was expected string in \"previous\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"previous\" value"),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
    C_ASSERT_NOT_NULL(tmp2->valuestring,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected not NULL string in \"previous\""),
-         CTEST_ON_SUCCESS("String found in \"previous\""),
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"previous\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"previous\""),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
-   C_ASSERT_EQUAL_STRING_IGNORE_CASE(previous, tmp2->valuestring,
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(previous, p,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected \"%s\" in \"previous\" but found \"%s\"", previous, tmp2->valuestring),
-         CTEST_ON_SUCCESS("String found in \"previous\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"previous\" but found \"%s\"", previous, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"previous\": \"%s\" -> ok", p),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
@@ -784,28 +788,377 @@ void nano_p2pow_test()
 
    C_ASSERT_TRUE(cJSON_IsString(tmp2),
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected string in \"representative\" value"),
-         CTEST_ON_SUCCESS("String found in \"representative\" value"),
+         CTEST_ON_ERROR("user_block: Was expected string in \"representative\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"representative\" value"),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
    C_ASSERT_NOT_NULL(tmp2->valuestring,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected not NULL string in \"representative\""),
-         CTEST_ON_SUCCESS("String found in \"representative\""),
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"representative\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"representative\""),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
 
-   C_ASSERT_EQUAL_STRING(representative, tmp2->valuestring,
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(representative, p,
       CTEST_SETTER(
-         CTEST_ON_ERROR("Was expected \"%s\" in \"representative\" but found \"%s\"", representative, tmp2->valuestring),
-         CTEST_ON_SUCCESS("String found in \"representative\": \"%s\" -> ok", tmp2->valuestring),
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"representative\" but found \"%s\"", representative, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"representative\": \"%s\" -> ok", p),
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
-//TODO to be continued ...
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "balance");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected string in \"balance\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"balance\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"balance\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"balance\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+#define VALUE_EXPECTED "95930012000028370001800000000000"
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(VALUE_EXPECTED, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"balance\" but found \"%s\"", VALUE_EXPECTED, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"balance\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef VALUE_EXPECTED
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected string in \"link\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"link\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"link\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"link\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(link, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"link\" but found \"%s\"", link, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"link\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link_as_account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected string in \"link_as_account\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"link_as_account\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"link_as_account\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"link_as_account\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+#define LINK_AS_ACCOUNT_EXPECTED "nano_3kpkxczxjdo5msybxiqia9ci67aeshmk1bmmrhxjzsigr1nx8aygnbmb4iif"
+   C_ASSERT_EQUAL_STRING(LINK_AS_ACCOUNT_EXPECTED, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"link_as_account\" but found \"%s\"", LINK_AS_ACCOUNT_EXPECTED, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"link_as_account\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef LINK_AS_ACCOUNT_EXPECTED
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "signature");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected string in \"signature\" value"),
+         CTEST_ON_SUCCESS("user_block: String found in \"signature\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected not NULL string in \"signature\""),
+         CTEST_ON_SUCCESS("user_block: String found in \"signature\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+#define SIGNATURE "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(SIGNATURE, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("user_block: Was expected \"%s\" in \"signature\" but found \"%s\"", SIGNATURE, p),
+         CTEST_ON_SUCCESS("user_block: String found in \"signature\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp=cJSON_GetObjectItemCaseSensitive(b.json, "reward_block");
+
+   C_ASSERT_TRUE(cJSON_IsObject(tmp),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"user_block\" object"),
+         CTEST_ON_SUCCESS("reward_block: Object found in \"user_block\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "block_type");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"block_type\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"block_type\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"block_type\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"block_type\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING("state", p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"state\" in \"block_type\" but found \"%s\"", p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"block_type\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"account\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"account\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"account\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"account\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(account, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"account\" but found \"%s\"", account, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"account\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "previous");
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"previous\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"previous\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"previous\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"previous\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+#define USER_BLOCK_HASH "7168B03B2C0C83687AB8218609BAE481D23B402FF82168D5DAE8AB6BA0D9DD72"
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(USER_BLOCK_HASH, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"previous\" but found \"%s\"", USER_BLOCK_HASH, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"previous\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef USER_BLOCK_HASH
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "representative");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"representative\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"representative\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"representative\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"representative\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(representative, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"representative\" but found \"%s\"", representative, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"representative\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "balance");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"balance\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"balance\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"balance\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"balance\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+#define VALUE_EXPECTED "94930012000028370001800000000000"
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(VALUE_EXPECTED, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"balance\" but found \"%s\"", VALUE_EXPECTED, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"balance\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef VALUE_EXPECTED
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"link\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"link\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+#define WORKER_ADDRESS_PUBLIC_KEY "F1F7BF367AC3A67AE4EE86439B1D32C0F3F4D58ED65A9D2998B87018FE8770AB"
+   C_ASSERT_EQUAL_STRING_IGNORE_CASE(WORKER_ADDRESS_PUBLIC_KEY, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"link\" but found \"%s\"", WORKER_ADDRESS_PUBLIC_KEY, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef WORKER_ADDRESS_PUBLIC_KEY
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "link_as_account");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"link_as_account\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link_as_account\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"link_as_account\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link_as_account\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   strcpy(p, tmp2->valuestring);
+
+   C_ASSERT_EQUAL_STRING(WORKER_ADDRESS, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"link_as_account\" but found \"%s\"", WORKER_ADDRESS, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"link_as_account\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+#undef WORKER_ADDRESS
+
+   tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "signature");
+
+   C_ASSERT_TRUE(cJSON_IsString(tmp2),
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected string in \"signature\" value"),
+         CTEST_ON_SUCCESS("reward_block: String found in \"signature\" value"),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+   C_ASSERT_NOT_NULL(tmp2->valuestring,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected not NULL string in \"signature\""),
+         CTEST_ON_SUCCESS("reward_block: String found in \"signature\""),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+#define SIGNATURE "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+   strcpy(p, tmp2->valuestring);
+   C_ASSERT_EQUAL_STRING(SIGNATURE, p,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("reward_block: Was expected \"%s\" in \"signature\" but found \"%s\"", SIGNATURE, p),
+         CTEST_ON_SUCCESS("reward_block: String found in \"signature\": \"%s\" -> ok", p),
+         CTEST_ON_ERROR_CB(close_p2pow_block, &b)
+      )
+   )
+
+
    cJSON_Delete(b.json);
    free(b.block[1]);
    free(b.block[0]);
@@ -1555,7 +1908,6 @@ void nano_json_string_test()
       )
    )
 
-#define SIGNATURE "00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
    strcpy(msgbuf(), tmp2->valuestring);
    C_ASSERT_EQUAL_STRING(SIGNATURE, msgbuf(),
       CTEST_SETTER(
