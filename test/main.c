@@ -32,6 +32,7 @@ int main (int argc, char **argv)
    nano_encrypted_stream_test();
    parse_seed_to_json_test();
    nano_p2pow_test();
+   verify_signature_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

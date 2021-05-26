@@ -1397,18 +1397,18 @@ int f_sign_data(
 #define F_VERIFY_SIG_NANO_WALLET (uint32_t)1
 
 /**
- * @def F_VERIFY_SIG_RAW_HEX
+ * @def F_PUBLIC_KEY_RAW_HEX
  * @brief Public key raw 32 bytes data
  * @see f_verify_signed_data()
  */
-#define F_VERIFY_SIG_RAW_HEX (uint32_t)2
+#define F_PUBLIC_KEY_RAW_HEX (uint32_t)2
 
 /**
- * @def F_VERIFY_SIG_ASCII_HEX
+ * @def F_PUBLIC_KEY_ASCII_HEX
  * @brief Public key is a hex ASCII encoded string
  * @see f_verify_signed_data()
  */
-#define F_VERIFY_SIG_ASCII_HEX (uint32_t)4
+#define F_PUBLIC_KEY_ASCII_HEX (uint32_t)4
 
 /**
  * @fn int f_verify_signed_data(const unsigned char *signature, const unsigned char *message, size_t message_len, const void *public_key, uint32_t pk_type)
@@ -1421,7 +1421,7 @@ int f_sign_data(
  *     <br/><br/>
  *     - <i>F_VERIFY_SIG_NANO_WALLET</i> Public key is a NANO wallet with <i>XRB</i> or <i>NANO</i> prefixes encoded base32 string
  *     - <i>F_VERIFY_SIG_RAW_HEX</i> Public key is raw 32 bytes data
- *     - <i>F_VERIFY_SIG_ASCII_HEX</i> Public key is a hex ASCII encoded string
+ *     - <i>F_PUBLIC_KEY_ASCII_HEX</i> Public key is a hex ASCII encoded string
  *
  * <b>Return value are</b>
  * - Greater than zero if <i>signature</i> is VALID

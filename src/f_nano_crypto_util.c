@@ -265,7 +265,7 @@ int nano_base_32_2_hex(uint8_t *res, char *str_wallet)
 
 #define F_SIGN_BUF_SZ (size_t)(sizeof(crypto_generichash_state)+64+32+sizeof(ge25519_p3)+sizeof(ge25519_p2))
 #ifdef F_ESP32
-int IRAM_ATTR f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *pk)
+static int IRAM_ATTR f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *pk)
 {
 
    int err, i;
@@ -355,7 +355,7 @@ f_crypto_sign_ed25519_verify_detached_EXIT1:
 
 }
 #else
-int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *pk)
+static int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *pk)
 {
    int err;
    crypto_generichash_state *hs; //
@@ -3405,9 +3405,9 @@ int f_verify_signed_data(
    if (!(tmp=malloc(PUB_KEY_EXTENDED_MAX_LEN+MAX_STR_NANO_CHAR+32)))
       return -8937;
 
-   if (pk_type&F_VERIFY_SIG_RAW_HEX)
+   if (pk_type&F_PUBLIC_KEY_RAW_HEX)
       memcpy(tmp, public_key, 32);
-   else if (pk_type&F_VERIFY_SIG_ASCII_HEX) {
+   else if (pk_type&F_PUBLIC_KEY_ASCII_HEX) {
 
       if (strnlen((const char *)public_key, 65)!=64) {
 
@@ -3450,15 +3450,12 @@ int f_verify_signed_data(
 
       }
 
-   }
-
-   p=message;
-   sz_tmp=message_len;
+   } else
+      memcpy(tmp+32, signature, 64);
 
    if (pk_type&F_MESSAGE_IS_HASH_STRING) {
 
-      //if (strnlen((const char *)message, 65)!=64) {
-      if (sz_tmp!=64) {
+      if (strnlen((const char *)message, 65)!=64) {
 
          err=-9940;
 
@@ -3476,9 +3473,11 @@ int f_verify_signed_data(
 
       sz_tmp=32;
 
+   } else if ((sz_tmp=message_len)) p=message;
+   else {
+      err=-9941;
+      goto f_verify_signed_data_EXIT1;
    }
-
-   //err=(f_crypto_sign_ed25519_verify_detached((unsigned char *)(tmp+32), (unsigned char *)message, message_len, tmp)==0);
 
    err=(f_crypto_sign_ed25519_verify_detached((unsigned char *)(tmp+32), (unsigned char *)p, sz_tmp, tmp)==0);
 

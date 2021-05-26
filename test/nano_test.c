@@ -2264,10 +2264,10 @@ _Static_assert((BUF_MSG_SZ>>2)>=sizeof(F_NANO_CRYPTOWALLET), "Error. F_NANO_CRYP
             tmp->valuestring, compare
          ),
          CTEST_ON_SUCCESS(
-            "Seed are equal -> OK"
+            "Seeds are equal -> OK"
          ),
          CTEST_ON_ERROR(
-            "Seed are not equal -> ERROR"
+            "Seeds are not equal -> ERROR"
          ),
          CTEST_ON_ERROR_CB(close_json, json)
       )
@@ -2278,3 +2278,246 @@ _Static_assert((BUF_MSG_SZ>>2)>=sizeof(F_NANO_CRYPTOWALLET), "Error. F_NANO_CRYP
    INFO_MSG("Finishing reading encrypted stream from memory")
 
 }
+
+void verify_signature_test()
+{
+   int err;
+   size_t i;
+
+#define COMMON_SIGNATURE_HEX_STR "AA95D3A025C518AC8C168570ABA9C747E6C658334A51D1F94B40A9BC6D7D48BD5172FBC0E9713C1A3DFBB579258DE38065B309B8DE75E5F435736D444AACE80A"
+#define COMMON_SIGNATURE (const unsigned char []) {\
+           0xAA, 0x95, 0xD3, 0xA0, 0x25, 0xC5, 0x18, 0xAC, 0x8C, 0x16, 0x85, 0x70, 0xAB, 0xA9, 0xC7, 0x47,\
+           0xE6, 0xC6, 0x58, 0x33, 0x4A, 0x51, 0xD1, 0xF9, 0x4B, 0x40, 0xA9, 0xBC, 0x6D, 0x7D, 0x48, 0xBD,\
+           0x51, 0x72, 0xFB, 0xC0, 0xE9, 0x71, 0x3C, 0x1A, 0x3D, 0xFB, 0xB5, 0x79, 0x25, 0x8D, 0xE3, 0x80,\
+           0x65, 0xB3, 0x09, 0xB8, 0xDE, 0x75, 0xE5, 0xF4, 0x35, 0x73, 0x6D, 0x44, 0x4A, 0xAC, 0xE8, 0x0A\
+        }
+
+#define COMMOM_ADDRESS "nano_3bqwmnkpa76q43ga4syz3owwbihun51bfjmkry1pg6yae49yoeg6f5mxigbq"
+#define SUCCESS_MESSAGE "f_verify_signed_data: Success. Expected value %d"
+#define ERROR_MESSAGE "f_verify_signed_data: Was expected %d but found %d"
+#define COMMON_VALID_HASH_STR "87507AB9C4451A5C9306C5955AD858814A5A948D4508421A74DAD7C552FCF8DD"
+#define COMMON_INVALID_HASH_STR "77507AB9C4451A5C9306C5955AD858814A5A948D4508421A74DAD7C552FCF8DD"
+#define COMMON_VALID_HASH (const unsigned char []) {\
+           0x87, 0x50, 0x7A, 0xB9, 0xC4, 0x45, 0x1A, 0x5C, 0x93, 0x06, 0xC5, 0x95, 0x5A, 0xD8, 0x58, 0x81,\
+           0x4A, 0x5A, 0x94, 0x8D, 0x45, 0x08, 0x42, 0x1A, 0x74, 0xDA, 0xD7, 0xC5, 0x52, 0xFC, 0xF8, 0xDD\
+        }
+#define COMMON_INVALID_HASH (const unsigned char []) {\
+           0x77, 0x50, 0x7A, 0xB9, 0xC4, 0x45, 0x1A, 0x5C, 0x93, 0x06, 0xC5, 0x95, 0x5A, 0xD8, 0x58, 0x81,\
+           0x4A, 0x5A, 0x94, 0x8D, 0x45, 0x08, 0x42, 0x1A, 0x74, 0xDA, 0xD7, 0xC5, 0x52, 0xFC, 0xF8, 0xDD\
+        }
+#define COMMOM_XRB_ADDRESS "xrb_3bqwmnkpa76q43ga4syz3owwbihun51bfjmkry1pg6yae49yoeg6f5mxigbq"
+
+   struct signature_test_t {
+      int expected;
+      const char *on_success;
+      const char *on_error;
+      const unsigned char *signature;
+      const unsigned char *message;
+      size_t message_len;
+      const void *public_key;
+      uint32_t pk_type;
+   } SIGNATURE_TEST[] = {
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_VALID_HASH_STR, 0,
+         COMMOM_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING|F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_INVALID_HASH_STR, 0,
+         COMMOM_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING|F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_VALID_HASH, 32,
+         COMMOM_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_INVALID_HASH, 32,
+         COMMOM_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_VALID_HASH_STR, 0,
+         COMMOM_ADDRESS,
+         F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_INVALID_HASH_STR, 0,
+         COMMOM_ADDRESS,
+         F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_VALID_HASH, 32,
+         COMMOM_ADDRESS,
+         0
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_INVALID_HASH, 32,
+         COMMOM_ADDRESS,
+         0
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_VALID_HASH_STR, 0,
+         COMMOM_XRB_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING|F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_INVALID_HASH_STR, 0,
+         COMMOM_XRB_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING|F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_VALID_HASH, 32,
+         COMMOM_XRB_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE_HEX_STR,
+         COMMON_INVALID_HASH, 32,
+         COMMOM_XRB_ADDRESS,
+         F_IS_SIGNATURE_RAW_HEX_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_VALID_HASH_STR, 0,
+         COMMOM_XRB_ADDRESS,
+         F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_INVALID_HASH_STR, 0,
+         COMMOM_XRB_ADDRESS,
+         F_MESSAGE_IS_HASH_STRING
+      },
+      {
+         C_TEST_TRUE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_VALID_HASH, 32,
+         COMMOM_XRB_ADDRESS,
+         0
+      },
+      {
+         C_TEST_FALSE,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_INVALID_HASH, 32,
+         COMMOM_XRB_ADDRESS,
+         0
+      },
+      {
+         -23,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_VALID_HASH, 32,
+         "xrb_3bqwmnkpa76q43ga4syz3owwbihun51bfjmkry1pg6yae49yoeg6f5mxigbo",
+         0
+      },
+      {
+         -39,
+         SUCCESS_MESSAGE,
+         ERROR_MESSAGE,
+         COMMON_SIGNATURE,
+         COMMON_INVALID_HASH, 32,
+         "Xrb_3bqwmnkpa76q43ga4syz3owwbihun51bfjmkry1pg6yae49yoeg6f5mxigbq",
+         0
+      }
+   };
+
+#undef COMMOM_XRB_ADDRESS
+#undef COMMON_INVALID_HASH
+#undef COMMON_VALID_HASH
+#undef COMMON_INVALID_HASH_STR
+#undef COMMON_VALID_HASH_STR
+#undef ERROR_MESSAGE
+#undef SUCCESS_MESSAGE
+#undef COMMOM_ADDRESS
+#undef COMMON_SIGNATURE
+#undef COMMON_SIGNATURE_HEX_STR
+
+#define SIGNATURE_TEST_SZ sizeof(SIGNATURE_TEST)/sizeof(struct signature_test_t)
+
+   for (i=0;i<SIGNATURE_TEST_SZ;i++) {
+
+      err=f_verify_signed_data(
+         SIGNATURE_TEST[i].signature,
+         SIGNATURE_TEST[i].message,
+         SIGNATURE_TEST[i].message_len,
+         SIGNATURE_TEST[i].public_key,
+         SIGNATURE_TEST[i].pk_type
+      );
+
+      C_ASSERT_EQUAL_INT(SIGNATURE_TEST[i].expected, err,
+         CTEST_SETTER(
+            CTEST_INFO("Testing signature %d of %d", i+1, SIGNATURE_TEST_SZ),
+            CTEST_ON_ERROR(
+               SIGNATURE_TEST[i].on_error,
+               SIGNATURE_TEST[i].expected, err
+            ),
+            CTEST_ON_SUCCESS(SIGNATURE_TEST[i].on_success, err)
+         )
+      )
+
+   }
+//TODO Continue with raw public key and hex string public key
+//TODO Continue with string and raw data messages
+#undef SIGNATURE_TEST_SZ
+}
+
