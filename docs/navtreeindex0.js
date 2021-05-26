@@ -199,7 +199,7 @@ var NAVTREEINDEX0 =
 "df/d1d/f__nano__crypto__util_8h.html#a29993e3c3aae95f4210732c3f3774bff":[1,3,9],
 "df/d1d/f__nano__crypto__util_8h.html#a2a5e04187a92343e2d2733ca64c51ad3":[1,3,44],
 "df/d1d/f__nano__crypto__util_8h.html#a2a89ee0dcc8d1f8367ea257967165c6e":[1,3,123],
-"df/d1d/f__nano__crypto__util_8h.html#a2e34bebdf0cfeaf2fed546e6a4e5368f":[1,3,40],
+"df/d1d/f__nano__crypto__util_8h.html#a2e34bebdf0cfeaf2fed546e6a4e5368f":[1,3,42],
 "df/d1d/f__nano__crypto__util_8h.html#a33d0195a592347a82dd2cfbfe6a32efb":[1,3,111],
 "df/d1d/f__nano__crypto__util_8h.html#a33e931bcf84aab13b0d2090f02d8a3eb":[1,3,122],
 "df/d1d/f__nano__crypto__util_8h.html#a3477a2f2d6d1e36089fbbc0e33295a9b":[1,3,74],
@@ -229,7 +229,6 @@ var NAVTREEINDEX0 =
 "df/d1d/f__nano__crypto__util_8h.html#a3c456dc91a46acdc6f837fa50341002b":[1,3,110],
 "df/d1d/f__nano__crypto__util_8h.html#a3ccc22b724a46e05eec80ab384a83ac4":[1,3,92],
 "df/d1d/f__nano__crypto__util_8h.html#a3f1da138f378b2092504d6a0ae62a662":[1,3,48],
-"df/d1d/f__nano__crypto__util_8h.html#a3fc1d0fdaeaf722bce672f93b19e4bfb":[1,3,41],
 "df/d1d/f__nano__crypto__util_8h.html#a406d1895c7e0812210079bfd4bcf340c":[1,3,78],
 "df/d1d/f__nano__crypto__util_8h.html#a4100450d64005cdafbc5bd2cc7bc9774":[1,3,113],
 "df/d1d/f__nano__crypto__util_8h.html#a43fa072ac6ed611b27d9ebefad6b72ca":[1,3,70],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "df/d1d/f__nano__crypto__util_8h.html#a45db4c051f03f1ee8f76369a7a5c2721":[1,3,56],
 "df/d1d/f__nano__crypto__util_8h.html#a46976d4225f8a3f8f4a3b3c563849345":[1,3,105],
 "df/d1d/f__nano__crypto__util_8h.html#a48a13dfb9397b457711bba52fdcd82a2":[1,3,57],
-"df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420":[1,3,90]
+"df/d1d/f__nano__crypto__util_8h.html#a4b8347fe7afb8ead037ec9f9d4e5b420":[1,3,90],
+"df/d1d/f__nano__crypto__util_8h.html#a4e23db218b52c16c883c3f1b5d085371":[1,3,93]
 };
