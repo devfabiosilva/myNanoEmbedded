@@ -2283,6 +2283,9 @@ void verify_signature_test()
 {
    int err;
    size_t i;
+   uint32_t wallet_number;
+   uint8_t *private_key, *public_key, *seed, *signature;
+   char *string_public_key, *wallet_address, *wallet_address_xrb, *seed_str, *p;
 
 #define COMMON_SIGNATURE_HEX_STR "AA95D3A025C518AC8C168570ABA9C747E6C658334A51D1F94B40A9BC6D7D48BD5172FBC0E9713C1A3DFBB579258DE38065B309B8DE75E5F435736D444AACE80A"
 #define COMMON_SIGNATURE (const unsigned char []) {\
@@ -2514,10 +2517,191 @@ void verify_signature_test()
             CTEST_ON_SUCCESS(SIGNATURE_TEST[i].on_success, err)
          )
       )
-
    }
-//TODO Continue with raw public key and hex string public key
-//TODO Continue with string and raw data messages
+
+   clear_msgbuf();
+
+   seed=(uint8_t *)msgbuf();
+   private_key=seed+32;
+   public_key=private_key+32;
+   string_public_key=(char *)(public_key+32);
+   wallet_address=string_public_key+65;
+   wallet_address_xrb=wallet_address+128;
+   seed_str=wallet_address_xrb+128;
+   signature=(uint8_t *)seed_str+65;
+   p=&msgbuf()[BUF_MSG_SZ>>1];
+
+   gen_rand_no_entropy(seed, 32);
+   gen_rand_no_entropy(&wallet_number, sizeof(wallet_number));
+
+   WARN_MSG_FMT("Creating random seed \"%s\" ...", fhex2strv2(seed_str, seed, 32, 1))
+
+   err=f_seed_to_nano_wallet(private_key, public_key, seed, wallet_number);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_seed_to_nano_wallet: Was expected ERROR_SUCCESS (%d) but found (%d)",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("Expected ERROR_SUCCESS (%d) OK", ERROR_SUCCESS)
+      )
+   )
+
+   WARN_MSG_FMT("Extracted from seed \"%s\" Ed25519 PRIVATE KEY number %u = \"%s\" ...", seed_str, wallet_number, fhex2strv2(p, private_key, 64, 1))
+   WARN_MSG_FMT("Ed25519 PUBLIC KEY number %u = \"%s\" ...", wallet_number, strcpy(string_public_key, &p[64]))
+
+#define TEXT_MESSAGE "myNanoEmbedded is cool :)"
+
+   err=f_sign_data(
+      (unsigned char *)signature,
+      public_key,
+      F_SIGNATURE_RAW|F_SIGNATURE_OUTPUT_RAW_PK,
+      (const unsigned char *)TEXT_MESSAGE, sizeof(TEXT_MESSAGE)-1,
+      private_key
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_sign_data: Was expected ERROR_SUCCESS (%d) but found (%d)",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("f_sign_data: Expected ERROR_SUCCESS (%d) OK", ERROR_SUCCESS)
+      )
+   )
+
+   WARN_MSG_FMT("Signature \"%s\"\nPublic key = \"%s\"", fhex2strv2(p, signature, 64, 1), string_public_key)
+
+   err=f_verify_signed_data(
+      (const unsigned char *)signature,
+      (const unsigned char *)TEXT_MESSAGE,
+      sizeof(TEXT_MESSAGE)-1,
+      (const void *)public_key,
+      F_PUBLIC_KEY_RAW_HEX
+   );
+
+   C_ASSERT_EQUAL_INT(C_TEST_TRUE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_verify_signed_data: Was expected C_TEST_TRUE (%d) for valid signature but found (%d)",
+            C_TEST_TRUE, err
+         ),
+         CTEST_ON_SUCCESS("Expected C_TEST_TRUE (%d) OK", C_TEST_TRUE)
+      )
+   )
+
+   err=f_verify_signed_data(
+      (const unsigned char *)signature,
+      (const unsigned char *)TEXT_MESSAGE,
+      sizeof(TEXT_MESSAGE)-1,
+      (const void *)string_public_key,
+      F_PUBLIC_KEY_ASCII_HEX
+   );
+
+   C_ASSERT_EQUAL_INT(C_TEST_TRUE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_verify_signed_data (F_PUBLIC_KEY_ASCII_HEX): Was expected C_TEST_TRUE (%d) for valid signature but found (%d)",
+            C_TEST_TRUE, err
+         ),
+         CTEST_ON_SUCCESS("Expected C_TEST_TRUE (%d) for (F_PUBLIC_KEY_ASCII_HEX) OK", C_TEST_TRUE)
+      )
+   )
+
+   err=f_sign_data(
+      (unsigned char *)signature,
+      wallet_address,
+      F_SIGNATURE_RAW|F_SIGNATURE_OUTPUT_NANO_PK,
+      (const unsigned char *)TEXT_MESSAGE, sizeof(TEXT_MESSAGE)-1,
+      private_key
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_sign_data: Was expected ERROR_SUCCESS (%d) but found (%d)",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("f_sign_data: Expected ERROR_SUCCESS (%d) OK", ERROR_SUCCESS)
+      )
+   )
+
+   err=f_verify_signed_data(
+      (const unsigned char *)signature,
+      (const unsigned char *)TEXT_MESSAGE,
+      sizeof(TEXT_MESSAGE)-1,
+      (const void *)wallet_address,
+      0
+   );
+
+   C_ASSERT_EQUAL_INT(C_TEST_TRUE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_verify_signed_data (%s): Was expected C_TEST_TRUE (%d) for valid signature but found (%d)",
+            wallet_address, C_TEST_TRUE, err
+         ),
+         CTEST_ON_SUCCESS("Expected C_TEST_TRUE (%d) for (%s) OK", C_TEST_TRUE, wallet_address)
+      )
+   )
+
+   err=f_sign_data(
+      (unsigned char *)signature,
+      wallet_address_xrb,
+      F_SIGNATURE_RAW,
+      (const unsigned char *)TEXT_MESSAGE, sizeof(TEXT_MESSAGE)-1,
+      private_key
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_sign_data: Was expected ERROR_SUCCESS (%d) but found (%d)",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("f_sign_data: Expected ERROR_SUCCESS (%d) OK", ERROR_SUCCESS)
+      )
+   )
+
+   err=f_verify_signed_data(
+      (const unsigned char *)signature,
+      (const unsigned char *)TEXT_MESSAGE,
+      sizeof(TEXT_MESSAGE)-1,
+      (const void *)wallet_address_xrb,
+      0
+   );
+
+   C_ASSERT_EQUAL_INT(C_TEST_TRUE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_verify_signed_data (%s): Was expected C_TEST_TRUE (%d) for valid signature but found (%d)",
+            wallet_address_xrb, C_TEST_TRUE, err
+         ),
+         CTEST_ON_SUCCESS("Expected C_TEST_TRUE (%d) for (%s) OK", C_TEST_TRUE, wallet_address_xrb)
+      )
+   )
+
+   signature[0]^=0xFF;
+
+   err=f_verify_signed_data(
+      (const unsigned char *)signature,
+      (const unsigned char *)TEXT_MESSAGE,
+      sizeof(TEXT_MESSAGE)-1,
+      (const void *)wallet_address_xrb,
+      0
+   );
+
+   C_ASSERT_EQUAL_INT(C_TEST_FALSE, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_verify_signed_data (%s): Was expected C_TEST_FALSE (%d) for invalid signature but found (%d)",
+            wallet_address_xrb, C_TEST_FALSE, err
+         ),
+         CTEST_ON_SUCCESS("Expected C_TEST_FALSE (%d) for (%s) OK", C_TEST_FALSE, wallet_address_xrb)
+      )
+   )
+
+#undef TEXT_MESSAGE
 #undef SIGNATURE_TEST_SZ
 }
 

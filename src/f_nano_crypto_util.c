@@ -100,9 +100,9 @@ int f_reverse(unsigned char *val, size_t val_sz)
 */
 #define LIST_STR_WALLET (size_t)56
 #ifdef F_ESP32
-int IRAM_ATTR str_wallet_to_alphabet_index(uint8_t *list, char *str_wallet, size_t str_sz)
+static int IRAM_ATTR str_wallet_to_alphabet_index(uint8_t *list, char *str_wallet, size_t str_sz)
 #else
-int str_wallet_to_alphabet_index(uint8_t *list, char *str_wallet, size_t str_sz)
+static int str_wallet_to_alphabet_index(uint8_t *list, char *str_wallet, size_t str_sz)
 #endif
 {
    int err;
@@ -441,9 +441,9 @@ f_crypto_sign_ed25519_verify_detached_EXIT1:
 #endif
 
 #ifdef F_ESP32
-int IRAM_ATTR f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *sk)
+static int IRAM_ATTR f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *sk)
 #else
-int f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *sk)
+static int f_crypto_sign_ed25519_detached(unsigned char *sig, const unsigned char *m, size_t mlen, const unsigned char *sk)
 #endif
 {
    unsigned char az[64];
