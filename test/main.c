@@ -33,6 +33,7 @@ int main (int argc, char **argv)
    parse_seed_to_json_test();
    nano_p2pow_test();
    verify_signature_test();
+   sign_nano_block_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

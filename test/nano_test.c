@@ -1128,7 +1128,6 @@ void nano_p2pow_test()
          CTEST_ON_ERROR_CB(close_p2pow_block, &b)
       )
    )
-#undef WORKER_ADDRESS
 
    tmp2=cJSON_GetObjectItemCaseSensitive(tmp, "signature");
 
@@ -2703,5 +2702,194 @@ void verify_signature_test()
 
 #undef TEXT_MESSAGE
 #undef SIGNATURE_TEST_SZ
+}
+
+typedef struct sign_nano_block_t {
+   F_BLOCK_TRANSFER *blk[2];
+} SIGN_NANO_BLOCK_TEST;
+
+static void close_sign_nano_block(void *block)
+{
+   SIGN_NANO_BLOCK_TEST *b=(SIGN_NANO_BLOCK_TEST *)block;
+   void *p;
+
+   if ((p=b->blk[0])) {
+      printf("\nClosing Nano block at (%p) ...\n", p);
+      free(p);
+   }
+
+   if (p=b->blk[1]) {
+      printf("\nClosing P2PoW block at (%p) ...\n", p);
+      free(p);
+   }
+}
+
+void sign_nano_block_test()
+{
+   int err;
+   SIGN_NANO_BLOCK_TEST block;
+
+   clear_msgbuf();
+
+   block.blk[1]=NULL;
+
+#define PUBLIC_KEY (uint8_t []) {\
+         0xA8, 0x81, 0xDB, 0x55, 0xC9, 0x2D, 0x06, 0xCC, 0x0E, 0x95, 0x2D, 0x5C, 0x37, 0x98, 0xF9, 0xAB,\
+         0x4C, 0x53, 0x93, 0xFE, 0x58, 0x7B, 0x54, 0x29, 0xF1, 0x34, 0xE1, 0x2C, 0x1C, 0x0D, 0x37, 0x25\
+      }
+
+#define PRIVATE_KEY (uint8_t []) {\
+         0x45, 0x44, 0x6A, 0x27, 0xCA, 0x71, 0xED, 0xE9, 0xC7, 0x44, 0x3D, 0x0F, 0xD7, 0x13, 0xF1, 0xA1,\
+         0xDD, 0x60, 0x68, 0x05, 0xD1, 0x51, 0xE1, 0x39, 0x0F, 0x01, 0x7B, 0x17, 0x6A, 0x1A, 0x15, 0x66,\
+         0xA8, 0x81, 0xDB, 0x55, 0xC9, 0x2D, 0x06, 0xCC, 0x0E, 0x95, 0x2D, 0x5C, 0x37, 0x98, 0xF9, 0xAB,\
+         0x4C, 0x53, 0x93, 0xFE, 0x58, 0x7B, 0x54, 0x29, 0xF1, 0x34, 0xE1, 0x2C, 0x1C, 0x0D, 0x37, 0x25\
+      }
+
+   err=nano_create_block_dynamic(
+      &block.blk[0],
+      PUBLIC_KEY,
+      sizeof(PUBLIC_KEY),
+      previous,
+      0,
+      representative,
+      0,
+      balance,
+      value_to_receive,
+      F_BALANCE_REAL_STRING|F_VALUE_SEND_RECEIVE_REAL_STRING,
+      link,
+      0,
+      F_VALUE_TO_RECEIVE
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"nano_create_block_dynamic\"",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("sign_nano_block_test: ERROR_SUCCESS (%d) expected success", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   err=f_nano_sign_block(block.blk[0], NULL, PRIVATE_KEY);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_nano_sign_block @ sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"f_nano_sign_block\"",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("f_nano_sign_block @ sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_nano_sign_block @ sign_nano_block_test: ERROR_SUCCESS (%d) expected success", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   err=f_verify_signed_block(block.blk[0]);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_verify_signed_block @ sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"f_nano_sign_block\"",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("f_verify_signed_block @ sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_verify_signed_block @ sign_nano_block_test: ERROR_SUCCESS (%d) expected success", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   memset(block.blk[0]->signature, 0xFF, 64);
+
+   err=f_verify_signed_block(block.blk[0]);
+
+   C_ASSERT_EQUAL_INT(ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_verify_signed_block @ sign_nano_block_test: Expecting ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER (%d) from \"f_nano_sign_block\"",
+            ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER
+         ),
+         CTEST_ON_ERROR(
+            "f_verify_signed_block @ sign_nano_block_test: Was expected ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER (%d) but found (%d)",
+            ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER, err
+         ),
+         CTEST_ON_SUCCESS(
+            "f_verify_signed_block @ sign_nano_block_test: ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER (%d) expected success",
+            ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER
+         ),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   err=nano_create_p2pow_block_dynamic(
+      &block.blk[1],
+      block.blk[0],
+      WORKER_ADDRESS, 0,
+      "1.25", F_FEE_VALUE_REAL_STRING,
+      NULL, 0
+   );
+
+   err=f_nano_sign_block(block.blk[0], block.blk[1], PRIVATE_KEY);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_nano_sign_block @ sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"f_nano_sign_block\" (step 2)",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("f_nano_sign_block @ sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d) on (step 2)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_nano_sign_block @ sign_nano_block_test: ERROR_SUCCESS (%d) expected success on (step 2)", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   err=f_verify_signed_block(block.blk[0]);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_verify_signed_block @ sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"f_nano_sign_block\" (step 2)",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("f_verify_signed_block @ sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d) (step 2)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_verify_signed_block @ sign_nano_block_test: ERROR_SUCCESS (%d) expected success (step 2)", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   err=f_verify_signed_block(block.blk[1]);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_WARN(
+            "f_verify_signed_block @ sign_nano_block_test: Expecting ERROR_SUCCESS (%d) from \"f_nano_sign_block\" (step 3)",
+            ERROR_SUCCESS
+         ),
+         CTEST_ON_ERROR("f_verify_signed_block @ sign_nano_block_test: Was expected ERROR_SUCCESS (%d) but found (%d) (step 3)", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_verify_signed_block @ sign_nano_block_test: ERROR_SUCCESS (%d) expected success (step 3)", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   memcpy(&msgbuf()[(BUF_MSG_SZ>>1)+sizeof(F_BLOCK_TRANSFER)], block.blk[1], sizeof(F_BLOCK_TRANSFER));
+   err=f_nano_p2pow_to_JSON(msgbuf(), NULL, BUF_MSG_SZ>>1, memcpy(&msgbuf()[BUF_MSG_SZ>>1], block.blk[0], sizeof(F_BLOCK_TRANSFER)));
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR("f_nano_p2pow_to_JSON @ nano_p2pow_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS("f_nano_p2pow_to_JSON @ nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS),
+         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+      )
+   )
+
+   INFO_MSG_FMT("\n\nJSON block with signature:\n\n%s\n\n", msgbuf())
+
+   close_sign_nano_block(&block);
+
+#undef WORKER_ADDRESS
+#undef PRIVATE_KEY
+#undef PUBLIC_KEY
 }
 

@@ -377,7 +377,7 @@ static int f_crypto_sign_ed25519_verify_detached(const unsigned char *sig, const
 
    if ((sc25519_is_canonical(sig+32)==0)||(ge25519_has_small_order(sig)!=0)) {
 
-       err=12621;
+       err=ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER;
 
        goto f_crypto_sign_ed25519_verify_detached_EXIT1;
 
@@ -2808,15 +2808,15 @@ int f_nano_p2pow_to_JSON(char *buffer, size_t *olen, size_t buffer_sz, F_BLOCK_T
    size_t sz_tmp;
    F_BLOCK_TRANSFER *blk;
 
-   //if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
-   if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
-      return 13013;
-
    if (!f_nano_is_valid_block(block))
       return 13014;
 
    if (!f_nano_is_valid_block(&block[1]))
       return 13015;
+
+   //if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
+   if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
+      return 13013;
 
    memcpy(buf, p2pow_json, F_P2POW_JSON_SZ);
    blk=block;
@@ -3369,14 +3369,11 @@ int f_verify_signed_block(F_BLOCK_TRANSFER *nano_block)
    if ((err=f_nano_get_block_hash(hash, nano_block)))
       return err;
 
-   if ((err=f_crypto_sign_ed25519_verify_detached(
+   return f_crypto_sign_ed25519_verify_detached(
       (const unsigned char *)nano_block->signature,
       (const unsigned char *)hash,
       sizeof(hash),
-      (const unsigned char *)nano_block->account)))
-      return err;
-
-   return 0;
+      (const unsigned char *)nano_block->account);
 
 }
 

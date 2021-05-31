@@ -26,3 +26,5 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
 #define EMPTY_PASSWORD 7169
 #define WRONG_PASSWORD 7167
 
+#define ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER 12621
+
