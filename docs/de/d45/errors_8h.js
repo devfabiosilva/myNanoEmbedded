@@ -2,8 +2,11 @@ var errors_8h =
 [
     [ "CANT_OPEN_DICTIONARY_FILE", "de/d45/errors_8h.html#a0a5837cf92d2cdfddc60b296c5cd64bb", null ],
     [ "EMPTY_PASSWORD", "de/d45/errors_8h.html#ad1db4a479f3557bad34872682ec6cec1", null ],
+    [ "ERROR_25519_IS_NOT_CANONICAL_OR_HAS_NOT_SMALL_ORDER", "de/d45/errors_8h.html#a6efc963fb92d63a6f13bf0f759344674", null ],
     [ "ERROR_GEN_TOKEN_NO_RAND_NUM_GEN", "de/d45/errors_8h.html#a593145287f41db5bdbd8f36829d1dcf5", null ],
     [ "ERROR_INVALID_NANO_ADDRESS_VERIFY_CHKSUM", "de/d45/errors_8h.html#a1f8ed02bd6b2b14d3660573360369e87", null ],
+    [ "ERROR_NANO_BLOCK", "de/d45/errors_8h.html#ad779669c665034e679ba58e4f8704005", null ],
+    [ "ERROR_P2POW_BLOCK", "de/d45/errors_8h.html#a36b63be21d6b29ffc56f2896e64ecd49", null ],
     [ "ERROR_SUCCESS", "de/d45/errors_8h.html#aea0ae801b7d25c979655a7eb20d034af", null ],
     [ "INVALID_RAW_BALANCE", "de/d45/errors_8h.html#a8585bd7ff9c7e0770984ebe0193b80fe", null ],
     [ "MISSING_PASSWORD", "de/d45/errors_8h.html#a0fc5e73ddecdc7a95bfe820b7bb2febb", null ],
