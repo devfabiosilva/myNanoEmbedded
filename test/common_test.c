@@ -6,9 +6,9 @@ char *msgbuf()
    return msgbuffer;
 }
 
-void clear_msgbuf()
+char *clear_msgbuf()
 {
-   memset(msgbuffer, 0, sizeof(msgbuffer));
+   return (char *)memset(msgbuffer, 0, sizeof(msgbuffer));
 }
 
 void gen_rand_no_entropy(void *output, size_t output_len)

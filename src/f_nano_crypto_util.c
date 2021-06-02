@@ -2809,12 +2809,11 @@ int f_nano_p2pow_to_JSON(char *buffer, size_t *olen, size_t buffer_sz, F_BLOCK_T
    F_BLOCK_TRANSFER *blk;
 
    if (!f_nano_is_valid_block(block))
-      return 13014;
+      return ERROR_NANO_BLOCK;
 
    if (!f_nano_is_valid_block(&block[1]))
-      return 13015;
+      return ERROR_P2POW_BLOCK;
 
-   //if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
    if (!(buf=malloc(F_P2POW_JSON_MAX_SZ+MAX_STR_NANO_CHAR+128)))
       return 13013;
 

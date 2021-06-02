@@ -6,6 +6,6 @@
 #include <cJSON.h>
 #define BUF_MSG_SZ 5120
 char *msgbuf();
-void clear_msgbuf();
+char *clear_msgbuf();
 void gen_rand_no_entropy(void *, size_t);
 

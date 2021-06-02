@@ -2876,20 +2876,104 @@ void sign_nano_block_test()
    memcpy(&msgbuf()[(BUF_MSG_SZ>>1)+sizeof(F_BLOCK_TRANSFER)], block.blk[1], sizeof(F_BLOCK_TRANSFER));
    err=f_nano_p2pow_to_JSON(msgbuf(), NULL, BUF_MSG_SZ>>1, memcpy(&msgbuf()[BUF_MSG_SZ>>1], block.blk[0], sizeof(F_BLOCK_TRANSFER)));
 
+   close_sign_nano_block(&block);
+
    C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
       CTEST_SETTER(
          CTEST_ON_ERROR("f_nano_p2pow_to_JSON @ nano_p2pow_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS, err),
-         CTEST_ON_SUCCESS("f_nano_p2pow_to_JSON @ nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS),
-         CTEST_ON_ERROR_CB(close_sign_nano_block, &block)
+         CTEST_ON_SUCCESS("f_nano_p2pow_to_JSON @ nano_p2pow_test: ERROR_SUCCESS (%d) expected success for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS)
       )
    )
 
    INFO_MSG_FMT("\n\nJSON block with signature:\n\n%s\n\n", msgbuf())
 
-   close_sign_nano_block(&block);
+   err=f_nano_p2pow_to_JSON(msgbuf(), NULL, BUF_MSG_SZ>>1, (F_BLOCK_TRANSFER *)clear_msgbuf());
+
+   C_ASSERT_EQUAL_INT(ERROR_NANO_BLOCK, err,
+      CTEST_SETTER(
+         CTEST_ON_ERROR(
+            "f_nano_p2pow_to_JSON @ nano_p2pow_test: Was expected ERROR_NANO_BLOCK (%d) but found (%d) for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS("f_nano_p2pow_to_JSON @ nano_p2pow_test: ERROR_NANO_BLOCK (%d) expected success for \"f_nano_p2pow_to_JSON\"", ERROR_SUCCESS)
+      )
+   )
 
 #undef WORKER_ADDRESS
 #undef PRIVATE_KEY
 #undef PUBLIC_KEY
 }
 
+void balance_test()
+{
+   int err;
+   size_t sz;
+
+   f_uint128_t one_nano = {
+      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xD3, 0xC2, 0x1B, 0xCE, 0xCC, 0xED, 0xA1, 0x00, 0x00, 0x00
+   };
+
+   clear_msgbuf();
+
+   err=f_nano_balance_to_str(msgbuf(), BUF_MSG_SZ>>4, &sz, one_nano);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Converting raw balance to raw string balance"),
+         CTEST_ON_ERROR("f_nano_balance_to_str @ balance_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_balance_to_str\"", ERROR_SUCCESS, err),
+         CTEST_ON_SUCCESS(
+            "f_nano_balance_to_str @ balance_test: ERROR_SUCCESS (%d) expected success for \"f_nano_balance_to_str\". String size %lu", ERROR_SUCCESS, sz
+         )
+      )
+   )
+
+   INFO_MSG_FMT("Raw string value %.*s", sz, msgbuf())
+
+   msgbuf()[sz]=0;
+#define ONE_NANO_RAW_STR "1000000000000000000000000"
+
+   C_ASSERT_EQUAL_STRING(ONE_NANO_RAW_STR, msgbuf())
+
+   err=f_nano_parse_raw_str_to_raw128_t((uint8_t *)&msgbuf()[sizeof(ONE_NANO_RAW_STR)], msgbuf());
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Converting back raw string to raw balance (binary)"),
+         CTEST_ON_ERROR(
+            "f_nano_parse_raw_str_to_raw128_t @ balance_test: Was expected ERROR_SUCCESS (%d) but found (%d) for \"f_nano_parse_raw_str_to_raw128_t\"",
+            ERROR_SUCCESS, err
+         ),
+         CTEST_ON_SUCCESS(
+            "f_nano_parse_raw_str_to_raw128_t @ balance_test: ERROR_SUCCESS (%d) expected success for \"f_nano_parse_raw_str_to_raw128_t\".",
+            ERROR_SUCCESS
+         )
+      )
+   )
+
+   C_ASSERT_EQUAL_BYTE(one_nano, &msgbuf()[sizeof(ONE_NANO_RAW_STR)], sizeof(one_nano),
+      CTEST_SETTER(
+         CTEST_INFO("Testing if raw balance extracted from string are equals to")
+      )
+   )
+
+   msgbuf()[0]=1;
+
+   err=f_nano_parse_raw_str_to_raw128_t((uint8_t *)&msgbuf()[sizeof(ONE_NANO_RAW_STR)], msgbuf());
+
+   C_ASSERT_EQUAL_INT(INVALID_RAW_BALANCE, err,
+      CTEST_SETTER(
+         CTEST_WARN("Converting back raw string to raw balance (binary). Expecting error"),
+         CTEST_ON_ERROR(
+            "f_nano_parse_raw_str_to_raw128_t @ balance_test: Was expected INVALID_RAW_BALANCE (%d) but found (%d) for \"f_nano_parse_raw_str_to_raw128_t\"",
+            INVALID_RAW_BALANCE, err
+         ),
+         CTEST_ON_SUCCESS(
+            "f_nano_parse_raw_str_to_raw128_t @ balance_test: INVALID_RAW_BALANCE (%d) expected for \"f_nano_parse_raw_str_to_raw128_t\".",
+            INVALID_RAW_BALANCE
+         )
+      )
+   )
+
+#undef ONE_NANO_RAW_STR
+// TODO Implement this
+
+}

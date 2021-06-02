@@ -34,6 +34,7 @@ int main (int argc, char **argv)
    nano_p2pow_test();
    verify_signature_test();
    sign_nano_block_test();
+   balance_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 
