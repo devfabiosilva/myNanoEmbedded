@@ -1443,20 +1443,118 @@ int f_verify_signed_data( const unsigned char *, const unsigned char *, size_t, 
  */
 int f_is_valid_nano_seed_encrypted(void *, size_t, int);
 
-#ifndef F_ESP32
-
+/**
+ * @def F_BALANCE_RAW_128
+ * @brief Balance is RAW 128 bit
+ */
 #define F_BALANCE_RAW_128 F_NANO_A_RAW_128
+
+/**
+ * @def F_BALANCE_REAL_STRING
+ * @brief Balance is real string
+ */
 #define F_BALANCE_REAL_STRING F_NANO_A_REAL_STRING
+
+/**
+ * @def F_BALANCE_RAW_STRING
+ * @brief Balance is raw string
+ */
 #define F_BALANCE_RAW_STRING F_NANO_A_RAW_STRING
+
+/**
+ * @def F_VALUE_SEND_RECEIVE_RAW_128
+ * @brief Value to send or receive is RAW 128 bit
+ */
 #define F_VALUE_SEND_RECEIVE_RAW_128 F_NANO_B_RAW_128
+
+/**
+ * @def F_VALUE_SEND_RECEIVE_REAL_STRING
+ * @brief Value to send or receive is real string
+ */
 #define F_VALUE_SEND_RECEIVE_REAL_STRING F_NANO_B_REAL_STRING
+
+/**
+ * @def F_VALUE_SEND_RECEIVE_RAW_STRING
+ * @brief Value to send or receive is raw string
+ */
 #define F_VALUE_SEND_RECEIVE_RAW_STRING F_NANO_B_RAW_STRING
+
+/**
+ * @def F_VALUE_TO_SEND
+ * @brief Value to send
+ */
 #define F_VALUE_TO_SEND (int)(1<<0)
+
+/**
+ * @def F_VALUE_TO_RECEIVE
+ * @brief Value to receive
+ */
 #define F_VALUE_TO_RECEIVE (int)(1<<1)
+
+/**
+ * @def F_FEE_VALUE_RAW_128
+ * @brief P2PoW fee value is raw 128 bit
+ */
 #define F_FEE_VALUE_RAW_128 F_NANO_B_RAW_128
+
+/**
+ * @def F_FEE_VALUE_REAL_STRING
+ * @brief P2PoW fee value is real string
+ */
 #define F_FEE_VALUE_REAL_STRING F_NANO_B_REAL_STRING
+
+/**
+ * @def F_FEE_VALUE_RAW_STRING
+ * @brief P2PoW fee value is raw string
+ */
 #define F_FEE_VALUE_RAW_STRING F_NANO_B_RAW_STRING
 
+/**
+ * @fn int nano_create_block_dynamic(
+ *  F_BLOCK_TRANSFER **block,
+ *  const void *account,
+ *  size_t account_len,
+ *  const void *previous,
+ *  size_t previous_len,
+ *  const void *representative,
+ *  size_t representative_len,
+ *  const void *balance,
+ *  const void *value_to_send_or_receive,
+ *  uint32_t balance_and_val_to_send_or_rec_types,
+ *  const void *link,
+ *  size_t link_len,
+ *  int direction)
+ * @brief Creates a Nano block dynamically in memory
+ * @param [out] block Pointer to new allocated Nano block
+ * @param [in] account _nano_ or _xrb_ or _raw hex string_ or raw _hex binary_ **account** (public key)
+ * @param [in] account_len Account length. If zero it is assumed as _nano_, _xrb_ or _raw hex string_ public key
+ * @param [in] previous _Hex string_ or _raw hex binary_ **previous** block
+ * @param [in] previous_len Previous length size. If zero it is assumed **previous** is a _NULL_ terminated string
+ * @param [in] representative _nano_ or _xrb_ or _raw hex string_ or raw _hex binary_ **representative** account
+ * @param [in] representative_len Representative length. If zero it is assumed as _nano_, _xrb_ or _raw hex string_ representative
+ * @param [in] balance _Real balance_ or _raw string balance_ or _raw binary balance_
+ * @param [in] value_to_send_or_receive _Real value to send or receive_ or _raw string value to send or receive_ or _raw value to send or receive_
+ * @param [in] balance_and_val_to_send_or_rec_types Balance and value to send/receive types:
+ *     <br/><br/>
+ *     - <i>F_BALANCE_RAW_128</i> Balance is _raw binary 128 bit_
+ *     - <i>F_BALANCE_REAL_STRING</i> Balance is _real string_
+ *     - <i>F_BALANCE_RAW_STRING</i> Balance is _raw string_
+ *     - <i>F_VALUE_SEND_RECEIVE_RAW_128</i> Value to send/receive is _raw binary 128 bit_
+ *     - <i>F_VALUE_SEND_RECEIVE_REAL_STRING</i> Value to send/receive is _real string_
+ *     - <i>F_VALUE_SEND_RECEIVE_RAW_STRING</i> Value to send/receive is _raw string_
+ * @param [in] link _nano_ or _xrb_ or _raw hex string_ or raw _hex binary_ **link**
+ * @param [in] link_len Link length. If zero it is assumed as _nano_, _xrb_ or _raw hex string_ link
+ * @param [in] direction Direction of the Nano block:
+ *     <br/><br/>
+ *     - <i>F_VALUE_TO_SEND</i> Value to send to **link** = _destination account_
+ *     - <i>F_VALUE_TO_RECEIVE</i> Value to receive from **link** = _receive amount_
+ *
+ * _**WARNING**_: _block_ must be free after used.
+ *
+ * @retval ERROR_SUCCESS when success or non zero otherwise
+ *
+ * @see nano_create_p2pow_block_dynamic()
+ */
 int nano_create_block_dynamic(
    F_BLOCK_TRANSFER **,
    const void *,
@@ -1499,7 +1597,6 @@ int f_verify_signed_block(F_BLOCK_TRANSFER *);
  * @see f_verify_work()
  */
 int f_nano_pow(uint64_t *, unsigned char *, const uint64_t, int);
-#endif
 
 #ifdef __cplusplus
 }
