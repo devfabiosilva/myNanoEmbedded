@@ -96,7 +96,9 @@ clean:
 	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB) distclean
 	rm -rfv $(CURDIR)/src/$(LIBSODIUM_LIB)/build
 ifneq ("$(wildcard $(CURDIR)/test/test)","")
-	@echo "Removing $(CTEST_DIR)/test/test ..."
-	rm $(CURDIR)/test/test
+	#@echo "Removing $(CTEST_DIR)/test/test ..."
+	#rm $(CURDIR)/test/test
+	#rm 
+	$(MAKE) -C $(PWD)/test clean
 endif
 

@@ -9,6 +9,10 @@
 #define INFO "\n\n***** %s *****\n"
 int main (int argc, char **argv)
 {
+   extern char welcome[] asm("_binary_welcome_txt_start");
+   extern char welcome_end[] asm("_binary_welcome_txt_end");
+   const size_t welcome_sz=welcome_end-welcome;
+
    TITLE_MSG("Initiating myNanoEmbedded library tests ...")
 
    INFO_MSG_FMT(INFO, "Initiating non deterministic token generator tests ...")
@@ -37,6 +41,8 @@ int main (int argc, char **argv)
    balance_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
+
+   printf("\n%.*s\n", (int)welcome_sz, welcome);
 
    end_tests();
 
