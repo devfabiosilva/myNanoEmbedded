@@ -742,6 +742,7 @@ static int free_vargs(void *vargs)
 
    while (*p) {
       if (!check_msgsig(*p)) {
+         p++;
          err=7;
          ERROR_MSG("ERROR: check_msgsig(). Missing or invalid message signature. Maybe wrong parameters. Ignoring free argument")
          continue;
