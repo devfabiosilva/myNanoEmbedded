@@ -2977,3 +2977,70 @@ void balance_test()
 // TODO Implement this
 
 }
+
+static void brainwallet_success(void *ctx)
+{
+   int err=*((int *)ctx);
+
+   if (err)
+      ERROR_MSG_FMT("No SEED extracted from Brainwallet due to error %d", err)
+   else
+      WARN_MSG_FMT("Extracted SEED from Brainwallet: \"%s\"", fhex2strv2(msgbuf()+32, (uint8_t *)msgbuf(), 32, 1))
+}
+
+void brainwallet_test()
+{
+   int err, i;
+   const char *warning_msg;
+   struct brainwallet_t {
+      int expected;
+      uint32_t allow_mode;
+      const char
+         *info,
+         *on_success,
+         *on_error,
+         *brainwallet,
+         *salt;
+   } BRAINWALLET[]={
+      {
+         ERROR_MISSING_BRAINWALLET,
+         F_BRAIN_WALLET_VERY_POOR,
+         "Expecting error ERROR_MISSING_BRAINWALLET (%d) for missing brainwallet.",
+         "Error success for missing brainwallet \"%s\". Warning message: \"%s\" (%p)",
+         "Was expected ERROR_MISSING_BRAINWALLET (%d), but found error (%d). Warning message: \"%s\" (%p)",
+         NULL,
+         NULL
+      },
+      {
+         ERROR_MISSING_SALT,
+         F_BRAIN_WALLET_VERY_POOR,
+         "Expecting error ERROR_MISSING_SALT (%d) for missing salt.",
+         "Error success for missing salt \"%s\". Warning message: \"%s\" (%p)",
+         "Was expected ERROR_MISSING_SALT (%d), but found error (%d). Warning message: \"%s\" (%p)",
+         "this is a short brainwallet with no salt",
+         NULL
+      }
+// TODO Implement this
+   };
+
+   TITLE_MSG("BEGIN BRAINWALLET TEST")
+#define BRAINWALLET_ARRAY sizeof(BRAINWALLET)/sizeof(struct brainwallet_t)
+
+   for (i=0;i<BRAINWALLET_ARRAY;i++) {
+      err=f_extract_seed_from_brainwallet((uint8_t *)msgbuf(), (char **)&warning_msg, BRAINWALLET[i].allow_mode, BRAINWALLET[i].brainwallet, BRAINWALLET[i].salt);
+
+      C_ASSERT_EQUAL_INT(BRAINWALLET[i].expected, err,
+         CTEST_SETTER(
+            CTEST_INFO(BRAINWALLET[i].info, BRAINWALLET[i].expected),
+            CTEST_ON_SUCCESS(BRAINWALLET[i].on_success, (BRAINWALLET[i].brainwallet)?BRAINWALLET[i].brainwallet:"(NULL)", warning_msg, warning_msg),
+            CTEST_ON_ERROR(BRAINWALLET[i].on_error, BRAINWALLET[i].expected, err, warning_msg, warning_msg),
+            CTEST_ON_SUCCESS_CB(brainwallet_success, &err)
+         )
+      )
+   }
+
+#undef BRAINWALLET_ARRAY
+
+   TITLE_MSG("END BRAINWALLET TEST")
+}
+

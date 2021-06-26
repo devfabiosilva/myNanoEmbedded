@@ -3170,6 +3170,12 @@ int f_extract_seed_from_brainwallet(uint8_t *seed, char **warning_msg, uint32_t 
    if (warning_msg)
       *warning_msg="Brainwallet Error";
 
+   if (!brainwallet)
+      return ERROR_MISSING_BRAINWALLET;
+
+   if (!salt)
+      return ERROR_MISSING_SALT;
+
    if ((err=f_pass_must_have_at_least((char *)brainwallet, F_BRAIN_WALLET_MAX_SZ, F_BRAIN_WALLET_MIN_SZ, F_BRAIN_WALLET_MAX_SZ-1, F_ALL_KIND))&(~F_ALL_KIND))
       return err;
 
@@ -3203,7 +3209,7 @@ f_extract_seed_from_brainwallet_EXIT1:
       *warning_msg=(char *)&CRACK_TIME_TITLE[err];
 
    if (allow_mode>err)
-      return 0x3C00;
+      return ERROR_BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED;
 
    return f_pbkdf2_hmac((unsigned char *)brainwallet, sz_tmp, (unsigned char *)salt, strlen(salt), seed);
 

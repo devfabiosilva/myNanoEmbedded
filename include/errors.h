@@ -84,3 +84,21 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
  */
 #define ERROR_P2POW_BLOCK 13015
 
+/**
+ * @def BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED
+ * @brief Brainwallet not accepted error
+ */
+#define ERROR_BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED 0x3C00
+
+/**
+ * @def BRAINWALLET_MISSING_BRAINWALLET
+ * @brief Missing brainwallet error
+ */
+#define ERROR_MISSING_BRAINWALLET 0x3C01
+
+/**
+ * @def BRAINWALLET_MISSING_SALT
+ * @brief Missing salt error
+ */
+#define ERROR_MISSING_SALT 0x3C02
+
