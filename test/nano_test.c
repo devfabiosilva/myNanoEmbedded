@@ -2990,6 +2990,7 @@ static void brainwallet_success(void *ctx)
 
 void brainwallet_test()
 {
+#define WARING_MESSAGE " Warning message: \"%s\" @ (%p)"
    int err, i;
    const char *warning_msg;
    struct brainwallet_t {
@@ -3006,8 +3007,8 @@ void brainwallet_test()
          ERROR_MISSING_BRAINWALLET,
          F_BRAIN_WALLET_VERY_POOR,
          "Expecting error ERROR_MISSING_BRAINWALLET (%d) for missing brainwallet.",
-         "Error success for missing brainwallet \"%s\". Warning message: \"%s\" (%p)",
-         "Was expected ERROR_MISSING_BRAINWALLET (%d), but found error (%d). Warning message: \"%s\" (%p)",
+         "Error success for missing brainwallet \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_MISSING_BRAINWALLET (%d), but found error (%d)."WARING_MESSAGE,
          NULL,
          NULL
       },
@@ -3015,18 +3016,148 @@ void brainwallet_test()
          ERROR_MISSING_SALT,
          F_BRAIN_WALLET_VERY_POOR,
          "Expecting error ERROR_MISSING_SALT (%d) for missing salt.",
-         "Error success for missing salt \"%s\". Warning message: \"%s\" (%p)",
-         "Was expected ERROR_MISSING_SALT (%d), but found error (%d). Warning message: \"%s\" (%p)",
+         "Error success for missing salt \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_MISSING_SALT (%d), but found error (%d)."WARING_MESSAGE,
          "this is a short brainwallet with no salt",
          NULL
+      },
+      {
+         F_PASS_IS_TOO_SHORT,
+         F_BRAIN_WALLET_VERY_POOR,
+         "Expecting error F_PASS_IS_TOO_SHORT (%d) for empty brainwallet or Brainwallet too short",
+         "Error success for empty brainwallet \"%s\"."WARING_MESSAGE,
+         "Was expected F_PASS_IS_TOO_SHORT (%d), but found error (%d)."WARING_MESSAGE,
+         "",
+         "this is a salt with empty brainwallet"
+      },
+      {
+         F_PASS_IS_TOO_SHORT+1,
+         F_BRAIN_WALLET_VERY_POOR,
+         "Expecting error F_PASS_IS_TOO_SHORT + 1 (%d) for missing salt.",
+         "Error success for missing salt \"%s\"."WARING_MESSAGE,
+         "Was expected F_PASS_IS_TOO_SHORT + 1 (%d), but found error (%d)."WARING_MESSAGE,
+         "this is a short brainwallet with empty salt",
+         ""
+      },
+#define SHORT_BRAINWALLET "this is a short brainwallet with empty salt"
+#define SHORT_SALT "this is a simple salt"
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_VERY_POOR,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_VERY_POOR scenario.",
+         "Error success for simple salt \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d), but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_POOR,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_POOR scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_POOR) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_POOR, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_VERY_BAD,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_VERY_BAD scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_VERY_BAD) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_VERY_BAD, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_VERY_WEAK,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_VERY_WEAK scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_VERY_WEAK) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_VERY_WEAK, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_WEAK,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_WEAK scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_WEAK) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_WEAK, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_STILL_WEAK,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_STILL_WEAK scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_STILL_WEAK) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_STILL_WEAK, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_MAYBE_GOOD,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_MAYBE_GOOD scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_MAYBE_GOOD) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_MAYBE_GOOD, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_GOOD,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_GOOD scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_GOOD) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_GOOD, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_VERY_GOOD,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_VERY_GOOD scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_VERY_GOOD) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_VERY_GOOD, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_NICE,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt even if it has all simple text because it is configured to F_BRAIN_WALLET_NICE scenario.",
+         "Error success for simple salt (F_BRAIN_WALLET_GOOD) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_NICE, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED,
+         F_BRAIN_WALLET_PERFECT,
+         "Expecting error ERROR_BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED (%d) for simple salt F_BRAIN_WALLET_PERFECT scenario. This is paranoic (recommended)",
+         "Error success for simple salt (F_BRAIN_WALLET_PERFECT) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_BRAINWALLET_ALLOW_MODE_NOT_ACCEPTED (%d) for F_BRAIN_WALLET_PERFECT, but found error (%d)."WARING_MESSAGE,
+         SHORT_BRAINWALLET,
+         SHORT_SALT
+      },
+      {
+         ERROR_SUCCESS,
+         F_BRAIN_WALLET_PERFECT,
+         "Expecting error ERROR_SUCCESS (%d) for simple salt F_BRAIN_WALLET_PERFECT scenario. This is paranoic (recommended)",
+         "Error success for simple salt (F_BRAIN_WALLET_PERFECT) \"%s\"."WARING_MESSAGE,
+         "Was expected ERROR_SUCCESS (%d) for F_BRAIN_WALLET_PERFECT, but found error (%d)."WARING_MESSAGE,
+         "This is a strong example of a very very strong Brainwallet. It must contain number such as 37446 and symbols @$*",
+         "Salt:youremail@gmail.com:(21)9999-9999-Phone-number. Never forget it"
       }
-// TODO Implement this
+#undef SHORT_SALT
+#undef SHORT_BRAINWALLET
    };
 
-   TITLE_MSG("BEGIN BRAINWALLET TEST")
-#define BRAINWALLET_ARRAY sizeof(BRAINWALLET)/sizeof(struct brainwallet_t)
+#define BRAINWALLET_ARRAY_SIZE sizeof(BRAINWALLET)/sizeof(struct brainwallet_t)
+   TITLE_MSG_FMT("BEGIN BRAINWALLET TEST\nTesting %d brainwallet scenarios ...\n", BRAINWALLET_ARRAY_SIZE)
 
-   for (i=0;i<BRAINWALLET_ARRAY;i++) {
+   for (i=0;i<BRAINWALLET_ARRAY_SIZE;i++) {
+      INFO_MSG_FMT("Testing brainwallet scenario %d of %d ...", i+1, BRAINWALLET_ARRAY_SIZE)
       err=f_extract_seed_from_brainwallet((uint8_t *)msgbuf(), (char **)&warning_msg, BRAINWALLET[i].allow_mode, BRAINWALLET[i].brainwallet, BRAINWALLET[i].salt);
 
       C_ASSERT_EQUAL_INT(BRAINWALLET[i].expected, err,
@@ -3040,6 +3171,7 @@ void brainwallet_test()
    }
 
 #undef BRAINWALLET_ARRAY
+#undef WARING_MESSAGE
 
    TITLE_MSG("END BRAINWALLET TEST")
 }
