@@ -295,6 +295,22 @@ void assert_equal_string_ignore_case(const char *, const char *, ...);
 void assert_not_equal_string_ignore_case(const char *, const char *, ...);
 void assert_null(void *, ...);
 void assert_not_null(void *, ...);
+void assert_equal_u8(uint8_t, uint8_t, ...);
+void assert_not_equal_u8(uint8_t, uint8_t, ...);
+void assert_equal_s8(int8_t, int8_t, ...);
+void assert_not_equal_s8(int8_t, int8_t, ...);
+void assert_equal_u16(uint16_t, uint16_t, ...);
+void assert_not_equal_u16(uint16_t, uint16_t, ...);
+void assert_equal_s16(int16_t, int16_t, ...);
+void assert_not_equal_s16(int16_t, int16_t, ...);
+void assert_equal_u32(uint32_t, uint32_t, ...);
+void assert_not_equal_u32(uint32_t, uint32_t, ...);
+void assert_equal_s32(int32_t, int32_t, ...);
+void assert_not_equal_s32(int32_t, int32_t, ...);
+void assert_equal_u64(uint64_t, uint64_t, ...);
+void assert_not_equal_u64(uint64_t, uint64_t, ...);
+void assert_equal_s64(int64_t, int64_t, ...);
+void assert_not_equal_s64(int64_t, int64_t, ...);
 #endif
 
 /**
@@ -829,6 +845,183 @@ void *set_varg(uint32_t, const char *, ...);
  * @see C_ASSERT_EQUAL_STRING_IGNORE_CASE
  */
 #define C_ASSERT_NOT_EQUAL_STRING_IGNORE_CASE(expected, ...) assert_not_equal_string_ignore_case(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_U8(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_U8
+ */
+#define C_ASSERT_EQUAL_U8(expected, ...) assert_equal_u8(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_U8(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_U8
+ */
+#define C_ASSERT_NOT_EQUAL_U8(expected, ...) assert_not_equal_u8(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_S8(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_S8
+ */
+#define C_ASSERT_EQUAL_S8(expected, ...) assert_equal_s8(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_S8(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_S8
+ */
+#define C_ASSERT_NOT_EQUAL_S8(expected, ...) assert_not_equal_s8(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_U16(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_U16
+ */
+#define C_ASSERT_EQUAL_U16(expected, ...) assert_equal_u16(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_U16(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_U16
+ */
+#define C_ASSERT_NOT_EQUAL_U16(expected, ...) assert_not_equal_u16(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_S16(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_S16
+ */
+#define C_ASSERT_EQUAL_S16(expected, ...) assert_equal_s16(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_S16(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_S16
+ */
+#define C_ASSERT_NOT_EQUAL_S16(expected, ...) assert_not_equal_s16(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_U32(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_U32
+ */
+#define C_ASSERT_EQUAL_U32(expected, ...) assert_equal_u32(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_U32(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_U32
+ */
+#define C_ASSERT_NOT_EQUAL_U32(expected, ...) assert_not_equal_u32(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_S32(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_S32
+ */
+#define C_ASSERT_EQUAL_S32(expected, ...) assert_equal_s32(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_S32(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_S32
+ */
+#define C_ASSERT_NOT_EQUAL_S32(expected, ...) assert_not_equal_s32(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_U64(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_U64
+ */
+#define C_ASSERT_EQUAL_U64(expected, ...) assert_equal_u64(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_U64(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_U64
+ */
+#define C_ASSERT_NOT_EQUAL_U64(expected, ...) assert_not_equal_u64(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_S64(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_S64
+ */
+#define C_ASSERT_EQUAL_S64(expected, ...) assert_equal_s64(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_S64(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_S64
+ */
+#define C_ASSERT_NOT_EQUAL_S64(expected, ...) assert_not_equal_s64(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
 #ifndef CTEST_DOC_SKIP
 #ifdef DEBUG_TEST
 // TEMPORARY FOR TESTS
