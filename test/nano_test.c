@@ -541,8 +541,7 @@ void nano_encrypted_stream_test()
       )
    )
 
-//TODO Refactor C_TEST for unsigned long long int in next version
-   C_ASSERT_EQUAL_LONG_INT((signed long long int)sizeof(F_NANO_CRYPTOWALLET), (signed long long int)len,
+   C_ASSERT_EQUAL_UNSIGNED_LONG_INT((signed long long int)sizeof(F_NANO_CRYPTOWALLET), (signed long long int)len,
       CTEST_SETTER(
          CTEST_ON_SUCCESS(
             "Success. len == sizeof(F_NANO_CRYPTOWALLET) == %lu for f_url_decode", sizeof(F_NANO_CRYPTOWALLET)

@@ -12,6 +12,7 @@ static int c_test_not_ignored=C_TEST_TRUE;
 
 static void print_assert_int(void *, void *);
 static void print_assert_longint(void *, void *);
+static void print_assert_unsigned_longint(void *, void *);
 static void print_assert_byte(void *, void *);
 static void print_assert_double(void *, void *);
 static void print_assert_string(void *, void *);
@@ -151,6 +152,14 @@ typedef struct c_test_type_long_int_t {
    result;
 } C_TEST_TYPE_LONG_INT;
 
+typedef struct c_test_type_unsigned_long_int_t {
+   C_TEST_TYPE_HEADER header;
+
+   unsigned long long int
+   expected,
+   result;
+} C_TEST_TYPE_UNSIGNED_LONG_INT;
+
 typedef struct c_test_type_s64_t {
    C_TEST_TYPE_HEADER header;
 
@@ -239,6 +248,8 @@ static C_TEST_VARGS_MSG *check_vargs_sigmsg_exists(C_TEST_VARGS_MSG **, uint32_t
 #define ASSERT_TRUE_FN "assert_true"
 #define ASSERT_FALSE_FN "assert_false"
 #define ASSERT_EQUAL_LONG_INT "assert_equal_longint"
+#define ASSERT_EQUAL_UNSIGNED_LONG_INT "assert_equal_unsigned_longint"
+#define ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT "assert_not_equal_unsigned_longint"
 #define ASSERT_EQUAL_DOUBLE "assert_equal_double"
 #define ASSERT_EQUAL_BYTE "assert_equal_byte"
 #define ASSERT_NOT_EQUAL_INT_FN "assert_not_equal"
@@ -300,7 +311,9 @@ enum type_assert_e {
    TYPE_ASSERT_EQUAL_U64,
    TYPE_ASSERT_NOT_EQUAL_U64,
    TYPE_ASSERT_EQUAL_S64,
-   TYPE_ASSERT_NOT_EQUAL_S64
+   TYPE_ASSERT_NOT_EQUAL_S64,
+   TYPE_ASSERT_EQUAL_UNSIGNED_LONG_INT,
+   TYPE_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT
 };
 
 static C_TEST_FN_DESCRIPTION _tst_fn_desc[] = {
@@ -335,13 +348,17 @@ static C_TEST_FN_DESCRIPTION _tst_fn_desc[] = {
    {TYPE_ASSERT_EQUAL_U64, ASSERT_EQUAL_U64, sizeof(C_TEST_TYPE_U64), print_assert_u64},
    {TYPE_ASSERT_NOT_EQUAL_U64, ASSERT_NOT_EQUAL_U64, sizeof(C_TEST_TYPE_U64), print_assert_u64},
    {TYPE_ASSERT_EQUAL_S64, ASSERT_EQUAL_S64, sizeof(C_TEST_TYPE_S64), print_assert_s64},
-   {TYPE_ASSERT_NOT_EQUAL_S64, ASSERT_NOT_EQUAL_S64, sizeof(C_TEST_TYPE_S64), print_assert_s64}
+   {TYPE_ASSERT_NOT_EQUAL_S64, ASSERT_NOT_EQUAL_S64, sizeof(C_TEST_TYPE_S64), print_assert_s64},
+   {TYPE_ASSERT_EQUAL_UNSIGNED_LONG_INT, ASSERT_EQUAL_UNSIGNED_LONG_INT, sizeof(C_TEST_TYPE_UNSIGNED_LONG_INT), print_assert_unsigned_longint},
+   {TYPE_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT, ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT, sizeof(C_TEST_TYPE_UNSIGNED_LONG_INT), print_assert_unsigned_longint}
 };
 
 #define C_TEST_FN_DESCRIPTION_ASSERT_EQ_INT _tst_fn_desc[TYPE_ASSERT_EQUAL_INT]
 #define C_TEST_FN_DESCRIPTION_ASSERT_TRUE _tst_fn_desc[TYPE_ASSERT_TRUE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_FALSE _tst_fn_desc[TYPE_ASSERT_FALSE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_EQ_LONG_INT _tst_fn_desc[TYPE_ASSERT_EQUAL_LONG_INT]
+#define C_TEST_FN_DESCRIPTION_ASSERT_EQ_UNSIGNED_LONG_INT _tst_fn_desc[TYPE_ASSERT_EQUAL_UNSIGNED_LONG_INT]
+#define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_UNSIGNED_LONG_INT _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT]
 #define C_TEST_FN_DESCRIPTION_ASSERT_EQ_DOUBLE _tst_fn_desc[TYPE_ASSERT_EQUAL_DOUBLE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_EQ_BYTE _tst_fn_desc[TYPE_ASSERT_EQUAL_BYTE]
 #define C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_INT _tst_fn_desc[TYPE_ASSERT_NOT_EQUAL_INT]
@@ -388,6 +405,7 @@ typedef union c_test_fn {
    C_TEST_TYPE_S32 tst_eq_s32;
    C_TEST_TYPE_U64 tst_eq_u64;
    C_TEST_TYPE_S64 tst_eq_s64;
+   C_TEST_TYPE_UNSIGNED_LONG_INT tst_eq_unsigned_longint;
 } C_TEST_FN;
 
 #define PRINTF_FINAL_FMT printf("%.*s", err, msg);
@@ -1352,8 +1370,8 @@ static void print_assert_longint(void *ctx, void *vas)
    char *p;
 
    const char *print_assert_long_int_msg[][2] = {
-      {"\"%s\". Expected %d (0x%016llx) == result %d (0x%016llx) -> ok", "\"%s\". Expected %d (0x%016llx), but found %d (0x%016llx) -> fail"},
-      {"\"%s\". Unexpected %d (0x%016llx) != result %d (0x%016llx) -> ok", "\"%s\". Unexpected %d (%016llx) == result %d (0x%016llx) -> fail"}
+      {"\"%s\". Expected %lld (0x%016llx) == result %lld (0x%016llx) -> ok", "\"%s\". Expected %lld (0x%016llx), but found %lld (0x%016llx) -> fail"},
+      {"\"%s\". Unexpected %lld (0x%016llx) != result %lld (0x%016llx) -> ok", "\"%s\". Unexpected %lld (%016llx) == result %lld (0x%016llx) -> fail"}
    };
 
    PRINT_CALLBACK
@@ -1393,6 +1411,60 @@ static void print_assert_longint(void *ctx, void *vas)
    free_vargs(vas);
 
    SUCCESS_MSG_FMT(print_assert_long_int_msg[idx][0],
+      type->header.desc.fn_name,
+      type->expected, type->expected,
+      type->result, type->result
+   )
+}
+
+static void print_assert_unsigned_longint(void *ctx, void *vas)
+{
+   C_TEST_TYPE_UNSIGNED_LONG_INT *type=(C_TEST_TYPE_UNSIGNED_LONG_INT *)ctx;
+   int error, idx, p_sz;
+   char *p;
+
+   const char *print_assert_unsigned_long_int_msg[][2] = {
+      {"\"%s\". Expected %llu (0x%016llx) == result %llu (0x%016llx) -> ok", "\"%s\". Expected %llu (0x%016llx), but found %llu (0x%016llx) -> fail"},
+      {"\"%s\". Unexpected %llu (0x%016llx) != result %llu (0x%016llx) -> ok", "\"%s\". Unexpected %llu (%016llx) == result %llu (0x%016llx) -> fail"}
+   };
+
+   PRINT_CALLBACK
+
+   error=(type->expected!=type->result);
+
+   idx=0;
+   if (type->header.desc.type==TYPE_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT) {
+      error=!error;
+      idx=1;
+   }
+
+   SHOW_USER_NOTIFICATION
+
+   if (error) {
+      CALLBACK_ON_ERROR
+
+      if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_ERROR)))
+         ERROR_MSG_FMT("%.*s", p_sz, p)
+
+      free_vargs(vas);
+
+      ERROR_MSG_FMT(print_assert_unsigned_long_int_msg[idx][1],
+         type->header.desc.fn_name,
+         type->expected, type->expected,
+         type->result, type->result
+      )
+
+      abort_tests();
+   }
+
+   CALLBACK_ON_SUCCESS
+
+   if ((p=parse_vas_msg(&p_sz, vas, C_TEST_VARGS_SUCCESS)))
+      SUCCESS_MSG_FMT("%.*s", p_sz, p)
+
+   free_vargs(vas);
+
+   SUCCESS_MSG_FMT(print_assert_unsigned_long_int_msg[idx][0],
       type->header.desc.fn_name,
       type->expected, type->expected,
       type->result, type->result
@@ -1457,7 +1529,7 @@ static void print_assert_byte(void *ctx, void *vas)
    C_TEST_TYPE_BYTE *type=(C_TEST_TYPE_BYTE *)ctx;
    int error, idx, p_sz;
    char *p;
-
+//TODO Compatibility to size
    const char *print_assert_byte_msg[][2] = {
       {
           "\"%s\". (%llu) bytes at pointer expected (%p) == pointer result (%p) -> ok",
@@ -1579,7 +1651,7 @@ static void print_assert_nullable(void *ctx, void *vas)
    int error, idx, p_sz;
    char *p;
 
-   const char *print_assert_byte_msg[][2] = {
+   const char *print_assert_nullable_msg[][2] = {
       {
           "\"%s\". Expected not NULL. Result (%p) -> ok",
           "\"%s\". Expected not NULL pointer but pointer (%s) found -> fail"
@@ -1609,7 +1681,7 @@ static void print_assert_nullable(void *ctx, void *vas)
 
       free_vargs(vas);
 
-      ERROR_MSG_FMT(print_assert_byte_msg[idx][1], type->header.desc.fn_name, (type->pointer)?(type->pointer):"NULL")
+      ERROR_MSG_FMT(print_assert_nullable_msg[idx][1], type->header.desc.fn_name, (type->pointer)?(type->pointer):"NULL")
 
       abort_tests();
    }
@@ -1621,7 +1693,7 @@ static void print_assert_nullable(void *ctx, void *vas)
 
    free_vargs(vas);
 
-   SUCCESS_MSG_FMT(print_assert_byte_msg[idx][0], type->header.desc.fn_name, (type->pointer)?(type->pointer):"NULL")
+   SUCCESS_MSG_FMT(print_assert_nullable_msg[idx][0], type->header.desc.fn_name, (type->pointer)?(type->pointer):"NULL")
 }
 
 static void print_assert_u8(void *ctx, void *vas)
@@ -2262,6 +2334,45 @@ void assert_not_equal_longint(long long int expected, long long int result, ...)
    va_end(va);
 
    assert_longint(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_LONG_INT, vas);
+}
+
+static void assert_unsigned_longint(unsigned long long int expected, unsigned long long int result, C_TEST_FN_DESCRIPTION *desc, void *vas)
+{
+   static C_TEST_TYPE_UNSIGNED_LONG_INT type;
+
+   memcpy(&type.header.desc, desc, sizeof(type.header.desc));
+   ASSERT_PRELOAD
+   TEST_BEGIN
+}
+
+void assert_equal_unsigned_longint(unsigned long long int expected, unsigned long long int result, ...)
+{
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_EQUAL_UNSIGNED_LONG_INT")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_unsigned_longint(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_EQ_UNSIGNED_LONG_INT, vas);
+}
+
+void assert_not_equal_unsigned_longint(unsigned long long int expected, unsigned long long int result, ...)
+{
+   void *vas;
+   va_list va;
+
+   va_start(va, result);
+   if (assert_warning_util(&vas, (void *)va_arg(va, void *), "C_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT")) {
+      va_end(va);
+      abort_tests();
+   }
+   va_end(va);
+
+   assert_unsigned_longint(expected, result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_EQ_UNSIGNED_LONG_INT, vas);
 }
 
 static void assert_double(double expected, double result, double delta, C_TEST_FN_DESCRIPTION *desc, void *vas)

@@ -275,6 +275,8 @@ void assert_equal_int(int, int, ...);
 void assert_not_equal_int(int, int, ...);
 void assert_equal_longint(long long int, long long int, ...);
 void assert_not_equal_longint(long long int, long long int, ...);
+void assert_equal_unsigned_longint(unsigned long long int, unsigned long long int, ...);
+void assert_not_equal_unsigned_longint(unsigned long long int, unsigned long long int, ...);
 void assert_equal_double(double, double, double, ...);
 void assert_not_equal_double(double, double, double, ...);
 void assert_equal_byte(
@@ -733,6 +735,28 @@ void *set_varg(uint32_t, const char *, ...);
  * @see C_ASSERT_EQUAL_LONG_INT
  */
 #define C_ASSERT_NOT_EQUAL_LONG_INT(expected, ...) assert_not_equal_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_EQUAL_UNSIGNED_LONG_INT(expected, result, ...)
+ * @brief Checks if expected and result value are equal
+ * @param expected Expected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT
+ */
+#define C_ASSERT_EQUAL_UNSIGNED_LONG_INT(expected, ...) assert_equal_unsigned_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE);
+
+/**
+ * @def C_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT(unexpected, result, ...)
+ * @brief Checks if expected and result value are NOT equal
+ * @param unexpected Unexpected value
+ * @param result Result value
+ * @param ... Optional. See CTEST_SETTER() for details
+ *
+ * @see C_ASSERT_EQUAL_UNSIGNED_LONG_INT
+ */
+#define C_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT(expected, ...) assert_not_equal_unsigned_longint(expected, __VA_ARGS__, VAS_END_SIGNATURE);
 
 /**
  * @def C_ASSERT_EQUAL_DOUBLE(expected, result, delta, ...)
