@@ -233,3 +233,206 @@ void password_strength_test()
 #undef PASSWORD_MSG
 }
 
+#define ARRAY_SIZE (size_t)32
+struct mbedtls_test_t {
+   mbedtls_mpi 
+      X,
+      A,
+      B;
+   uint8_t
+      xArray[ARRAY_SIZE],
+      aArray[ARRAY_SIZE],
+      bArray[ARRAY_SIZE];
+} *mbedtls_test;
+
+static void nano_embedded_mbedtls_free_test(void *ctx)
+{
+   struct mbedtls_test_t *v=(struct mbedtls_test_t *)ctx;
+   
+   printf("\nError occurred in mbedTLS big number. Freeing vector (%p)\n\n", v);
+   mbedtls_mpi_free(&v->B);
+   mbedtls_mpi_free(&v->A);
+   mbedtls_mpi_free(&v->X);
+
+   free(v);
+
+}
+
+void nano_embedded_mbedtls_bn_test()
+{
+   int err;
+   mbedtls_mpi_sint tmp;
+   #define MBEDTLS_TEST_SIZE sizeof(struct mbedtls_test_t)
+
+   mbedtls_test=malloc(MBEDTLS_TEST_SIZE);
+
+   C_ASSERT_NOT_NULL(mbedtls_test,
+      CTEST_SETTER(
+         CTEST_INFO("Testing pointer for test \"mbedtls_test\"(%p) of size = %lu", mbedtls_test, MBEDTLS_TEST_SIZE)
+      )
+   )
+
+   #define INITIAL_BYTE (uint8_t)0xAB
+
+   memset(mbedtls_test, INITIAL_BYTE, MBEDTLS_TEST_SIZE);
+
+   mbedtls_mpi_init(&mbedtls_test->X);
+   mbedtls_mpi_init(&mbedtls_test->A);
+   mbedtls_mpi_init(&mbedtls_test->B);
+
+   #define A_VALUE (mbedtls_mpi_sint)0xFF
+   #define B_VALUE (mbedtls_mpi_sint)0xEF
+
+   err=mbedtls_mpi_lset(&mbedtls_test->A, A_VALUE);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Loading big number value \"A_VALUE\" =  %d", A_VALUE),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_lset loading A value", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   err=mbedtls_mpi_lset(&mbedtls_test->B, B_VALUE);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Loading big number value \"B_VALUE\" =  %d", B_VALUE),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_lset loading B value", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   err=mbedtls_mpi_add_mpi(&mbedtls_test->X, &mbedtls_test->A, &mbedtls_test->B);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Adding X(%d) = A(%d) + B(%d)", A_VALUE+B_VALUE, A_VALUE, B_VALUE),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_add_mpi", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   err=mbedtls_mpi_write_binary(&mbedtls_test->A, (unsigned char *)mbedtls_test->aArray, sizeof(mbedtls_test->aArray));
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Wrinting A value to array A at pointer (%p) of size %lu", mbedtls_test->aArray, sizeof(mbedtls_test->aArray)),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_write_binary when write A value", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   tmp=(mbedtls_mpi_sint)mbedtls_test->aArray[ARRAY_SIZE-1];
+
+   C_ASSERT_TRUE(tmp==A_VALUE,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->aArray[ARRAY_SIZE-1]\" = %d is equal to A_VALUE = %d",
+            tmp, A_VALUE
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   C_ASSERT_TRUE(is_filled_with_value(mbedtls_test->aArray, ARRAY_SIZE-1, 0),
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->aArray\" at (%p) has fist %lu bytes filled with zeroes",
+            mbedtls_test->aArray, ARRAY_SIZE-1
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   err=mbedtls_mpi_write_binary(&mbedtls_test->B, (unsigned char *)mbedtls_test->bArray, sizeof(mbedtls_test->bArray));
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Wrinting B value to array B at pointer (%p) of size %lu", mbedtls_test->bArray, sizeof(mbedtls_test->bArray)),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_write_binary when write B value", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   tmp=(mbedtls_mpi_sint)mbedtls_test->bArray[ARRAY_SIZE-1];
+
+   C_ASSERT_TRUE(tmp==B_VALUE,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->bArray[ARRAY_SIZE-1]\" = %d is equal to B_VALUE = %d",
+            tmp, B_VALUE
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   C_ASSERT_TRUE(is_filled_with_value(mbedtls_test->bArray, ARRAY_SIZE-1, 0),
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->bArray\" at (%p) has fist %lu bytes filled with zeroes",
+            mbedtls_test->bArray, ARRAY_SIZE-1
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   err=mbedtls_mpi_write_binary(&mbedtls_test->X, (unsigned char *)mbedtls_test->xArray, sizeof(mbedtls_test->xArray));
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Wrinting X value to array X at pointer (%p) of size %lu", mbedtls_test->xArray, sizeof(mbedtls_test->xArray)),
+         CTEST_ON_ERROR("Was expected error ERROR_SUCCESS (%d). But found %d for mbedtls_mpi_write_binary when write X value", ERROR_SUCCESS, err),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   tmp=(mbedtls_mpi_sint)mbedtls_test->xArray[ARRAY_SIZE-2];
+
+   #define X_VALUE_MSB (mbedtls_mpi_sint)0x01
+   #define X_VALUE_LSB (mbedtls_mpi_sint)0xEE
+
+   C_ASSERT_TRUE(tmp==X_VALUE_MSB,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->aArray[ARRAY_SIZE-2]\" = %d is equal to X_VALUE_MSB = %d",
+            tmp, X_VALUE_MSB
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   tmp=(mbedtls_mpi_sint)mbedtls_test->xArray[ARRAY_SIZE-1];
+
+   C_ASSERT_TRUE(tmp==X_VALUE_LSB,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->aArray[ARRAY_SIZE-1]\" = %d is equal to X_VALUE_LSB = %d",
+            tmp, X_VALUE_LSB
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   C_ASSERT_TRUE(is_filled_with_value(mbedtls_test->xArray, ARRAY_SIZE-2, 0),
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Checking if \"mbedtls_test->xArray\" at (%p) has fist %lu bytes filled with zeroes",
+            mbedtls_test->xArray, ARRAY_SIZE-2
+         ),
+         CTEST_ON_ERROR_CB(nano_embedded_mbedtls_free_test, (void *)mbedtls_test)
+      )
+   )
+
+   mbedtls_mpi_free(&mbedtls_test->B);
+   mbedtls_mpi_free(&mbedtls_test->A);
+   mbedtls_mpi_free(&mbedtls_test->X);
+
+   free(mbedtls_test);
+
+   #undef X_VALUE_LSB
+   #undef X_VALUE_MSB
+   #undef INITIAL_BYTE
+   #undef MBEDTLS_TEST_SIZE
+   #undef ARRAY_SIZE
+}

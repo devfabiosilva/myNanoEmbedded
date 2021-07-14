@@ -41,6 +41,9 @@ int main (int argc, char **argv)
    balance_test();
    brainwallet_test();
 
+   INFO_MSG_FMT(INFO, "Initiating mbedTLS tests ...")
+   nano_embedded_mbedtls_bn_test();
+
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 
    printf("\n%.*s\n", (int)welcome_sz, welcome);
