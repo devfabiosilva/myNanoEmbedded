@@ -436,3 +436,156 @@ void nano_embedded_mbedtls_bn_test()
    #undef MBEDTLS_TEST_SIZE
    #undef ARRAY_SIZE
 }
+
+static void free_mpi_size_test(void *ctx)
+{
+   mbedtls_ecdsa_context *ecdsa_ctx = (mbedtls_ecdsa_context *)ctx;
+
+   printf("\nFreeing ecdsa_ctx at (%p) ...\n", ecdsa_ctx); 
+   mbedtls_ecdsa_free(ecdsa_ctx);
+   free(ecdsa_ctx);
+}
+
+void check_mbedTLS_mpi_size_test()
+{
+   int err;
+   size_t sz;
+   mbedtls_ecdsa_context *ecdsa_ctx;
+
+   #define SUCCESS_ECDSA_MESSAGE "Success: Expected size = %lu for %s"
+   #define ERROR_ECDSA_MESSAGE "Success: Expected size = %lu for %s but found %lu"
+
+   struct test_ecdsa_t {
+      int expected;
+      size_t size;
+      mbedtls_ecp_group_id gid;
+      const char *gid_name;
+   } test_ecdsa[] = {
+      {
+         MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE,
+         0,
+         MBEDTLS_ECP_DP_NONE,
+         "MBEDTLS_ECP_DP_NONE"
+      },
+      {
+         ERROR_SUCCESS,
+         32,
+         MBEDTLS_ECP_DP_BP256R1,
+         "MBEDTLS_ECP_DP_BP256R1"
+      },
+      {
+         ERROR_SUCCESS,
+         28,
+         MBEDTLS_ECP_DP_SECP224R1,
+         "MBEDTLS_ECP_DP_SECP224R1"
+      },
+      {
+         ERROR_SUCCESS,
+         32,
+         MBEDTLS_ECP_DP_SECP256R1,
+         "MBEDTLS_ECP_DP_SECP256R1"
+      },
+      {
+         ERROR_SUCCESS,
+         48,
+         MBEDTLS_ECP_DP_SECP384R1,
+         "MBEDTLS_ECP_DP_SECP384R1"
+      },
+      {
+         ERROR_SUCCESS,
+         66, // TODO Find why size is 66 instead 64
+         MBEDTLS_ECP_DP_SECP521R1,
+         "MBEDTLS_ECP_DP_SECP521R1"
+      },
+      {
+         ERROR_SUCCESS,
+         32,
+         MBEDTLS_ECP_DP_BP256R1,
+         "MBEDTLS_ECP_DP_BP256R1"
+      },
+      {
+         ERROR_SUCCESS,
+         48,
+         MBEDTLS_ECP_DP_BP384R1,
+         "MBEDTLS_ECP_DP_BP384R1"
+      },
+      {
+         ERROR_SUCCESS,
+         64,
+         MBEDTLS_ECP_DP_BP512R1,
+         "MBEDTLS_ECP_DP_BP512R1"
+      },
+      {
+         ERROR_SUCCESS,
+         32,
+         MBEDTLS_ECP_DP_CURVE25519,
+         "MBEDTLS_ECP_DP_CURVE25519"
+      },
+      {
+         ERROR_SUCCESS,
+         24,
+         MBEDTLS_ECP_DP_SECP192K1,
+         "MBEDTLS_ECP_DP_SECP192K1"
+      },
+      {
+         ERROR_SUCCESS,
+         28,
+         MBEDTLS_ECP_DP_SECP224K1,
+         "MBEDTLS_ECP_DP_SECP224K1"
+      },
+      {
+         ERROR_SUCCESS,
+         32,
+         MBEDTLS_ECP_DP_SECP256K1,
+         "MBEDTLS_ECP_DP_SECP256K1"
+      },
+      {
+         ERROR_SUCCESS,
+         56,
+         MBEDTLS_ECP_DP_CURVE448,
+         "MBEDTLS_ECP_DP_CURVE448"
+      }
+   };
+
+   #define TEST_ECDSA_SZ sizeof(test_ecdsa)/sizeof(struct test_ecdsa_t)
+
+   ecdsa_ctx=malloc(sizeof(mbedtls_ecdsa_context));
+
+   C_ASSERT_NOT_NULL(ecdsa_ctx,
+      CTEST_SETTER(
+         CTEST_INFO("Testing pointer for test \"ecdsa_ctx\"(%p) of size = %lu", ecdsa_ctx, sizeof(mbedtls_ecdsa_context))
+      )
+   )
+
+   mbedtls_ecdsa_init(ecdsa_ctx);
+
+   for (size_t i=0;i<TEST_ECDSA_SZ;i++) {
+      INFO_MSG_FMT("Testing \"%s\". Index %u of %u", test_ecdsa[i].gid_name, i+1, TEST_ECDSA_SZ)
+
+      err=mbedtls_ecp_group_load(&ecdsa_ctx->grp, test_ecdsa[i].gid);
+
+      C_ASSERT_EQUAL_INT(test_ecdsa[i].expected, err,
+         CTEST_SETTER(
+            CTEST_ON_SUCCESS("Success on load %s ...", test_ecdsa[i].gid_name),
+            CTEST_ON_ERROR("Error on load %s. Expected error number %d but found", test_ecdsa[i].gid_name, test_ecdsa[i].expected, err),
+            CTEST_ON_ERROR_CB(free_mpi_size_test, (void *)ecdsa_ctx)
+         )
+      )
+
+      sz=mbedtls_mpi_size(&ecdsa_ctx->grp.P);
+
+      //TODO implement C_ASSERT_EQUAL_SIZE_T
+      C_ASSERT_EQUAL_U64((uint64_t)test_ecdsa[i].size, (uint64_t)sz,
+         CTEST_SETTER(
+            CTEST_ON_SUCCESS(SUCCESS_ECDSA_MESSAGE, sz, test_ecdsa[i].gid_name),
+            CTEST_ON_ERROR(ERROR_ECDSA_MESSAGE, test_ecdsa[i].size, test_ecdsa[i].gid_name, sz),
+            CTEST_ON_ERROR_CB(free_mpi_size_test, (void *)ecdsa_ctx)
+         )
+      )
+   }
+
+   free_mpi_size_test(ecdsa_ctx);
+   #undef TEST_ECDSA_SZ
+   #undef ERROR_ECDSA_MESSAGE
+   #undef SUCCESS_ECDSA_MESSAGE
+}
