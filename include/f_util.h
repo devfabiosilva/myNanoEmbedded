@@ -542,9 +542,55 @@ int f_convert_to_double(double *, const char *);
 uint32_t crc32_init(unsigned char *, size_t, uint32_t);
 //
 typedef int (*fn_det)(void *, unsigned char *, size_t);
+
+/**
+ * @fn int f_reverse(unsigned char *val, size_t val_sz)
+ * @brief Reverse bytes
+ *
+ * @param [in] val Pointer to be reversed
+ * @param [in] val_sz Size of _val_
+ *
+ * @retval ERROR_SUCCESS (0) if success or non zero if error
+ */
 int f_reverse(unsigned char *, size_t);
+
+/**
+ * @fn f_md_hmac_sha512 f_hmac_sha512(unsigned char *result, const unsigned char *key, size_t key_len, const unsigned char *data, size_t data_len)
+ * @brief Calculates SHA512 HMAC
+ *
+ * @param [out] result Output result
+ * @param [in] key Pointer of the key address
+ * @param [in] key_len Size of _key_
+ * @param [in] data Data pointer address
+ * @param [in] data_len Size of _data_
+ *
+ * @retval ERROR_SUCCESS (0) if success or non zero if error
+ */
 f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, const unsigned char *, size_t);
-int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
+
+/**
+ * @typedef err_ecdsa_secret_key_valid_e
+ * @brief ECDSA secret key error checker enumerator
+ */
+typedef enum err_ecdsa_secret_key_valid_e {
+   ERR_KEY_SK_SIZE_ZERO = 476, /** Key size is zero */
+   ERR_SK_MALLOC, /** Error alloc memory for check */
+   ERR_SK_READ_BINARY, /** Error binary read */
+   ERR_SK_CHECK /** Secret key invalid */
+} ERR_ECDSA_SECRET_KEY_VALID;
+
+/**
+ * @fn ERR_ECDSA_SECRET_KEY_VALID f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
+ * @brief Checks is ECDSA secret key is valid
+ *
+ * @param [in] gid Input EC group _id_
+ * @param [in] secret_key Secret key
+ * @param [in] secret_key_len Size of secret key
+ *
+ * @retval ERROR_SUCCESS (0) if success or non zero if error
+ */
+ERR_ECDSA_SECRET_KEY_VALID
+f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 int f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *, int, fn_det, void *);
 int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
@@ -558,6 +604,8 @@ int f_base64url_encode(char *, size_t, size_t *, void *, size_t);
 int f_base64url_decode(void *, size_t, size_t *, const char *, size_t);
 int f_url_base64_to_base64_dynamic(char **, size_t *, const char *, size_t);
 int f_url_decode(void *, size_t, size_t *, const char *, size_t);
+
+#define CLEAR_AND_FREE(ptr, size) free(memset(ptr, 0, size));
 #ifdef __cplusplus
 }
 #endif

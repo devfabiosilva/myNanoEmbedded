@@ -1,5 +1,6 @@
 var f__util_8h =
 [
+    [ "CLEAR_AND_FREE", "de/dc6/f__util_8h.html#a9005cc98641e2cabaf8011b0dc029f24", null ],
     [ "ENTROPY_BEGIN", "de/dc6/f__util_8h.html#ab32805b689cb494d0a65f81d4ef2198c", null ],
     [ "ENTROPY_END", "de/dc6/f__util_8h.html#af10b137544d5f946352998c58b626a5f", null ],
     [ "F_ENTROPY_TYPE_EXCELENT", "de/dc6/f__util_8h.html#aef38cfeb3568f967ce0c3503963916ee", null ],
@@ -17,8 +18,15 @@ var f__util_8h =
     [ "F_PASS_MUST_HAVE_AT_LEAST_ONE_NUMBER", "de/dc6/f__util_8h.html#a072a26375daef254c566514de108f8a4", null ],
     [ "F_PASS_MUST_HAVE_AT_LEAST_ONE_SYMBOL", "de/dc6/f__util_8h.html#a81143c2c475ed36f6cff9f66f613c5aa", null ],
     [ "F_PASS_MUST_HAVE_AT_LEAST_ONE_UPPER_CASE", "de/dc6/f__util_8h.html#a6e14d9fd7d0b26c242af241aa98cc430", null ],
+    [ "ERR_ECDSA_SECRET_KEY_VALID", "de/dc6/f__util_8h.html#a8af08ffb61428ab13826bba45ac6b48f", null ],
     [ "fn_det", "de/dc6/f__util_8h.html#a1c43041058622111b44cb67adf975c09", null ],
     [ "rnd_fn", "de/dc6/f__util_8h.html#a608b9d764fef769f10c438b9975a329f", null ],
+    [ "err_ecdsa_secret_key_valid_e", "de/dc6/f__util_8h.html#a5e1d10c70b3f2692438e04436370d0a5", [
+      [ "ERR_KEY_SK_SIZE_ZERO", "de/dc6/f__util_8h.html#a5e1d10c70b3f2692438e04436370d0a5a9393f89244f724b3ac0bddcce4fa7768", null ],
+      [ "ERR_SK_MALLOC", "de/dc6/f__util_8h.html#a5e1d10c70b3f2692438e04436370d0a5a46b3cdbfb20c000bbf9929867b22c89f", null ],
+      [ "ERR_SK_READ_BINARY", "de/dc6/f__util_8h.html#a5e1d10c70b3f2692438e04436370d0a5a8f359b077f8a6d4e70fc8a3b93cd3f28", null ],
+      [ "ERR_SK_CHECK", "de/dc6/f__util_8h.html#a5e1d10c70b3f2692438e04436370d0a5a49354b140cb5113ecc3acac521a5c6f5", null ]
+    ] ],
     [ "crc32_init", "de/dc6/f__util_8h.html#af6ba128bbdc65e4ea350a6a831ea74ae", null ],
     [ "f_base64_decode_dynamic", "de/dc6/f__util_8h.html#a85d7578dd62fe4fa01ca67764a2b66a8", null ],
     [ "f_base64url_decode", "de/dc6/f__util_8h.html#a094cb4bb63129a7d3b26e6b48ceddaef", null ],
@@ -34,7 +42,7 @@ var f__util_8h =
     [ "f_convert_to_unsigned_int0x", "de/dc6/f__util_8h.html#a0b2e24b0a6daa05fd45d74964db0465b", null ],
     [ "f_convert_to_unsigned_int_std", "de/dc6/f__util_8h.html#af35daf6120c76c1f9d00b29703149fe1", null ],
     [ "f_ecdsa_public_key_valid", "de/dc6/f__util_8h.html#a573e5333519b5ee2dec43ada57001a78", null ],
-    [ "f_ecdsa_secret_key_valid", "de/dc6/f__util_8h.html#af666f3c81e520b518e3a063ba46a2efb", null ],
+    [ "f_ecdsa_secret_key_valid", "de/dc6/f__util_8h.html#a5ceef813fc96ddbf146113d40440e74a", null ],
     [ "f_encode_to_base64", "de/dc6/f__util_8h.html#affc271411252bb8fd90e3e882e2b2418", null ],
     [ "f_encode_to_base64_dynamic", "de/dc6/f__util_8h.html#a00d05f0cac7084f0485fd17afc174002", null ],
     [ "f_gen_ecdsa_key_pair", "de/dc6/f__util_8h.html#ae107245f3b2e2616177706f992d16aa2", null ],

@@ -45,3 +45,73 @@ void bitcoin_address_test()
       )
    )
 }
+
+void xpriv_xpub_test()
+{
+// Based on test https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+   int err;
+   const char *entropy_128="000102030405060708090a0b0c0d0e0f";
+   uint8_t *buffer_test=(uint8_t *)msgbuf();
+   char *key, *p;
+   BITCOIN_SERIALIZE *btc_ser=(BITCOIN_SERIALIZE *)(msgbuf()+(BUF_MSG_SZ>>1));
+
+   clear_msgbuf();
+
+   err=f_str_to_hex(buffer_test, (char *)entropy_128);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO("Parsing \"%s\" to binary hex", entropy_128)
+      )
+   )
+
+   err=f_load_from_master_key_from_entropy_bits(
+      btc_ser,
+      MAINNET_PRIVATE,
+      (const uint8_t *)buffer_test,
+      MK_128
+   );
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Load from master key \"%s\" ...",
+            entropy_128
+         ),
+         CTEST_ON_SUCCESS(
+            "BITCOIN_SERIALIZE at %p size = %u success", 
+            btc_ser,
+            sizeof(BITCOIN_SERIALIZE)
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS(%d) but found %d",
+            ERROR_SUCCESS,
+            err
+         )
+      )
+   )
+
+   err=f_derive_xkey_dynamic((void **)&key, btc_ser, "m/0", DERIVE_XPRIV_XPUB_DYN_OUT_BASE58|DERIVE_XPRIV_XPUB_DYN_OUT_XPRIV);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+      CTEST_SETTER(
+         CTEST_INFO(
+            "Deriving key for \"btc_ser\" at %p",
+            btc_ser
+         ),
+         CTEST_ON_SUCCESS(
+            "\"key\" at %p successful \"%s\"",
+            key,
+            OR_ELSE_NULL_STR(key)
+         ),
+         CTEST_ON_ERROR(
+            "Was expected ERROR_SUCCESS(%d) but found %d for \"f_derive_xkey_dynamic\"",
+            ERROR_SUCCESS,
+            err
+         )
+      )
+   )
+// TODO IMPLEMENT THIS
+   free(key);
+
+}

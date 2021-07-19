@@ -637,46 +637,7 @@ f_hmac_sha512_EXIT1:
    free(sha512_ctx);
    return err;
 }
-/*
-#define GET_EC_SZ_UTIL_NOT_IMPLEMENTED_YET (int)35000
-int get_ec_sz_util(size_t *sz, mbedtls_ecp_group_id gid)
-{
 
-   switch (gid) {
-      case MBEDTLS_ECP_DP_SECP256K1:
-      case MBEDTLS_ECP_DP_BP256R1:
-      case MBEDTLS_ECP_DP_SECP256R1:
-         *sz=32;
-         return 0;
-
-      case MBEDTLS_ECP_DP_SECP384R1:
-      case MBEDTLS_ECP_DP_BP384R1:
-         *sz=48;
-         return 0;
-
-      case MBEDTLS_ECP_DP_SECP224R1:
-      case MBEDTLS_ECP_DP_SECP224K1:
-         *sz=28;
-         return 0;
-
-      case MBEDTLS_ECP_DP_SECP192R1:
-      case MBEDTLS_ECP_DP_SECP192K1:
-         *sz=24;
-         return 0;
-
-      case MBEDTLS_ECP_DP_CURVE448:
-         *sz=56;
-         return 0;
-
-      case MBEDTLS_ECP_DP_BP512R1:
-         *sz=64;
-         return 0;
-
-   }
-
-   return GET_EC_SZ_UTIL_NOT_IMPLEMENTED_YET;
-}
-*/
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *f_key_pair, int format, fn_det fn, void *fn_det_ctx)
 {
    int err;
@@ -707,7 +668,7 @@ https://tls.mbed.org/api/bignum_8h.html#a681ab2710d044c0cb091b6497c6ed395
    if ((err=get_ec_sz_util(&f_key_pair->private_key_sz, f_key_pair->gid)))
       goto f_gen_ecdsa_key_pair_EXIT1;
 */
-   f_key_pair->private_key_sz=mbedtls_mpi_size(&f_ctx_tmp->grp.P);
+   f_key_pair->private_key_sz=mbedtls_mpi_size(&f_ctx_tmp->grp.P); // For given curve this has fixed size
 
    if ((err=mbedtls_mpi_write_binary(&f_ctx_tmp->d, f_key_pair->private_key, f_key_pair->private_key_sz)))
       goto f_gen_ecdsa_key_pair_EXIT1;
@@ -780,7 +741,8 @@ f_aes256cipher_EXIT1:
 }
 // Checks if secret key generated in HMAC is valid = 0, error = non zero
 #define F_ECDSA_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_mpi))
-int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
+ERR_ECDSA_SECRET_KEY_VALID
+f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
 {
    int err;
    uint8_t *buffer;
@@ -788,10 +750,10 @@ int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key
    mbedtls_mpi *A;
 
    if (!secret_key_len)
-      return 476;
+      return ERR_KEY_SK_SIZE_ZERO;
 
    if (!(buffer=malloc(F_ECDSA_BUFFER_SZ)))
-      return 477;
+      return ERR_SK_MALLOC;
 
    ecdsa_ctx=(mbedtls_ecdsa_context *)buffer;
    A=(mbedtls_mpi *)(buffer+sizeof(mbedtls_ecdsa_context));
@@ -804,22 +766,19 @@ int f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key
    mbedtls_mpi_init(A);
 
    if (mbedtls_mpi_read_binary(A, secret_key, secret_key_len)) {
-      err=480;
+      err=ERR_SK_READ_BINARY;
       goto f_ecdsa_secret_key_valid_EXIT2;
    }
 
-   err=0;
-
    if (mbedtls_ecp_check_privkey(&ecdsa_ctx->grp, A))
-      err=481;
+      err=ERR_SK_CHECK;
 
 f_ecdsa_secret_key_valid_EXIT2:
    mbedtls_mpi_free(A);
 
 f_ecdsa_secret_key_valid_EXIT1:
    mbedtls_ecdsa_free(ecdsa_ctx);
-   memset(buffer, 0, F_ECDSA_BUFFER_SZ);
-   free(buffer);
+   CLEAR_AND_FREE(buffer, F_ECDSA_BUFFER_SZ)
    return err;
 }
 

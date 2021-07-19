@@ -1,8 +1,12 @@
 var searchData=
 [
-  ['nano_5fprivate_5fkey',['NANO_PRIVATE_KEY',['../df/d1d/f__nano__crypto__util_8h.html#a628858859650567387ab898a1f0d2279',1,'f_nano_crypto_util.h']]],
-  ['nano_5fprivate_5fkey_5fextended',['NANO_PRIVATE_KEY_EXTENDED',['../df/d1d/f__nano__crypto__util_8h.html#af809db7ad8c77323658a86780a93ef4f',1,'f_nano_crypto_util.h']]],
-  ['nano_5fpublic_5fkey',['NANO_PUBLIC_KEY',['../df/d1d/f__nano__crypto__util_8h.html#af48ae0a2d6bdcacf748db902fff06a8b',1,'f_nano_crypto_util.h']]],
-  ['nano_5fpublic_5fkey_5fextended',['NANO_PUBLIC_KEY_EXTENDED',['../df/d1d/f__nano__crypto__util_8h.html#a34e54f824382ddb08d52f0d512b4e691',1,'f_nano_crypto_util.h']]],
-  ['nano_5fseed',['NANO_SEED',['../df/d1d/f__nano__crypto__util_8h.html#aa27b69937867bb6384601306f7f00474',1,'f_nano_crypto_util.h']]]
+  ['f_5fadd_5f288',['F_ADD_288',['../d8/da5/f__add__bn__288__le_8h.html#af1024ee25bde772d34b7c4d032bc12ef',1,'f_add_bn_288_le.h']]],
+  ['f_5ffile_5finfo_5ferr',['F_FILE_INFO_ERR',['../df/d1d/f__nano__crypto__util_8h.html#a016da69f9a6eb386c13763da8866b3a8',1,'f_nano_crypto_util.h']]],
+  ['f_5fnano_5fcreate_5fblock_5fdyn_5ferr',['F_NANO_CREATE_BLOCK_DYN_ERR',['../df/d1d/f__nano__crypto__util_8h.html#a728b9dddf900881bfcdf77316085731b',1,'f_nano_crypto_util.h']]],
+  ['f_5fnano_5ferr',['f_nano_err',['../df/d1d/f__nano__crypto__util_8h.html#a45db4c051f03f1ee8f76369a7a5c2721',1,'f_nano_crypto_util.h']]],
+  ['f_5fnano_5fp2pow_5fblock_5fdyn_5ferr',['F_NANO_P2POW_BLOCK_DYN_ERR',['../df/d1d/f__nano__crypto__util_8h.html#a48a13dfb9397b457711bba52fdcd82a2',1,'f_nano_crypto_util.h']]],
+  ['f_5ftoken',['F_TOKEN',['../df/d1d/f__nano__crypto__util_8h.html#ac9ac42e5afe2e3a314ae3ca38c143850',1,'f_nano_crypto_util.h']]],
+  ['f_5fuint128_5ft',['f_uint128_t',['../df/d1d/f__nano__crypto__util_8h.html#aa2c193d9108b22fda3da8fbdc272aac2',1,'f_nano_crypto_util.h']]],
+  ['f_5fwrite_5fseed_5ferr',['f_write_seed_err',['../df/d1d/f__nano__crypto__util_8h.html#afc7635203eca2aec604c12539b24871a',1,'f_nano_crypto_util.h']]],
+  ['fn_5fdet',['fn_det',['../de/dc6/f__util_8h.html#a1c43041058622111b44cb67adf975c09',1,'f_util.h']]]
 ];

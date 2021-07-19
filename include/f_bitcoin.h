@@ -65,4 +65,23 @@ int f_derive_xpriv_or_xpub_dynamic(void **, uint8_t *, uint32_t *, void *, uint3
 int f_derive_xkey_dynamic(void **, void *, const char *, int);
 int f_check_if_invalid_btc_public_key(uint8_t *);
 
+typedef enum error_load_master_key_from_entropy_bits_e {
+   ERR_INVALID_ENTROPY_BITS = 20300,
+   ERR_INVALID_VERSION_BYTES,
+   ERR_MASTER_KEY_FROM_ENTROPY_ALLOC
+} ERROR_LOAD_FROM_MASTER_KEY_FROM_ENTROPY_BITS;
+
+typedef enum master_key_entropy_bits_e {
+   MK_128 = 16,
+   MK_256 = 32,
+   MK_512 = 64
+} MASTER_KEY_ENTROPY_BITS;
+
+ERROR_LOAD_FROM_MASTER_KEY_FROM_ENTROPY_BITS
+f_load_from_master_key_from_entropy_bits(
+   BITCOIN_SERIALIZE *,
+   size_t,
+   const uint8_t *,
+   MASTER_KEY_ENTROPY_BITS
+);
 

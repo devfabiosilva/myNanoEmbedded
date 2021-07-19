@@ -44,6 +44,8 @@ int main (int argc, char **argv)
    INFO_MSG_FMT(INFO, "Initiating mbedTLS tests ...")
    nano_embedded_mbedtls_bn_test();
    check_mbedTLS_mpi_size_test();
+   xpriv_xpub_test();
+   check_ec_secret_key_valid_test();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

@@ -254,7 +254,97 @@ f_wif_to_private_key_EXIT1:
    free(buffer);
    return err;
 }
+
 ////https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki
+ERROR_LOAD_FROM_MASTER_KEY_FROM_ENTROPY_BITS
+f_load_from_master_key_from_entropy_bits(
+   BITCOIN_SERIALIZE *master_key,
+   size_t version_bytes,
+   const uint8_t *secret_from_entropy,
+   MASTER_KEY_ENTROPY_BITS entropy_bits
+)
+{
+   int err;
+   uint8_t *buffer, *hash;
+#define F_BITCOIN_MASTER_KEY_BUFFER_SZ (size_t)64
+
+   if (version_bytes>(F_VERSION_BYTES_IDX_LEN-1))
+      return ERR_INVALID_VERSION_BYTES;
+
+   switch (entropy_bits) {
+      case MK_128:
+      case MK_256:
+      case MK_512:
+         break;
+      default:
+         return ERR_INVALID_ENTROPY_BITS;
+   }
+
+   if (!(buffer=malloc(F_BITCOIN_MASTER_KEY_BUFFER_SZ)))
+      return ERR_MASTER_KEY_FROM_ENTROPY_ALLOC;
+
+   if ((err=f_hmac_sha512(
+      (unsigned char *)buffer,
+      F_BITCOIN_SEED_GENERATOR,
+      sizeof(F_BITCOIN_SEED_GENERATOR)-1,
+      (const unsigned char *)secret_from_entropy,
+      entropy_bits)))
+      goto f_load_from_master_key_from_entropy_bits_EXIT1;
+
+   if ((err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, (unsigned char *)buffer, 32)))
+      goto f_load_from_master_key_from_entropy_bits_EXIT2;
+
+   memset(master_key, 0, sizeof(BITCOIN_SERIALIZE));
+   memcpy(master_key->version_bytes, &F_VERSION_BYTES[version_bytes], 4);
+   memcpy(&master_key->sk_or_pk_data[1], buffer, 32);
+   memcpy(master_key->chain_code, buffer+32, 32);
+
+   if ((err=f_sha256_digest((void **)&hash, 0, (uint8_t *)master_key, sizeof(BITCOIN_SERIALIZE)-4))) 
+      goto f_load_from_master_key_from_entropy_bits_EXIT3;
+
+   if ((err=f_sha256_digest((void **)&hash, 0, hash, 32)))
+      goto f_load_from_master_key_from_entropy_bits_EXIT3;
+
+   memcpy(master_key->chksum, hash, 4);
+
+   goto f_load_from_master_key_from_entropy_bits_EXIT2;
+
+f_load_from_master_key_from_entropy_bits_EXIT3:
+   memset(master_key, 0, sizeof(BITCOIN_SERIALIZE));
+
+f_load_from_master_key_from_entropy_bits_EXIT2:
+   memset(buffer, 0, F_BITCOIN_MASTER_KEY_BUFFER_SZ);
+
+f_load_from_master_key_from_entropy_bits_EXIT1:
+   free(buffer);
+
+   return err;
+#undef F_BITCOIN_MASTER_KEY_BUFFER_SZ
+}
+
+#define F_BITCOIN_MASTER_KEY_BUFFER_SZ (size_t)(64+32)
+int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, uint32_t entropy) {
+   int err;
+#define RECOMMENDED_SIZE MK_256
+   uint8_t entropy_bytes[(size_t)RECOMMENDED_SIZE];
+
+   if ((err=f_verify_system_entropy_begin()))
+      return err;
+
+   err=f_verify_system_entropy(entropy, entropy_bytes, sizeof(entropy_bytes), 0);
+
+   f_verify_system_entropy_finish();
+
+   if (!err)
+      err=f_load_from_master_key_from_entropy_bits(master_key, version_bytes, entropy_bytes, RECOMMENDED_SIZE);
+
+   memset(entropy_bytes, 0, sizeof(entropy_bytes));
+
+   return err;
+#undef RECOMMENDED_SIZE
+}
+
+/*
 #define F_BITCOIN_MASTER_KEY_BUFFER_SZ (size_t)(64+32)
 int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, uint32_t entropy) {
    int err;
@@ -272,8 +362,8 @@ int f_generate_master_key(BITCOIN_SERIALIZE *master_key, size_t version_bytes, u
    if ((err=f_verify_system_entropy_begin()))
       goto f_generate_master_key_EXIT1; 
 
-   /*if ((err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0)))
-      goto f_generate_master_key_EXIT2;*/
+   //if ((err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0)))
+   //   goto f_generate_master_key_EXIT2;
    err=f_verify_system_entropy(entropy, entropy_bytes, 32, 0);
 
    f_verify_system_entropy_finish();
@@ -312,7 +402,7 @@ f_generate_master_key_EXIT1:
    free(buffer);
    return err;
 }
-
+*/
 // return 0 if is valid, otherwise invalid
 // output (optional) copy bip32 to binary if valid. It can be NULL
 // bip32 (binary or base58 encoded)
@@ -1058,12 +1148,11 @@ int f_check_if_invalid_btc_public_key(uint8_t *public_key)
 {
    int err;
    uint8_t *buf;
-   char ch;
 #define BTC_BUF_PK_SZ 65
    if (!(buf=malloc(BTC_BUF_PK_SZ)))
       return 20200;
 
-   if ((ch=public_key[0])==0x04)
+   if (public_key[0]==0x04)
       memcpy(buf, public_key, BTC_BUF_PK_SZ);
    else if ((err=f_uncompress_elliptic_curve(buf, BTC_BUF_PK_SZ, NULL, MBEDTLS_ECP_DP_SECP256K1, public_key, 33)))
       goto f_check_if_invalid_btc_public_key_EXIT1;
@@ -1075,4 +1164,3 @@ f_check_if_invalid_btc_public_key_EXIT1:
    return err;
 #undef BTC_BUF_PK_SZ
 }
-

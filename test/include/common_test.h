@@ -8,4 +8,4 @@
 char *msgbuf();
 char *clear_msgbuf();
 void gen_rand_no_entropy(void *, size_t);
-
+#define OR_ELSE_NULL_STR(s) (s)?s:"NULL"

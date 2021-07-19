@@ -589,3 +589,13 @@ void check_mbedTLS_mpi_size_test()
    #undef ERROR_ECDSA_MESSAGE
    #undef SUCCESS_ECDSA_MESSAGE
 }
+
+void check_ec_secret_key_valid_test()
+{
+   int err;
+   unsigned char sk[32];
+// TODO implement this
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0xff, sizeof(sk)), sizeof(sk));
+
+   C_ASSERT_EQUAL_INT(ERR_SK_CHECK, err)
+}

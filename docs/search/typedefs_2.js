@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rnd_5ffn',['rnd_fn',['../de/dc6/f__util_8h.html#a608b9d764fef769f10c438b9975a329f',1,'f_util.h']]]
+  ['master_5fkey_5fentropy_5fbits',['MASTER_KEY_ENTROPY_BITS',['../d0/da6/f__bitcoin_8h.html#a803064317035e44584da194dbd4b5b1f',1,'f_bitcoin.h']]]
 ];

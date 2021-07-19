@@ -19,6 +19,18 @@ var f__bitcoin_8h =
     [ "MAINNET_PUBLIC", "d0/da6/f__bitcoin_8h.html#a65a3c1475a0d9287dcea2eb2e1e3cc36", null ],
     [ "TESTNET_PRIVATE", "d0/da6/f__bitcoin_8h.html#ac24ad7750ccc176fff0b3a338d7d0748", null ],
     [ "TESTNET_PUBLIC", "d0/da6/f__bitcoin_8h.html#a4299c6a7a2b100a00ff56d1ce2f85272", null ],
+    [ "ERROR_LOAD_FROM_MASTER_KEY_FROM_ENTROPY_BITS", "d0/da6/f__bitcoin_8h.html#aa40d01e6e791b9305dd7caebae0657b6", null ],
+    [ "MASTER_KEY_ENTROPY_BITS", "d0/da6/f__bitcoin_8h.html#a803064317035e44584da194dbd4b5b1f", null ],
+    [ "error_load_master_key_from_entropy_bits_e", "d0/da6/f__bitcoin_8h.html#aa4e0b718f8ec8b8bb159f7e30a07eeff", [
+      [ "ERR_INVALID_ENTROPY_BITS", "d0/da6/f__bitcoin_8h.html#aa4e0b718f8ec8b8bb159f7e30a07eeffa77f5b33c12c5c3f1ecda5cf3a8152c15", null ],
+      [ "ERR_INVALID_VERSION_BYTES", "d0/da6/f__bitcoin_8h.html#aa4e0b718f8ec8b8bb159f7e30a07eeffa751b91015a81d5e6280a3bf28ddee23b", null ],
+      [ "ERR_MASTER_KEY_FROM_ENTROPY_ALLOC", "d0/da6/f__bitcoin_8h.html#aa4e0b718f8ec8b8bb159f7e30a07eeffa554541bba8464f160113ef31d8332c92", null ]
+    ] ],
+    [ "master_key_entropy_bits_e", "d0/da6/f__bitcoin_8h.html#a88555ba1cb9c663ef18da1d45b659300", [
+      [ "MK_128", "d0/da6/f__bitcoin_8h.html#a88555ba1cb9c663ef18da1d45b659300ab0f3c1d4a07cd060f0bde4d1aa25143e", null ],
+      [ "MK_256", "d0/da6/f__bitcoin_8h.html#a88555ba1cb9c663ef18da1d45b659300a7bfb33fb2e5a3470045f1b54e0f4203f", null ],
+      [ "MK_512", "d0/da6/f__bitcoin_8h.html#a88555ba1cb9c663ef18da1d45b659300aaac0203136dff2e7453e51b77eb13fd3", null ]
+    ] ],
     [ "__attribute__", "d0/da6/f__bitcoin_8h.html#af6eaced1d8282dfd043c865c0f40fec8", null ],
     [ "f_bip32_to_public_key_or_private_key", "d0/da6/f__bitcoin_8h.html#ab12653e013741b7da7aafd4024df5acd", null ],
     [ "f_bitcoin_valid_bip32", "d0/da6/f__bitcoin_8h.html#a9495fa620fb5e82582ed02a9f0e022e2", null ],
@@ -30,6 +42,7 @@ var f__bitcoin_8h =
     [ "f_fingerprint", "d0/da6/f__bitcoin_8h.html#acf2abcacdfc355ab6c5774d2d7488ac2", null ],
     [ "f_generate_master_key", "d0/da6/f__bitcoin_8h.html#a4546df2355416fc6889a26eb6cc6a6db", null ],
     [ "f_get_xkey_type", "d0/da6/f__bitcoin_8h.html#aed018f939159525de4557e388f8cb5a9", null ],
+    [ "f_load_from_master_key_from_entropy_bits", "d0/da6/f__bitcoin_8h.html#a372329aad5105555ea6f42440c70d02d", null ],
     [ "f_private_key_to_wif", "d0/da6/f__bitcoin_8h.html#aa4f420a1e217f470ff23d48365a20514", null ],
     [ "f_public_key_to_address", "d0/da6/f__bitcoin_8h.html#a0f49bd8010ad114743f2fd251b760e0b", null ],
     [ "f_uncompress_elliptic_curve", "d0/da6/f__bitcoin_8h.html#ad1510e0790496ed2db058b588d638db1", null ],
