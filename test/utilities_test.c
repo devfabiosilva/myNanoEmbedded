@@ -629,7 +629,7 @@ void check_ec_secret_key_valid_test()
          RANDOM_SECRET_KEY-1
       )
 
-      err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x01, SK_SIZE), SK_SIZE);
+      err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE);
       C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
          CTEST_SETTER(
             CTEST_ON_ERROR(
