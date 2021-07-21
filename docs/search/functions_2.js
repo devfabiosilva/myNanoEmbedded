@@ -21,7 +21,7 @@ var searchData=
   ['f_5fdecode_5fb58_5futil',['f_decode_b58_util',['../d0/da6/f__bitcoin_8h.html#a9625e8502d8be05fd1dace64e3a82ed4',1,'f_bitcoin.h']]],
   ['f_5fderive_5fxkey_5fdynamic',['f_derive_xkey_dynamic',['../d0/da6/f__bitcoin_8h.html#a734b0bb08f9779d23a0dbb3b38fa7d8d',1,'f_bitcoin.h']]],
   ['f_5fderive_5fxpriv_5for_5fxpub_5fdynamic',['f_derive_xpriv_or_xpub_dynamic',['../d0/da6/f__bitcoin_8h.html#aaa8fe6492354d0859e597f623748a934',1,'f_bitcoin.h']]],
-  ['f_5fecdsa_5fpublic_5fkey_5fvalid',['f_ecdsa_public_key_valid',['../de/dc6/f__util_8h.html#a573e5333519b5ee2dec43ada57001a78',1,'f_util.h']]],
+  ['f_5fecdsa_5fpublic_5fkey_5fvalid',['f_ecdsa_public_key_valid',['../de/dc6/f__util_8h.html#ae27870e7240b5c35d7f9ea6332f65d96',1,'f_util.h']]],
   ['f_5fecdsa_5fsecret_5fkey_5fvalid',['f_ecdsa_secret_key_valid',['../de/dc6/f__util_8h.html#a5ceef813fc96ddbf146113d40440e74a',1,'f_util.h']]],
   ['f_5fencode_5fb58',['f_encode_b58',['../d0/da6/f__bitcoin_8h.html#aae360837b813c1a1eb80d0e64bad52d1',1,'f_bitcoin.h']]],
   ['f_5fencode_5fto_5fbase64',['f_encode_to_base64',['../de/dc6/f__util_8h.html#affc271411252bb8fd90e3e882e2b2418',1,'f_util.h']]],

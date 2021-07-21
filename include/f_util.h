@@ -14,6 +14,7 @@
 #include "mbedtls/sha256.h"
 #include "mbedtls/aes.h"
 #include "mbedtls/ecdsa.h"
+#include "errors.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -573,11 +574,31 @@ f_md_hmac_sha512 f_hmac_sha512(unsigned char *, const unsigned char *, size_t, c
  * @brief ECDSA secret key error checker enumerator
  */
 typedef enum err_ecdsa_secret_key_valid_e {
-   ERR_KEY_SK_SIZE_ZERO = 476, /** Key size is zero */
-   ERR_SK_MALLOC, /** Error alloc memory for check */
-   ERR_SK_READ_BINARY, /** Error binary read */
-   ERR_SK_CHECK /** Secret key invalid */
-} ERR_ECDSA_SECRET_KEY_VALID;
+   /** Key size is zero */
+   ERR_KEY_SK_SIZE_ZERO = 476,
+   /** Error key wrong size */
+   ERR_KEY_WRONG_SIZE,
+   /** Error alloc memory for check */
+   ERR_SK_MALLOC,
+   /** Error binary read */
+   ERR_SK_READ_BINARY,
+   /** Secret key invalid */
+   ERR_SK_CHECK
+} /** Typedef of err_ecdsa_secret_key_valid_e */ ERR_ECDSA_SECRET_KEY_VALID;
+
+/**
+ * @typedef err_ecdsa_public_key_valid_e
+ * @brief ECDSA public key error checker enumerator
+ */
+typedef enum err_ecdsa_public_key_valid_e {
+   /** Public key size is zero */
+   ERR_KEY_PK_SIZE_ZERO = 501,
+   /** Error alloc memory for check */
+   ERR_PK_MALLOC,
+   /** Error binary read */
+   ERR_PK_CHECK
+} /** Typedef of err_ecdsa_public_key_valid_e */ ERR_ECDSA_PUBLIC_KEY_VALID;
+
 
 /**
  * @fn ERR_ECDSA_SECRET_KEY_VALID f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
@@ -591,7 +612,20 @@ typedef enum err_ecdsa_secret_key_valid_e {
  */
 ERR_ECDSA_SECRET_KEY_VALID
 f_ecdsa_secret_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
-int f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
+
+/**
+ * @fn ERR_ECDSA_PUBLIC_KEY_VALID f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key, size_t public_key_len)
+ * @brief Checks is ECDSA public key is valid
+ *
+ * @param [in] gid Input EC group _id_
+ * @param [in] public_key Public key
+ * @param [in] public_key_len Size of public key
+ *
+ * @retval ERROR_SUCCESS (0) if success or non zero if error
+ */
+ERR_ECDSA_PUBLIC_KEY_VALID
+f_ecdsa_public_key_valid(mbedtls_ecp_group_id, unsigned char *, size_t);
+
 f_ecdsa_key_pair_err f_gen_ecdsa_key_pair(f_ecdsa_key_pair *, int, fn_det, void *);
 int f_uncompress_elliptic_curve(uint8_t *, size_t, size_t *, mbedtls_ecp_group_id, uint8_t *, size_t);
 uint8_t *f_ripemd160(const uint8_t *, size_t);

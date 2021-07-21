@@ -1,5 +1,6 @@
 //mon apr 26 20:56:00 -03 2021 
-
+#ifndef ERRORS_H
+#define ERRORS_H
 /**
  * @def ERROR_SUCCESS
  * @brief Error success. Most of the _myNanoEmbedded_ functions returns **ERROR_SUCCESS** when execution success.
@@ -101,4 +102,4 @@ enum f_nano_account_or_pk_string_to_pk_util_err_t {
  * @brief Missing salt error
  */
 #define ERROR_MISSING_SALT 0x3C02
-
+#endif

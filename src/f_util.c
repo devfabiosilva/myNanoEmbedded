@@ -740,10 +740,11 @@ f_aes256cipher_EXIT1:
    return err;
 }
 // Checks if secret key generated in HMAC is valid = 0, error = non zero
-#define F_ECDSA_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_mpi))
+
 ERR_ECDSA_SECRET_KEY_VALID
 f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, size_t secret_key_len)
 {
+   #define F_ECDSA_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_mpi))
    int err;
    uint8_t *buffer;
    mbedtls_ecdsa_context *ecdsa_ctx;
@@ -763,6 +764,11 @@ f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, si
    if (err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid)))
       goto f_ecdsa_secret_key_valid_EXIT1;
 
+   if (mbedtls_mpi_size(&ecdsa_ctx->grp.P)!=secret_key_len) {
+      err=ERR_KEY_WRONG_SIZE;
+      goto f_ecdsa_secret_key_valid_EXIT1;
+   }
+
    mbedtls_mpi_init(A);
 
    if (mbedtls_mpi_read_binary(A, secret_key, secret_key_len)) {
@@ -780,21 +786,23 @@ f_ecdsa_secret_key_valid_EXIT1:
    mbedtls_ecdsa_free(ecdsa_ctx);
    CLEAR_AND_FREE(buffer, F_ECDSA_BUFFER_SZ)
    return err;
+   #undef F_ECDSA_BUFFER_SZ
 }
 
-#define F_ECDSA_PUBLIC_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_ecp_point))
-int f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key, size_t public_key_len)
+ERR_ECDSA_PUBLIC_KEY_VALID
+f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key, size_t public_key_len)
 {
+   #define F_ECDSA_PUBLIC_BUFFER_SZ (size_t)(sizeof(mbedtls_ecdsa_context)+sizeof(mbedtls_ecp_point))
    int err;
    uint8_t *buffer;
    mbedtls_ecdsa_context *ecdsa_ctx;
    mbedtls_ecp_point *P;
 
    if (!public_key_len)
-      return 500;
+      return ERR_KEY_PK_SIZE_ZERO;
 
    if (!(buffer=malloc(F_ECDSA_PUBLIC_BUFFER_SZ)))
-      return 501;
+      return ERR_PK_MALLOC;
 
    ecdsa_ctx=(mbedtls_ecdsa_context *)buffer;
    P=(mbedtls_ecp_point *)(buffer+sizeof(mbedtls_ecdsa_context));
@@ -808,16 +816,17 @@ int f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key
    if ((err=mbedtls_ecp_point_read_binary(&ecdsa_ctx->grp, P, public_key, public_key_len)))
       goto f_ecdsa_public_key_valid_EXIT1;
 
-   err=0;
    if (mbedtls_ecp_check_pubkey(&ecdsa_ctx->grp, P))
-      err=503;
+      err=ERR_PK_CHECK;
 
 f_ecdsa_public_key_valid_EXIT1:
    mbedtls_ecp_point_free(P);
    mbedtls_ecdsa_free(ecdsa_ctx);
-   memset(buffer, 0, F_ECDSA_PUBLIC_BUFFER_SZ);
-   free(buffer);
+   //memset(buffer, 0, F_ECDSA_PUBLIC_BUFFER_SZ);
+   //free(buffer);
+   CLEAR_AND_FREE(buffer, F_ECDSA_PUBLIC_BUFFER_SZ)
    return err;
+   #undef F_ECDSA_PUBLIC_BUFFER_SZ
 }
 
 #define UNCOMPRESS_BUFFER_SZ (size_t)(4*sizeof(mbedtls_mpi)+sizeof(mbedtls_ecdsa_context))

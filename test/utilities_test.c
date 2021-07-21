@@ -592,10 +592,53 @@ void check_mbedTLS_mpi_size_test()
 
 void check_ec_secret_key_valid_test()
 {
+   #define RANDOM_SECRET_KEY (size_t)1000
    int err;
-   unsigned char sk[32];
-// TODO implement this
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0xff, sizeof(sk)), sizeof(sk));
+   unsigned char sk[32+1];
+
+   #define SK_SIZE sizeof(sk)-1
+
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0xff, SK_SIZE), SK_SIZE);
 
    C_ASSERT_EQUAL_INT(ERR_SK_CHECK, err)
+
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x00, SK_SIZE), SK_SIZE);
+
+   C_ASSERT_EQUAL_INT(ERR_SK_CHECK, err)
+
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x01, SK_SIZE), SK_SIZE);
+
+   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err)
+
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE+1);
+
+   C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+
+   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE-1);
+
+   C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+
+   INFO_MSG("Checking random secret keys ...")
+
+   for (size_t i=0; i<RANDOM_SECRET_KEY; i++) {
+      gen_rand_no_entropy(&sk, SK_SIZE);
+      INFO_MSG_FMT(
+         "Testing if secrete key key \"%s\" is valid (%lu of %lu)",
+         fhex2strv2(msgbuf(), (const void *)sk, SK_SIZE, 1),
+         i,
+         RANDOM_SECRET_KEY-1
+      )
+
+      err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x01, SK_SIZE), SK_SIZE);
+      C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+         CTEST_SETTER(
+            CTEST_ON_ERROR(
+               "check_ec_secret_key_valid_test(). Was expected ERROR_SUCCESS(%d) but found %d for sk = \"%s\"",
+               ERROR_SUCCESS, err, msgbuf()
+            )
+         )
+      )
+   }
+   #undef SK_SIZE
+   #undef RANDOM_SECRET_KEY
 }
