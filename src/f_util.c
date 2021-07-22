@@ -679,8 +679,7 @@ https://tls.mbed.org/api/bignum_8h.html#a681ab2710d044c0cb091b6497c6ed395
 f_gen_ecdsa_key_pair_EXIT1:
    if (!f_key_pair->ctx) {
       mbedtls_ecdsa_free(f_ctx_tmp);
-      memset(f_ctx_tmp, 0, sizeof(mbedtls_ecdsa_context));
-      free(f_ctx_tmp);
+      CLEAR_AND_FREE(f_ctx_tmp, sizeof(mbedtls_ecdsa_context))
    }
 
    return err;
@@ -749,6 +748,7 @@ f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, si
    uint8_t *buffer;
    mbedtls_ecdsa_context *ecdsa_ctx;
    mbedtls_mpi *A;
+   size_t sz_tmp;
 
    if (!secret_key_len)
       return ERR_KEY_SK_SIZE_ZERO;
@@ -764,7 +764,12 @@ f_ecdsa_secret_key_valid(mbedtls_ecp_group_id gid, unsigned char *secret_key, si
    if (err=(mbedtls_ecp_group_load(&ecdsa_ctx->grp, gid)))
       goto f_ecdsa_secret_key_valid_EXIT1;
 
-   if (mbedtls_mpi_size(&ecdsa_ctx->grp.P)!=secret_key_len) {
+   sz_tmp=mbedtls_mpi_size(&ecdsa_ctx->grp.P);
+
+   if (gid==MBEDTLS_ECP_DP_CURVE25519)
+      sz_tmp<<=1;
+
+   if (sz_tmp!=secret_key_len) {
       err=ERR_KEY_WRONG_SIZE;
       goto f_ecdsa_secret_key_valid_EXIT1;
    }

@@ -446,6 +446,100 @@ static void free_mpi_size_test(void *ctx)
    free(ecdsa_ctx);
 }
 
+struct test_ecdsa_t {
+   int expected;
+   size_t size;
+   mbedtls_ecp_group_id gid;
+   const char *gid_name;
+} test_ecdsa[] = {
+   {
+      MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE,
+      0,
+      MBEDTLS_ECP_DP_NONE,
+      "MBEDTLS_ECP_DP_NONE"
+   },
+   {
+      ERROR_SUCCESS,
+      32,
+      MBEDTLS_ECP_DP_BP256R1,
+      "MBEDTLS_ECP_DP_BP256R1"
+   },
+   {
+      ERROR_SUCCESS,
+      28,
+      MBEDTLS_ECP_DP_SECP224R1,
+      "MBEDTLS_ECP_DP_SECP224R1"
+   },
+   {
+      ERROR_SUCCESS,
+      32,
+      MBEDTLS_ECP_DP_SECP256R1,
+      "MBEDTLS_ECP_DP_SECP256R1"
+   },
+   {
+      ERROR_SUCCESS,
+      48,
+      MBEDTLS_ECP_DP_SECP384R1,
+      "MBEDTLS_ECP_DP_SECP384R1"
+   },
+   {
+      ERROR_SUCCESS,
+      66, // TODO Find why size is 66 instead 64
+      MBEDTLS_ECP_DP_SECP521R1,
+      "MBEDTLS_ECP_DP_SECP521R1"
+   },
+   {
+      ERROR_SUCCESS,
+      32,
+      MBEDTLS_ECP_DP_BP256R1,
+      "MBEDTLS_ECP_DP_BP256R1"
+   },
+   {
+      ERROR_SUCCESS,
+      48,
+      MBEDTLS_ECP_DP_BP384R1,
+      "MBEDTLS_ECP_DP_BP384R1"
+   },
+   {
+      ERROR_SUCCESS,
+      64,
+      MBEDTLS_ECP_DP_BP512R1,
+      "MBEDTLS_ECP_DP_BP512R1"
+   },
+   {
+      ERROR_SUCCESS,
+      32,
+      MBEDTLS_ECP_DP_CURVE25519,
+      "MBEDTLS_ECP_DP_CURVE25519"
+   },
+   {
+      ERROR_SUCCESS,
+      24,
+      MBEDTLS_ECP_DP_SECP192K1,
+      "MBEDTLS_ECP_DP_SECP192K1"
+   },
+   {
+      ERROR_SUCCESS,
+      28,
+      MBEDTLS_ECP_DP_SECP224K1,
+      "MBEDTLS_ECP_DP_SECP224K1"
+   },
+   {
+      ERROR_SUCCESS,
+      32,
+      MBEDTLS_ECP_DP_SECP256K1,
+      "MBEDTLS_ECP_DP_SECP256K1"
+   },
+   {
+      ERROR_SUCCESS,
+      56,
+      MBEDTLS_ECP_DP_CURVE448,
+      "MBEDTLS_ECP_DP_CURVE448"
+   }
+};
+
+#define TEST_ECDSA_SZ sizeof(test_ecdsa)/sizeof(struct test_ecdsa_t)
+
 void check_mbedTLS_mpi_size_test()
 {
    int err;
@@ -454,100 +548,6 @@ void check_mbedTLS_mpi_size_test()
 
    #define SUCCESS_ECDSA_MESSAGE "Success: Expected size = %lu for %s"
    #define ERROR_ECDSA_MESSAGE "Success: Expected size = %lu for %s but found %lu"
-
-   struct test_ecdsa_t {
-      int expected;
-      size_t size;
-      mbedtls_ecp_group_id gid;
-      const char *gid_name;
-   } test_ecdsa[] = {
-      {
-         MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE,
-         0,
-         MBEDTLS_ECP_DP_NONE,
-         "MBEDTLS_ECP_DP_NONE"
-      },
-      {
-         ERROR_SUCCESS,
-         32,
-         MBEDTLS_ECP_DP_BP256R1,
-         "MBEDTLS_ECP_DP_BP256R1"
-      },
-      {
-         ERROR_SUCCESS,
-         28,
-         MBEDTLS_ECP_DP_SECP224R1,
-         "MBEDTLS_ECP_DP_SECP224R1"
-      },
-      {
-         ERROR_SUCCESS,
-         32,
-         MBEDTLS_ECP_DP_SECP256R1,
-         "MBEDTLS_ECP_DP_SECP256R1"
-      },
-      {
-         ERROR_SUCCESS,
-         48,
-         MBEDTLS_ECP_DP_SECP384R1,
-         "MBEDTLS_ECP_DP_SECP384R1"
-      },
-      {
-         ERROR_SUCCESS,
-         66, // TODO Find why size is 66 instead 64
-         MBEDTLS_ECP_DP_SECP521R1,
-         "MBEDTLS_ECP_DP_SECP521R1"
-      },
-      {
-         ERROR_SUCCESS,
-         32,
-         MBEDTLS_ECP_DP_BP256R1,
-         "MBEDTLS_ECP_DP_BP256R1"
-      },
-      {
-         ERROR_SUCCESS,
-         48,
-         MBEDTLS_ECP_DP_BP384R1,
-         "MBEDTLS_ECP_DP_BP384R1"
-      },
-      {
-         ERROR_SUCCESS,
-         64,
-         MBEDTLS_ECP_DP_BP512R1,
-         "MBEDTLS_ECP_DP_BP512R1"
-      },
-      {
-         ERROR_SUCCESS,
-         32,
-         MBEDTLS_ECP_DP_CURVE25519,
-         "MBEDTLS_ECP_DP_CURVE25519"
-      },
-      {
-         ERROR_SUCCESS,
-         24,
-         MBEDTLS_ECP_DP_SECP192K1,
-         "MBEDTLS_ECP_DP_SECP192K1"
-      },
-      {
-         ERROR_SUCCESS,
-         28,
-         MBEDTLS_ECP_DP_SECP224K1,
-         "MBEDTLS_ECP_DP_SECP224K1"
-      },
-      {
-         ERROR_SUCCESS,
-         32,
-         MBEDTLS_ECP_DP_SECP256K1,
-         "MBEDTLS_ECP_DP_SECP256K1"
-      },
-      {
-         ERROR_SUCCESS,
-         56,
-         MBEDTLS_ECP_DP_CURVE448,
-         "MBEDTLS_ECP_DP_CURVE448"
-      }
-   };
-
-   #define TEST_ECDSA_SZ sizeof(test_ecdsa)/sizeof(struct test_ecdsa_t)
 
    ecdsa_ctx=malloc(sizeof(mbedtls_ecdsa_context));
 
@@ -585,60 +585,126 @@ void check_mbedTLS_mpi_size_test()
    }
 
    free_mpi_size_test(ecdsa_ctx);
-   #undef TEST_ECDSA_SZ
    #undef ERROR_ECDSA_MESSAGE
    #undef SUCCESS_ECDSA_MESSAGE
 }
 
+static int rand_test(void *v, unsigned char *c, size_t c_sz)
+{
+   printf("lalalala");
+   if (!c_sz)
+      return -1;
+   
+   printf("\nGenerating random number for %s of size %lu", (char *)v, c_sz);
+   gen_rand_no_entropy(c, c_sz);
+
+   return 0;
+}
+
 void check_ec_secret_key_valid_test()
 {
-   #define RANDOM_SECRET_KEY (size_t)1000
-   int err;
-   unsigned char sk[32+1];
+   #define RANDOM_SECRET_KEY (size_t)500
+   int err, expected_err1, expected_err2;
+   unsigned char sk[MBEDTLS_ECDSA_MAX_LEN+1];
+   struct test_ecdsa_t tst;
+   size_t sz;
+   f_ecdsa_key_pair f_key_pair;
 
-   #define SK_SIZE sizeof(sk)-1
+   f_key_pair.ctx=NULL;
 
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0xff, SK_SIZE), SK_SIZE);
+   for (size_t k=1;k<TEST_ECDSA_SZ;k++) {
 
-   C_ASSERT_EQUAL_INT(ERR_SK_CHECK, err)
+      tst=test_ecdsa[k];
 
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x00, SK_SIZE), SK_SIZE);
+      INFO_MSG_FMT("For k = %lu Checking secret keys for %s curve ...", k, tst.gid_name)
 
-   C_ASSERT_EQUAL_INT(ERR_SK_CHECK, err)
+      sz=tst.size;
+      
+      expected_err1=ERR_SK_CHECK;
+      expected_err2=expected_err1;
+   
+      switch (tst.gid)
+      {
+         case MBEDTLS_ECP_DP_CURVE25519:
+            sz*=2;
+            break;
+      
+         case MBEDTLS_ECP_DP_SECP224K1:
+            expected_err1=ERROR_SUCCESS;
 
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, memset(sk, 0x01, SK_SIZE), SK_SIZE);
+         default:
+            break;
+      }
 
-   C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err)
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0xff, sz), sz);
 
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE+1);
+      C_ASSERT_EQUAL_INT(expected_err1, err)
 
-   C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x00, sz), sz);
 
-   err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE-1);
+      C_ASSERT_EQUAL_INT(expected_err2, err)
 
-   C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x01, sz), sz);
 
-   INFO_MSG("Checking random secret keys ...")
-
-   for (size_t i=0; i<RANDOM_SECRET_KEY; i++) {
-      gen_rand_no_entropy(&sk, SK_SIZE);
-      INFO_MSG_FMT(
-         "Testing if secrete key key \"%s\" is valid (%lu of %lu)",
-         fhex2strv2(msgbuf(), (const void *)sk, SK_SIZE, 1),
-         i,
-         RANDOM_SECRET_KEY-1
+      C_ASSERT_EQUAL_INT(
+         ((tst.gid!=MBEDTLS_ECP_DP_CURVE25519)&&(tst.gid!=MBEDTLS_ECP_DP_CURVE448))?
+         ERROR_SUCCESS:ERR_SK_CHECK,
+         err
       )
 
-      err=f_ecdsa_secret_key_valid(MBEDTLS_ECP_DP_SECP256K1, sk, SK_SIZE);
-      C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
-         CTEST_SETTER(
-            CTEST_ON_ERROR(
-               "check_ec_secret_key_valid_test(). Was expected ERROR_SUCCESS(%d) but found %d for sk = \"%s\"",
-               ERROR_SUCCESS, err, msgbuf()
+      err=f_ecdsa_secret_key_valid(tst.gid, sk, sz+1);
+
+      C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+
+      err=f_ecdsa_secret_key_valid(tst.gid, sk, sz-1);
+
+      C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
+
+      INFO_MSG_FMT("For k = %lu Checking random secret keys for %s curve...", k, tst.gid_name)
+
+      for (size_t i=0; i<RANDOM_SECRET_KEY; i++) {
+
+         INFO_MSG_FMT(
+            "Generating private key for %s curve ... (%lu of %lu)",
+            tst.gid_name,
+            i,
+            RANDOM_SECRET_KEY-1
+         )
+
+         if ((err=f_gen_ecdsa_key_pair(&f_key_pair, tst.gid, rand_test, (void *)tst.gid_name))==MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE) {
+            WARN_MSG_FMT("Generate curve for %s not available. Skipping ...", tst.gid_name)
+            continue;
+         }
+
+         C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+            CTEST_SETTER(
+               CTEST_ON_ERROR(
+                  "f_gen_ecdsa_key_pair(). Was expected ERROR_SUCCESS(%d) but found %d for curve %s",
+                  ERROR_SUCCESS, err, tst.gid_name
+               )
             )
          )
-      )
+
+         INFO_MSG_FMT(
+            "Testing if secret key \"%s\" is valid (%lu of %lu) for %s curve. Key size %lu",
+            fhex2strv2(msgbuf(), (const void *)f_key_pair.private_key, f_key_pair.private_key_sz, 1),
+            i,
+            RANDOM_SECRET_KEY-1,
+            tst.gid_name,
+            f_key_pair.private_key_sz
+         )
+
+         err=f_ecdsa_secret_key_valid(tst.gid, f_key_pair.private_key, f_key_pair.private_key_sz);
+         C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+            CTEST_SETTER(
+               CTEST_ON_ERROR(
+                  "check_ec_secret_key_valid_test(). Was expected ERROR_SUCCESS(%d) but found %d for sk = \"%s\"",
+                  ERROR_SUCCESS, err, msgbuf()
+               )
+            )
+         )
+      }
    }
-   #undef SK_SIZE
+   #undef TEST_ECDSA_SZ
    #undef RANDOM_SECRET_KEY
 }
