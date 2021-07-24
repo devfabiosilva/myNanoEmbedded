@@ -591,23 +591,24 @@ void check_mbedTLS_mpi_size_test()
 
 static int rand_test(void *v, unsigned char *c, size_t c_sz)
 {
-   printf("lalalala");
+
    if (!c_sz)
       return -1;
    
-   printf("\nGenerating random number for %s of size %lu", (char *)v, c_sz);
    gen_rand_no_entropy(c, c_sz);
-
+   printf(
+      "Generating random number for %s of size %lu random\"%s\"\n",
+      (char *)v, c_sz, fhex2strv2(msgbuf(), (const void *)c, c_sz, 0)
+   );
    return 0;
 }
 
 void check_ec_secret_key_valid_test()
 {
-   #define RANDOM_SECRET_KEY (size_t)500
+   #define RANDOM_SECRET_KEY (size_t)40
    int err, expected_err1, expected_err2;
    unsigned char sk[MBEDTLS_ECDSA_MAX_LEN+1];
    struct test_ecdsa_t tst;
-   size_t sz;
    f_ecdsa_key_pair f_key_pair;
 
    f_key_pair.ctx=NULL;
@@ -618,17 +619,12 @@ void check_ec_secret_key_valid_test()
 
       INFO_MSG_FMT("For k = %lu Checking secret keys for %s curve ...", k, tst.gid_name)
 
-      sz=tst.size;
       
       expected_err1=ERR_SK_CHECK;
       expected_err2=expected_err1;
    
       switch (tst.gid)
       {
-         case MBEDTLS_ECP_DP_CURVE25519:
-            sz*=2;
-            break;
-      
          case MBEDTLS_ECP_DP_SECP224K1:
             expected_err1=ERROR_SUCCESS;
 
@@ -636,15 +632,15 @@ void check_ec_secret_key_valid_test()
             break;
       }
 
-      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0xff, sz), sz);
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0xff, tst.size), tst.size);
 
       C_ASSERT_EQUAL_INT(expected_err1, err)
 
-      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x00, sz), sz);
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x00, tst.size), tst.size);
 
       C_ASSERT_EQUAL_INT(expected_err2, err)
 
-      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x01, sz), sz);
+      err=f_ecdsa_secret_key_valid(tst.gid, memset(sk, 0x01, tst.size), tst.size);
 
       C_ASSERT_EQUAL_INT(
          ((tst.gid!=MBEDTLS_ECP_DP_CURVE25519)&&(tst.gid!=MBEDTLS_ECP_DP_CURVE448))?
@@ -652,11 +648,11 @@ void check_ec_secret_key_valid_test()
          err
       )
 
-      err=f_ecdsa_secret_key_valid(tst.gid, sk, sz+1);
+      err=f_ecdsa_secret_key_valid(tst.gid, sk, tst.size+1);
 
       C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
 
-      err=f_ecdsa_secret_key_valid(tst.gid, sk, sz-1);
+      err=f_ecdsa_secret_key_valid(tst.gid, sk, tst.size-1);
 
       C_ASSERT_EQUAL_INT(ERR_KEY_WRONG_SIZE, err)
 
@@ -671,7 +667,9 @@ void check_ec_secret_key_valid_test()
             RANDOM_SECRET_KEY-1
          )
 
-         if ((err=f_gen_ecdsa_key_pair(&f_key_pair, tst.gid, rand_test, (void *)tst.gid_name))==MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE) {
+         f_key_pair.gid=tst.gid;       
+
+         if ((err=f_gen_ecdsa_key_pair(&f_key_pair, MBEDTLS_ECP_PF_UNCOMPRESSED, rand_test, (void *)tst.gid_name))==MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE) {
             WARN_MSG_FMT("Generate curve for %s not available. Skipping ...", tst.gid_name)
             continue;
          }

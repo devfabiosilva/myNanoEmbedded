@@ -35,14 +35,15 @@ all: part main
 
 %.o: %.S
 	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
-	@$(CC) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #Node/Java
+	$(CC) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #Node/Java
 	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
-	@echo "Assembly $<"
+	echo "Assembly $<"
 
 %.o: %.c
-	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program #PHP
-	@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -O2 -D$(ARCH) -flto -fuse-linker-plugin -fwhole-program -fPIC #NODE/JAVA
-	#@$(CC) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -c $< -o $@ -Os -D$(ARCH) -fwhole-program
+	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -flto -fuse-linker-plugin -fwhole-program #PHP
+	@echo -I$(INCLUDEDIR)
+	@$(CC) -c $< -o $@ -O2 -D$(ARCH) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE) -flto -fuse-linker-plugin -fwhole-program -fPIC #NODE/JAVA
+	#@$(CC) -c $< -o $@ -Os -D$(ARCH) -I$(INCLUDEDIR) -I$(INCLUDEDIRPRIVATE)  -fwhole-program
 	@echo "CC $<"
 
 part:$(COBJS) $(SOBJS)
@@ -96,9 +97,6 @@ clean:
 	$(MAKE) -C $(CURDIR)/src/$(LIBSODIUM_LIB) distclean
 	rm -rfv $(CURDIR)/src/$(LIBSODIUM_LIB)/build
 ifneq ("$(wildcard $(CURDIR)/test/test)","")
-	#@echo "Removing $(CTEST_DIR)/test/test ..."
-	#rm $(CURDIR)/test/test
-	#rm 
 	$(MAKE) -C $(PWD)/test clean
 endif
 
