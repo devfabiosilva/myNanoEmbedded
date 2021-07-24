@@ -822,8 +822,6 @@ f_ecdsa_public_key_valid(mbedtls_ecp_group_id gid, unsigned char *public_key, si
 f_ecdsa_public_key_valid_EXIT1:
    mbedtls_ecp_point_free(P);
    mbedtls_ecdsa_free(ecdsa_ctx);
-   //memset(buffer, 0, F_ECDSA_PUBLIC_BUFFER_SZ);
-   //free(buffer);
    CLEAR_AND_FREE(buffer, F_ECDSA_PUBLIC_BUFFER_SZ)
    return err;
    #undef F_ECDSA_PUBLIC_BUFFER_SZ

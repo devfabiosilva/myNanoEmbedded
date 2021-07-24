@@ -46,6 +46,7 @@ int main (int argc, char **argv)
    check_mbedTLS_mpi_size_test();
    xpriv_xpub_test();
    check_ec_secret_key_valid_test();
+   check_ec_public_key_valid();
 
    TITLE_MSG("Finishing myNanoEmbedded library tests ...")
 

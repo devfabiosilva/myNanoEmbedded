@@ -5,5 +5,6 @@ var files =
     [ "f_bitcoin.h", "d0/da6/f__bitcoin_8h.html", "d0/da6/f__bitcoin_8h" ],
     [ "f_nano_crypto_util.h", "df/d1d/f__nano__crypto__util_8h.html", "df/d1d/f__nano__crypto__util_8h" ],
     [ "f_util.h", "de/dc6/f__util_8h.html", "de/dc6/f__util_8h" ],
-    [ "sodium.h", "d6/d3c/sodium_8h.html", null ]
+    [ "sodium.h", "d6/d3c/sodium_8h.html", null ],
+    [ "version.h", "df/dfc/version_8h.html", "df/dfc/version_8h" ]
 ];

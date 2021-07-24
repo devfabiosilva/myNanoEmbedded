@@ -249,7 +249,7 @@ static void nano_embedded_mbedtls_free_test(void *ctx)
 {
    struct mbedtls_test_t *v=(struct mbedtls_test_t *)ctx;
    
-   printf("\nError occurred in mbedTLS big number. Freeing vector (%p)\n\n", v);
+   printf("\nFreeing vector (%p)\n\n", v);
    mbedtls_mpi_free(&v->B);
    mbedtls_mpi_free(&v->A);
    mbedtls_mpi_free(&v->X);
@@ -424,11 +424,7 @@ void nano_embedded_mbedtls_bn_test()
       )
    )
 
-   mbedtls_mpi_free(&mbedtls_test->B);
-   mbedtls_mpi_free(&mbedtls_test->A);
-   mbedtls_mpi_free(&mbedtls_test->X);
-
-   free(mbedtls_test);
+   nano_embedded_mbedtls_free_test(mbedtls_test);
 
    #undef X_VALUE_LSB
    #undef X_VALUE_MSB
@@ -602,10 +598,11 @@ static int rand_test(void *v, unsigned char *c, size_t c_sz)
    );
    return 0;
 }
-
+#define RANDOM_TEST (size_t)65
+#define UNAVAILABLE_CURVE "Generate curve for %s not available. Skipping ..."
+#define GEN_ECDSA_KP "f_gen_ecdsa_key_pair(). Was expected ERROR_SUCCESS(%d) but found %d for curve %s"
 void check_ec_secret_key_valid_test()
 {
-   #define RANDOM_SECRET_KEY (size_t)40
    int err, expected_err1, expected_err2;
    unsigned char sk[MBEDTLS_ECDSA_MAX_LEN+1];
    struct test_ecdsa_t tst;
@@ -619,7 +616,6 @@ void check_ec_secret_key_valid_test()
 
       INFO_MSG_FMT("For k = %lu Checking secret keys for %s curve ...", k, tst.gid_name)
 
-      
       expected_err1=ERR_SK_CHECK;
       expected_err2=expected_err1;
    
@@ -658,26 +654,26 @@ void check_ec_secret_key_valid_test()
 
       INFO_MSG_FMT("For k = %lu Checking random secret keys for %s curve...", k, tst.gid_name)
 
-      for (size_t i=0; i<RANDOM_SECRET_KEY; i++) {
+      for (size_t i=0; i<RANDOM_TEST; i++) {
 
          INFO_MSG_FMT(
             "Generating private key for %s curve ... (%lu of %lu)",
             tst.gid_name,
             i,
-            RANDOM_SECRET_KEY-1
+            RANDOM_TEST-1
          )
 
          f_key_pair.gid=tst.gid;       
 
          if ((err=f_gen_ecdsa_key_pair(&f_key_pair, MBEDTLS_ECP_PF_UNCOMPRESSED, rand_test, (void *)tst.gid_name))==MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE) {
-            WARN_MSG_FMT("Generate curve for %s not available. Skipping ...", tst.gid_name)
+            WARN_MSG_FMT(UNAVAILABLE_CURVE, tst.gid_name)
             continue;
          }
 
          C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
             CTEST_SETTER(
                CTEST_ON_ERROR(
-                  "f_gen_ecdsa_key_pair(). Was expected ERROR_SUCCESS(%d) but found %d for curve %s",
+                  GEN_ECDSA_KP,
                   ERROR_SUCCESS, err, tst.gid_name
                )
             )
@@ -687,7 +683,7 @@ void check_ec_secret_key_valid_test()
             "Testing if secret key \"%s\" is valid (%lu of %lu) for %s curve. Key size %lu",
             fhex2strv2(msgbuf(), (const void *)f_key_pair.private_key, f_key_pair.private_key_sz, 1),
             i,
-            RANDOM_SECRET_KEY-1,
+            RANDOM_TEST-1,
             tst.gid_name,
             f_key_pair.private_key_sz
          )
@@ -703,6 +699,91 @@ void check_ec_secret_key_valid_test()
          )
       }
    }
+}
+
+void check_ec_public_key_valid()
+{
+   int err;
+   unsigned char pk[MBEDTLS_ECDSA_MAX_LEN+1];
+   struct test_ecdsa_t tst;
+   f_ecdsa_key_pair f_key_pair;
+   f_key_pair.ctx=NULL;
+   size_t sz;
+
+   pk[0]=0x04;
+
+   for (size_t k=1;k<TEST_ECDSA_SZ;k++) {
+
+      tst=test_ecdsa[k];
+      sz=tst.size<<1+1;
+
+      if (sz > sizeof(pk)) {
+         WARN_MSG_FMT(
+            "Buffer overflow detected for %s. Size = %lu and max size allowed = %lu",
+            tst.gid_name, sz, sizeof(pk)
+         )
+         sz=tst.size;
+      }
+
+      INFO_MSG_FMT("For k = %lu Checking public keys for %s curve ...", k, tst.gid_name)
+
+      memset(pk+1, 0xff, sz-1);
+      err=f_ecdsa_public_key_valid(tst.gid, pk, sz);
+
+      C_ASSERT_EQUAL_INT((tst.gid!=MBEDTLS_ECP_DP_CURVE448)?MBEDTLS_ERR_ECP_BAD_INPUT_DATA:ERROR_SUCCESS, err)
+
+      memset(pk+1, 0x00, sz-1);
+      err=f_ecdsa_public_key_valid(tst.gid, pk, sz);
+
+      C_ASSERT_EQUAL_INT((tst.gid!=MBEDTLS_ECP_DP_CURVE448)?MBEDTLS_ERR_ECP_BAD_INPUT_DATA:ERROR_SUCCESS, err)
+
+      for (size_t i=0; i<RANDOM_TEST; i++) {
+
+         INFO_MSG_FMT(
+            "Generating key pair for %s curve ... (%lu of %lu)",
+            tst.gid_name,
+            i,
+            RANDOM_TEST-1
+         )
+
+         f_key_pair.gid=tst.gid;       
+
+         if ((err=f_gen_ecdsa_key_pair(&f_key_pair, MBEDTLS_ECP_PF_UNCOMPRESSED, rand_test, (void *)tst.gid_name))==MBEDTLS_ERR_ECP_FEATURE_UNAVAILABLE) {
+            WARN_MSG_FMT(UNAVAILABLE_CURVE, tst.gid_name)
+            continue;
+         }
+
+         C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+            CTEST_SETTER(
+               CTEST_ON_ERROR(
+                  GEN_ECDSA_KP,
+                  ERROR_SUCCESS, err, tst.gid_name
+               )
+            )
+         )
+
+         INFO_MSG_FMT(
+            "Testing if public key \"%s\" is valid (%lu of %lu) for %s curve. Key size %lu",
+            fhex2strv2(msgbuf(), (const void *)f_key_pair.public_key, f_key_pair.public_key_sz, 1),
+            i,
+            RANDOM_TEST-1,
+            tst.gid_name,
+            f_key_pair.public_key_sz
+         )
+
+         err=f_ecdsa_public_key_valid(tst.gid, f_key_pair.public_key, f_key_pair.public_key_sz);
+         C_ASSERT_EQUAL_INT(ERROR_SUCCESS, err,
+            CTEST_SETTER(
+               CTEST_ON_ERROR(
+                  "f_ecdsa_public_key_valid(). Was expected ERROR_SUCCESS(%d) but found %d for pk = \"%s\"",
+                  ERROR_SUCCESS, err, msgbuf()
+               )
+            )
+         )
+      }   
+   }
+   #undef GEN_ECDSA_KP
+   #undef UNAVAILABLE_CURVE
    #undef TEST_ECDSA_SZ
-   #undef RANDOM_SECRET_KEY
+   #undef RANDOM_TEST
 }

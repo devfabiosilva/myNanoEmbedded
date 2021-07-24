@@ -44,6 +44,8 @@
 
 #endif
 
+#include <version.h>
+
 /**
  * @file
  * @brief This API Integrates Nano Cryptocurrency to low computational devices

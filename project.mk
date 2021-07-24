@@ -81,6 +81,7 @@ CSRCS+=$(PWD)/src/mbedtls-2.26.0/base64.c
 CSRCS+=$(PWD)/src/f_util.c
 CSRCS+=$(PWD)/src/f_nano_crypto_util.c
 CSRCS+=$(PWD)/src/f_bitcoin.c
+CSRCS+=$(PWD)/src/version.c
 
 SSRCS:=$(PWD)/src/f_add_bn_288_le.S
 
