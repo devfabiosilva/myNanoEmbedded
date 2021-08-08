@@ -7,9 +7,12 @@
 // j-> major ; mN minorN
 // j.m1.m2
 #define MINOR1 (uint16_t)0
+#define MINOR1_STR "0"
 #define MINOR2 (uint16_t)1
+#define MINOR2_STR "1"
 #define MAJOR (uint16_t)0
-#define VERSION_STR "0.1.0"
+#define MAJOR_STR "0"
+#define VERSION_STR MAJOR_STR"."MINOR2_STR"."MINOR1_STR
 #define RELEASE_DATE_STR "202107241422"
 #define MYNANOEMBEDDED_VERSION_STR "myNanoEmbedded "VERSION_STR" - "RELEASE_DATE_STR
 #define GET_VERSION_U32 (uint32_t)((MAJOR<<22)|(MINOR1<<11)|(MINOR2))

@@ -1279,10 +1279,14 @@ int f_base64url_encode_dynamic(void **encoded, size_t *encoded_len, void *data, 
    size_t size_tmp;
    char *p;
 
-   if ((err=f_encode_to_base64_dynamic((char **)encoded, encoded_len, data, data_sz)))
+   if ((err=f_encode_to_base64_dynamic((char **)encoded, &size_tmp, data, data_sz)))
       return err;
 
-   (encoded_len)?(size_tmp=*encoded_len):(size_tmp=strlen((const char *)*encoded));
+   //(encoded_len)?(size_tmp=*encoded_len):(size_tmp=strlen((const char *)*encoded));
+
+   if (encoded_len)
+      *encoded_len=size_tmp;
+
    while (size_tmp--)
       if (*(p=((char *)(*encoded)+size_tmp))=='+')
          *p='-';
