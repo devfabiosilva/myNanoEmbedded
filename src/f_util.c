@@ -1085,7 +1085,8 @@ int f_url_encode(char *dest, size_t dest_sz, size_t *dest_len, uint8_t *source, 
       if ((c>='A')&&(c<='Z'))
          goto f_url_encode_STEP1;
 
-     if (((sz+=3)+1)>dest_sz)
+     //if (((sz+=3)+1)>dest_sz) //sun aug 08 22:52:39 -03 2021 BUG Fixed. Low. It was required 4*data_sz+1 (wrong) instead 3*data_sz+1 to parse
+     if (((sz+=2)+1)>dest_sz)
          return F_URL_ENCODE_DEST_SMALL;
 
      sprintf(dest, "%%%02x", c);
